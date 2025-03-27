@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
 
 
-export default function CollapseButton({ onPress, isCollapsed }) {
+export default function CollapseButton({ isCollapsed }) {
 
     function ChevronButtonIcon() {
         return isCollapsed ?
@@ -11,8 +11,6 @@ export default function CollapseButton({ onPress, isCollapsed }) {
     }
 
     return (
-        <TouchableOpacity onPress={onPress} hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <ChevronButtonIcon />
-        </TouchableOpacity>
+        <ChevronButtonIcon />
     )
 }

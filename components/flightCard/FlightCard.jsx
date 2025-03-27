@@ -15,7 +15,7 @@ export default function FlightCard({ data, onPress }) {
     }
 
     return (
-        <View style={s.container}>
+        <TouchableOpacity onPress={handleCollapsible} style={s.container} activeOpacity={1}>
             <View style={s.icons_container}>
                 <View style={s.plane_icon_container}>
                     <Plane
@@ -23,7 +23,7 @@ export default function FlightCard({ data, onPress }) {
                         size={18}
                         style={s.plane_icon} />
                 </View>
-                <CollapseButton onPress={handleCollapsible} isCollapsed={isCollapsed} />
+                <CollapseButton isCollapsed={isCollapsed} />
             </View>
 
             <View style={s.title_container}>
@@ -39,6 +39,7 @@ export default function FlightCard({ data, onPress }) {
                     style={s.arrow} />
                 <Txt style={s.iata}>{data.arrivalAirport}</Txt>
             </View>
+
             <Collapsible collapsed={isCollapsed} collapsedHeight={0}>
                 <View style={s.add_container}>
                     <Txt style={s.add_title}>Additionnal information</Txt>
@@ -51,7 +52,7 @@ export default function FlightCard({ data, onPress }) {
                     </TouchableOpacity>
                 </View>
             </Collapsible>
-        </View>
+        </TouchableOpacity>
 
     )
 } 

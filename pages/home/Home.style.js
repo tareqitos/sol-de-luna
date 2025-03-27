@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const s = StyleSheet.create({
     container: {
         flex: 1,
-        
         paddingHorizontal: 20
     },
     title: {
@@ -15,7 +14,7 @@ const s = StyleSheet.create({
 
     cards: {
         flex: 1,
-
+        gap: 20
     }
 });
 

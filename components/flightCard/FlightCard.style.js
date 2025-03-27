@@ -42,12 +42,12 @@ const s = StyleSheet.create({
         gap: 5
     },
     title: {
-        color: darkGreen,
+        color: "black",
         fontSize: 18,
         fontFamily: "Raleway-600"
     },
     date: {
-        color: darkGreen,
+        color: "black",
         fontFamily: "Inter-400"
     },
 
@@ -58,7 +58,7 @@ const s = StyleSheet.create({
     },
     iata: {
         fontSize: 18,
-        color: normalGreen
+        color: "black"
     },
 
     // ADDITIONAL INFO
@@ -68,13 +68,13 @@ const s = StyleSheet.create({
     },
 
     add_title: {
-        color: darkGreen,
+        color: "black",
         fontSize: 16,
         fontFamily: "Raleway-600"
     },
 
     add_infos: {
-        color: darkGreen
+        color: "black"
     },
 
     upload: {

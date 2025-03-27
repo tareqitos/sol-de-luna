@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { s } from "./Home.style";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Title from "../../components/title/Title";
@@ -12,12 +12,13 @@ const flights_data = {
     departureAirport: "BRU",
     arrivalAirport: "TPE",
     additionnalInformation: "Gate number 2, duration: 8h20m, one stop in Finland, three checked luggage",
-    documents: []
+    documents: ""
 }
 
 export default function Home() {
-    const [files, setFiles] = useState()
+    const [files, setFiles] = useState([])
 
+    // Pick a file
     const pickDocument = async () => {
         const result = await DocumentPicker.getDocumentAsync({
             type: "*/*",
@@ -40,6 +41,12 @@ export default function Home() {
                 </View>
 
                 <View style={s.cards}>
+                    <FlightCard data={flights_data} onPress={pickDocument} />
+                    <FlightCard data={flights_data} onPress={pickDocument} />
+                    <FlightCard data={flights_data} onPress={pickDocument} />
+                    <FlightCard data={flights_data} onPress={pickDocument} />
+                    <FlightCard data={flights_data} onPress={pickDocument} />
+                    <FlightCard data={flights_data} onPress={pickDocument} />
                     <FlightCard data={flights_data} onPress={pickDocument} />
                 </View>
             </SafeAreaView>
