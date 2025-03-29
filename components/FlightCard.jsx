@@ -1,0 +1,53 @@
+import { TouchableOpacity, View } from "react-native"
+import Txt from "./Txt"
+import { MoveRight, Plane, UploadIcon } from "lucide-react-native"
+import { ConvertDateToString } from "../services/date-service"
+import Collapsible from "react-native-collapsible"
+import { useState } from "react"
+import CollapseButton from "./CollapseButton"
+import { s } from "../styles/card.style"
+import { useTheme } from "../hook/theme"
+
+export default function FlightCard({ data, onPress }) {
+    const [isCollapsed, setIsCollapse] = useState(true)
+    const { colors } = useTheme();
+
+    function handleCollapsible() {
+        setIsCollapse(!isCollapsed);
+    }
+
+    return (
+        <TouchableOpacity onPress={handleCollapsible} activeOpacity={1} style={[s.card.container, { backgroundColor: colors.card.background }]}>
+            <View style={s.card.icons_container}>
+                <CollapseButton onPress={handleCollapsible} isCollapsed={isCollapsed} />
+            </View>
+
+            <View style={s.card.title_container}>
+                <Txt style={s.card.title}>{data.title}</Txt>
+                <Txt style={s.card.date}>{ConvertDateToString(data.departureDate)}</Txt>
+            </View>
+
+            <View style={s.card.destination_container}>
+                <Txt style={s.card.iata}>{data.departureAirport}</Txt>
+                <MoveRight
+                    color={colors.card.icon}
+                    size={14}
+                    style={s.card.arrow} />
+                <Txt style={s.card.iata}>{data.arrivalAirport}</Txt>
+            </View>
+            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={200} >
+                <View style={s.card.add_container}>
+                    <Txt style={s.card.add_title}>Additionnal information</Txt>
+                    <Txt style={s.card.add_infos}>{data.additionnalInformation}</Txt>
+                    <TouchableOpacity style={s.card.upload} onPress={onPress}>
+                        <UploadIcon
+                            color="#647457"
+                            size={14} />
+                        <Txt>Add a file</Txt>
+                    </TouchableOpacity>
+                </View>
+            </Collapsible>
+        </TouchableOpacity>
+
+    )
+} 

@@ -11,8 +11,6 @@ export default function CollapseButton({ onPress, isCollapsed }) {
     }
 
     return (
-        <TouchableOpacity onPress={onPress} hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <ChevronButtonIcon />
-        </TouchableOpacity>
+        <ChevronButtonIcon />
     )
 }
