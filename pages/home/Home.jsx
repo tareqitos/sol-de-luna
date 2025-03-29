@@ -23,6 +23,7 @@ const FLIGHTS = [
         id: "2",
         title: "Weekend in Barcelona ",
         departureDate: "2025-05-15T08:30:00",
+        departureTime: "08:30",
         departureAirport: "LHR",
         arrivalAirport: "BCN",
         additionnalInformation: "Gate number 14, duration: 2h45m, direct flight, one carry-on",
@@ -96,12 +97,12 @@ export default function Home() {
                 <CardContainer data={FLIGHTS} pickDocument={pickDocument} />
             </ScrollView>
 
-            {/* <Switch
+            <Switch
                 style={{ position: "absolute", top: 70, right: 20 }}
                 trackColor={{ false: '#767577', true: '#81b0ff' }}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleTheme}
-            /> */}
+            />
 
 
             <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background }]}>

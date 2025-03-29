@@ -33,7 +33,6 @@ export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
       <ThemeProvider>
-        <Container>
           {
             isRalewayLoaded && isInterLoaded ? (
               <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
@@ -42,7 +41,6 @@ export default function App() {
               </Stack.Navigator>
             ) : null
           }
-        </Container>
       </ThemeProvider >
     </NavigationContainer>
   );

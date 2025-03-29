@@ -10,11 +10,11 @@ const s = StyleSheet.create({
             gap: 10,
         },
 
-        container_addItem: {
+        title_container: {
             position: "absolue",
             alignItems: "center",
             flexDirection: "row",
-            paddingLeft: 20,
+            marginBottom: 20,
             gap: 0,
         },
 
@@ -41,10 +41,13 @@ const s = StyleSheet.create({
         },
 
         tab_bottom_menu: {
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
             paddingHorizontal: 40,
             paddingTop: 20,
             paddingBottom: 40,
-            backgroundColor: "white",
 
             shadowColor: "#000",
             shadowOffset: {
@@ -77,16 +80,34 @@ const s = StyleSheet.create({
         }
     },
 
-    shadow: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
+    form: {
+        container: {
+            gap: 20
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
 
-        elevation: 5,
+        input_container: {
+            gap: 5
+        },
+
+        input: {
+            width: "auto",
+            height: 40,
+            borderRadius: 5,
+            borderWidth: 1,
+            justifyContent: "center",
+            paddingHorizontal: 10,
+            fontFamily: "Raleway-400",
+        },
+
+        route_input: {
+            width: 80
+        },
+
+        button: {
+            alignItems: "center",
+            paddingVertical: 10,
+            borderRadius: 50,
+        }
     }
 })
 

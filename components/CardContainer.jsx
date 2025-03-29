@@ -18,6 +18,10 @@ export default function CardContainer({ data, pickDocument }) {
         setIsCollapse(!isCollapsed);
     }
 
+    function goToAddItem() {
+        nav.navigate("AddFlight", { data })
+    }
+
     return (
         <TouchableOpacity activeOpacity={1} onPress={handleCollapsible} style={[s.card_container.container, { backgroundColor: colors.background }]}>
             <View style={s.card_container.title_container}>
@@ -32,7 +36,7 @@ export default function CardContainer({ data, pickDocument }) {
                     <TouchableOpacity
                         activeOpacity={1}
                         style={[s.card_container.add_item, { borderColor: colors.border }]}
-                        onPress={() => nav.push("AddFlight")}
+                        onPress={goToAddItem}
                     >
                         <Txt style={{ color: colors.border }}>+ Add flight</Txt>
                     </TouchableOpacity>

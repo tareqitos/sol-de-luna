@@ -87,8 +87,17 @@ const s = StyleSheet.create({
             fontSize: 18,
             fontFamily: "Raleway-600"
         },
+
+        time_container: {
+            flexDirection: "row",
+            gap: 10
+        },
+
         date: {
-            fontFamily: "Inter-400"
+            fontFamily: "Inter-400",
+            alignItems: "center",
+            gap: 2,
+            flexDirection: "row",
         },
 
         destination_container: {

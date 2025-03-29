@@ -5,11 +5,15 @@ export const themes = {
         iconGrey: "#818181",
         iconSelected: "#9575cd",
         border: "#7c4dff",
+        inputBorder: "#818181",
+
+        grey: "#818181",
 
         card: {
             background: "#ede7f6",
             icon: "#9575cd",
-        }
+            time: "#5c5c5c"
+        },
     },
 
     dark: {

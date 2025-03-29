@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native"
 import Txt from "./Txt"
-import { MoveRight, Plane, UploadIcon } from "lucide-react-native"
-import { ConvertDateToString } from "../services/date-service"
+import { Calendar, Clock, Hourglass, MoveRight, Plane, UploadIcon } from "lucide-react-native"
+import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
 import Collapsible from "react-native-collapsible"
 import { useState } from "react"
 import CollapseButton from "./CollapseButton"
@@ -24,7 +24,17 @@ export default function FlightCard({ data, onPress }) {
 
             <View style={s.card.title_container}>
                 <Txt style={s.card.title}>{data.title}</Txt>
-                <Txt style={s.card.date}>{ConvertDateToString(data.departureDate)}</Txt>
+            </View>
+
+            <View style={s.card.time_container}>
+                <View style={s.card.date}>
+                    <Calendar color={colors.card.time} size={14} />
+                    <Txt style={[s.card.date, { color: colors.card.time }]}>{ConvertDateToString(data.departureDate)}</Txt>
+                </View>
+                <View style={s.card.date}>
+                    <Clock color={colors.card.time} size={14} />
+                    <Txt style={[s.card.date, { color: colors.card.time }]}>{ConvertTimetoString(data.departureDate)}</Txt>
+                </View>
             </View>
 
             <View style={s.card.destination_container}>

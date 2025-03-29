@@ -12,6 +12,7 @@
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/raleway": "^0.2.3",
     "@react-native-async-storage/async-storage": "^2.1.2",
+    "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/native": "^7.0.19",
     "@react-navigation/native-stack": "^7.3.3",
     "expo": "~52.0.40",
@@ -23,6 +24,8 @@
     "react": "18.3.1",
     "react-native": "0.76.7",
     "react-native-collapsible": "^1.6.2",
+    "react-native-date-picker": "^5.0.11",
+    "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-safe-area-context": "^5.3.0",
     "react-native-screens": "~4.4.0"
   },
