@@ -22,8 +22,8 @@ const s = StyleSheet.create({
 
         collapsible: {
             paddingHorizontal: 10,
-            paddingBottom: 20,
-            marginTop: 20,
+            paddingVertical: 20,
+            // marginTop: 20,
             gap: 15
         },
 
@@ -36,7 +36,7 @@ const s = StyleSheet.create({
         title: {
             flexDirection: "row",
             alignItems: "center",
-            gap: 10
+            gap: 5
         },
 
         add_item: {
@@ -52,15 +52,15 @@ const s = StyleSheet.create({
             gap: 5,
             borderRadius: 10,
 
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
+            // shadowColor: "#000",
+            // shadowOffset: {
+            //     width: 0,
+            //     height: 2,
+            // },
+            // shadowOpacity: 0.25,
+            // shadowRadius: 3.84,
 
-            elevation: 5,
+            // elevation: 5,
         },
 
         icons_container: {
@@ -71,7 +71,7 @@ const s = StyleSheet.create({
             alignItems: "center"
         },
 
-        plane_icon_container: {
+        icon_container: {
             padding: 5,
             borderRadius: 5,
         },

@@ -6,38 +6,20 @@ import { ArrowLeft, Calendar, MoveRight } from "lucide-react-native";
 import { useTheme } from "../../hook/theme";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Container from "../../components/Container";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { useRef, useState } from "react";
+import DateInput from "../../components/Inputs/DateInput";
+import TitleInput from "../../components/Inputs/TitleInput";
+import RouteInput from "../../components/Inputs/RouteInput";
+import InformationInput from "../../components/Inputs/InformationInput";
 
 
 export default function AddFlight() {
-    const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [date, setDate] = useState(new Date(Date.now()));
     const { colors } = useTheme();
     const { params } = useRoute();
     const nav = useNavigation();
     const iataRef = useRef();
-
-    const onNextIataInput = (text) => {
-        if (text.length >= 3) {
-            iataRef.current.focus();
-        }
-    }
-
-    const showDatePicker = () => {
-        setIsPickerOpen(true);
-    };
-
-    const hideDatePicker = () => {
-        setIsPickerOpen(false);
-    };
-
-    const handleConfirm = (date) => {
-        setDate(date);
-        console.warn("A date has been picked: ", date);
-        hideDatePicker();
-    };
 
     console.log(params)
     return (
@@ -51,68 +33,22 @@ export default function AddFlight() {
 
             <View style={s.form.container}>
                 <View style={s.form.input_container}>
-                    <Txt>Flight Name</Txt>
-                    <TextInput
-                        style={[s.form.input, { borderColor: colors.grey }]}
-                        maxLength={25}
-                        placeholder="e.g Conference in Tokyo"
-                        placeholderTextColor={colors.grey}
-                    />
+                    <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={25} />
                 </View>
 
                 <View style={{ flexDirection: "row", gap: 20 }}>
                     <View style={[s.form.input_container, { flex: 1 }]}>
-                        <Txt>Date</Txt>
-                        <TouchableOpacity style={[s.form.input, { borderColor: colors.grey }]} onPress={showDatePicker}>
-                            <Txt style={{ fontFamily: "Inter-400" }}>{date.toLocaleDateString()}</Txt>
-                        </TouchableOpacity>
-                        <DateTimePickerModal
-                            isVisible={isPickerOpen}
-                            mode="date"
-                            onConfirm={handleConfirm}
-                            onCancel={hideDatePicker}
-                        />
+                        <DateInput date={date} setDate={setDate} />
                     </View>
                     <View style={s.form.input_container}>
-                        <Txt>Route</Txt>
-                        <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-                            <TextInput
-                                style={[s.form.input, s.form.route_input, { borderColor: colors.grey }]}
-                                maxLength={3}
-                                placeholder="e.g BRU"
-                                placeholderTextColor={colors.grey}
-                                autoCapitalize="characters"
-                                inputMode="text"
-                                autoCorrect={false}
-                                onChangeText={onNextIataInput}
-                            />
-                            <MoveRight
-                                color={colors.card.icon}
-                                size={14} />
-                            <TextInput
-                                ref={iataRef}
-                                style={[s.form.input, s.form.route_input, { borderColor: colors.grey }]}
-                                maxLength={3}
-                                placeholder="e.g NRT"
-                                placeholderTextColor={colors.grey}
-                                autoCapitalize="characters"
-                                inputMode="text"
-                                autoCorrect={false}
-                            />
-                        </View>
+                        <RouteInput iataRef={iataRef} />
                     </View>
                 </View>
 
                 <View style={s.form.input_container}>
-                    <Txt>Additionnal information</Txt>
-                    <TextInput
-                        multiline
-                        maxLength={200}
-                        placeholder="Airline, flight number, departure time, etc."
-                        placeholderTextColor={colors.grey}
-                        style={[s.form.input, { borderColor: colors.grey, height: 150 }]}
-                    />
+                    <InformationInput placeholder="Airline, flight number, departure time, etc." />
                 </View>
+
                 <TouchableOpacity activeOpacity={1} style={[s.form.button, { backgroundColor: colors.iconSelected }]}>
                     <Txt style={{ color: "white" }}>Save flight</Txt>
                 </TouchableOpacity>
