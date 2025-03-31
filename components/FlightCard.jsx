@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native"
+import { TextInput, TouchableOpacity, View } from "react-native"
 import Txt from "./Txt"
 import { Calendar, Clock, Hourglass, MoveRight, Plane, UploadIcon } from "lucide-react-native"
 import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
@@ -7,6 +7,7 @@ import { useState } from "react"
 import CollapseButton from "./CollapseButton"
 import { s } from "../styles/card.style"
 import { useTheme } from "../hook/theme"
+import { useData } from "../hook/data"
 
 export default function FlightCard({ data, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true)
@@ -16,10 +17,11 @@ export default function FlightCard({ data, onPress }) {
         setIsCollapse(!isCollapsed);
     }
 
+
     return (
         <TouchableOpacity onPress={handleCollapsible} activeOpacity={1} style={[s.card.container, { backgroundColor: colors.card.background }]}>
             <View style={s.card.icons_container}>
-                <CollapseButton onPress={handleCollapsible} isCollapsed={isCollapsed} />
+                <CollapseButton isCollapsed={isCollapsed} />
             </View>
 
             <View style={s.card.title_container}>
@@ -45,10 +47,12 @@ export default function FlightCard({ data, onPress }) {
                     style={s.card.arrow} />
                 <Txt style={s.card.iata}>{data.arrivalAirport}</Txt>
             </View>
-            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={200} >
+            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={200} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
                     <Txt style={s.card.add_title}>Additionnal information</Txt>
-                    <Txt style={s.card.add_infos}>{data.additionnalInformation}</Txt>
+                    <TextInput
+                        editable
+                        style={s.card.add_infos}>{data.additionnalInformation}</TextInput>
                     <TouchableOpacity style={s.card.upload} onPress={onPress}>
                         <UploadIcon
                             color="#647457"

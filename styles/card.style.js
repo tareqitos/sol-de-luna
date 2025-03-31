@@ -24,7 +24,7 @@ const s = StyleSheet.create({
             paddingHorizontal: 10,
             paddingVertical: 20,
             // marginTop: 20,
-            gap: 15
+            gap: 15,
         },
 
         title_container: {

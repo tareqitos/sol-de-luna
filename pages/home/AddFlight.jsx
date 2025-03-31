@@ -1,10 +1,10 @@
-import { Button, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 import Txt from "../../components/Txt";
 import Title from "../../components/Title";
 import { s } from "../../styles/styles.style";
-import { ArrowLeft, Calendar, MoveRight } from "lucide-react-native";
+import { ArrowLeft } from "lucide-react-native";
 import { useTheme } from "../../hook/theme";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Container from "../../components/Container";
 
 import { useRef, useState } from "react";
@@ -12,16 +12,34 @@ import DateInput from "../../components/Inputs/DateInput";
 import TitleInput from "../../components/Inputs/TitleInput";
 import RouteInput from "../../components/Inputs/RouteInput";
 import InformationInput from "../../components/Inputs/InformationInput";
+import { useForm } from "react-hook-form";
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+import { useData } from "../../hook/data";
 
 
 export default function AddFlight() {
+    const { data, setData } = useData()
     const [date, setDate] = useState(new Date(Date.now()));
     const { colors } = useTheme();
-    const { params } = useRoute();
     const nav = useNavigation();
     const iataRef = useRef();
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            title: "",
+            departureAirport: "",
+            arrivalAirport: "",
+            additionnalInformation: "",
+        },
+        mode: "onBlur"
+    })
 
-    console.log(params)
+    const onSubmit = (newData) => {
+        setData({ ...data, flights: [...data.flights, { "id": uuidv4(), "departureDate": date, ...newData }] })
+        nav.goBack()
+    }
+
+
     return (
         <Container style={{ paddingHorizontal: 20 }}>
             <View style={s.header.title_container}>
@@ -33,7 +51,7 @@ export default function AddFlight() {
 
             <View style={s.form.container}>
                 <View style={s.form.input_container}>
-                    <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={25} />
+                    <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
                 </View>
 
                 <View style={{ flexDirection: "row", gap: 20 }}>
@@ -41,15 +59,15 @@ export default function AddFlight() {
                         <DateInput date={date} setDate={setDate} />
                     </View>
                     <View style={s.form.input_container}>
-                        <RouteInput iataRef={iataRef} />
+                        <RouteInput iataRef={iataRef} control={control} errors={errors} />
                     </View>
                 </View>
 
                 <View style={s.form.input_container}>
-                    <InformationInput placeholder="Airline, flight number, departure time, etc." />
+                    <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                 </View>
 
-                <TouchableOpacity activeOpacity={1} style={[s.form.button, { backgroundColor: colors.iconSelected }]}>
+                <TouchableOpacity onPress={handleSubmit(onSubmit)} activeOpacity={1} style={[s.form.button, { backgroundColor: colors.iconSelected }]}>
                     <Txt style={{ color: "white" }}>Save flight</Txt>
                 </TouchableOpacity>
             </View>

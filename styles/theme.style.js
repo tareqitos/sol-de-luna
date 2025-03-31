@@ -6,6 +6,8 @@ export const themes = {
         iconSelected: "#9575cd",
         border: "#7c4dff",
         inputBorder: "#818181",
+        error: "#e62c2c",
+
 
         grey: "#818181",
 

@@ -7,6 +7,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddFlight from './pages/home/AddFlight';
 import Container from './components/Container';
+import { DataProvider } from './context/DataContext';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
       <ThemeProvider>
+        <DataProvider>
           {
             isRalewayLoaded && isInterLoaded ? (
               <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
@@ -41,6 +43,7 @@ export default function App() {
               </Stack.Navigator>
             ) : null
           }
+        </DataProvider>
       </ThemeProvider >
     </NavigationContainer>
   );
