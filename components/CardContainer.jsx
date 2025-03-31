@@ -9,9 +9,11 @@ import { memo, useCallback, useMemo, useState } from "react";
 import FlightCard from "./FlightCard";
 import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
+import { useData } from "../hook/data";
 
 const CardContainer = memo(({ category, items, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
+    const { deleteData } = useData()
     const nav = useNavigation();
     const { colors } = useTheme()
 
@@ -27,6 +29,8 @@ const CardContainer = memo(({ category, items, style = {} }) => {
 
         nav.navigate(navPath);
     };
+
+
 
     const categoryIcon = () => {
         switch (category) {
@@ -49,7 +53,9 @@ const CardContainer = memo(({ category, items, style = {} }) => {
 
         if (category === "flights") {
             return items.map((flight) => (
-                <FlightCard key={flight.id || `flight-${flight.from}-${flight.to}`} data={flight} />
+                <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
+                    <FlightCard item={flight} />
+                </TouchableOpacity>
             ));
         }
 
@@ -57,7 +63,7 @@ const CardContainer = memo(({ category, items, style = {} }) => {
     }, [items, category, colors.grey]);
 
     return (
-        <TouchableOpacity activeOpacity={1} onPress={handleCollapsible} style={[s.card_container.container, style, { backgroundColor: colors.background }]}>
+        <View style={[s.card_container.container, style, { backgroundColor: colors.background }]}>
             <View style={s.card_container.title_container}>
                 <View style={s.card_container.title}>
                     <View style={s.card.icon_container}>
@@ -72,12 +78,12 @@ const CardContainer = memo(({ category, items, style = {} }) => {
                         <Txt style={{ color: colors.border }}>+ Add {category}</Txt>
                     </TouchableOpacity>
                 </View>
-                <CollapseButton isCollapsed={isCollapsed} />
+                <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
                 {cardContent}
             </Collapsible>
-        </TouchableOpacity >
+        </View>
     )
 });
 

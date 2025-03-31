@@ -1,12 +1,11 @@
-import Home from './pages/home/Home';
+import Home from './pages/Home';
 import { useFonts } from 'expo-font';
 import { useFonts as useRaleway, Raleway_400Regular, Raleway_600SemiBold, Raleway_300Light } from '@expo-google-fonts/raleway';
 import { Inter_300Light, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { ThemeProvider } from './context/ThemeContext';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AddFlight from './pages/home/AddFlight';
-import Container from './components/Container';
+import AddFlight from './pages/AddFlight';
 import { DataProvider } from './context/DataContext';
 const Stack = createNativeStackNavigator();
 

@@ -7,7 +7,7 @@ export const ThemeContext = createContext({
     toggleTheme: () => { },
 })
 
-const THEME_STORAGE_KEY = '@app_theme';
+const THEME_STORAGE_KEY = 'app_theme';
 
 export function ThemeProvider({ children }) {
     const systemColorScheme = useColorScheme();

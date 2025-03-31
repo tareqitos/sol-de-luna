@@ -1,22 +1,112 @@
-import { createContext, useEffect, useState } from "react"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { createContext, useEffect, useRef, useState } from "react"
+import { Alert } from "react-native"
 
 export const DataContext = createContext({
     data: [],
 })
 
 export function DataProvider({ children }) {
-    const [data, setData] = useState(
-        {
-            flights: [{ "id": "f36b6f65-fd78-4d93-99f6-b63f55b6e3f7", "title": "Kuala Lumpur ", "category": "flights", "additionnalInformation": "Pour t'es centré ?", "arrivalAirport": "KUL", "departureAirport": "BRU", "departureDate": "2025-06-07T21:47:00", }],
-            hotels: [],
-            transport: []
-        })
+    const [data, setData] = useState({
+        flights: [],
+        hotels: [],
+        transport: []
+    })
 
-    // console.log("***", data)
+    const DATA_STORAGE_KEY = "@app_data"
+    const isFirstRender = useRef(true)
+    const isLoadUpdate = useRef(false)
+
+    const deleteData = (item) => {
+        Alert.alert(`Delete ${item.title}`, "Do you want to delete this item?", [
+            {
+                text: 'Cancel',
+                onPress: () => console.log(item),
+                style: 'cancel'
+            },
+
+            {
+                text: 'Delete',
+                onPress: () => {
+                    setData(prevData => {
+                        const newData = { ...prevData };
+                        // Remove the item from the appropriate array based on its type
+                        switch (item.type) {
+                            case 'flights':
+                                newData.flights = newData.flights.filter(flight => flight.id !== item.id);
+                                break;
+                            case 'hotels':
+                                newData.hotels = newData.hotels.filter(hotel => hotel.id !== item.id);
+                                break;
+                            case 'transport':
+                                newData.transport = newData.transport.filter(transport => transport.id !== item.id);
+                                break;
+                        }
+                        return newData;
+                    });
+                },
+            },
+        ]);
+    }
+
+    const saveData = async () => {
+        try {
+            await AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data))
+            console.log("SAVED: ", data)
+        } catch (error) {
+            console.log("Unable to save data to AsyncStorage");
+        }
+    }
+
+    const loadData = async () => {
+        try {
+            const loadedData = await AsyncStorage.getItem(DATA_STORAGE_KEY);
+            if (loadedData) {
+                const parsedData = JSON.parse(loadedData)
+                isLoadUpdate.current = true;
+                setData(parsedData)
+                console.log("LOADED: ", parsedData)
+            } else {
+                setData({ flights: [], hotels: [], transport: [] })
+            }
+        } catch (error) {
+            console.log("Unable to load data to AsyncStorage");
+        }
+    }
+
+    // const clearAll = async () => {
+    //     try {
+    //         await AsyncStorage.clear()
+    //     } catch (e) {
+    //         // clear error
+    //     }
+
+    //     console.log('Done.')
+    // }
+
+
+
+    useEffect(() => {
+        // clearAll();
+        loadData();
+    }, []);
+
+    useEffect(() => {
+        if (isLoadUpdate.current) {
+            isLoadUpdate.current = false;
+        } else {
+            if (!isFirstRender.current) {
+                saveData();
+            } else {
+                isFirstRender.current = false;
+            }
+        }
+    }, [data]);
+
 
 
     return (
-        <DataContext.Provider value={{ data, setData }}>
+        <DataContext.Provider value={{ data, setData, deleteData }}>
             {children}
         </DataContext.Provider>
     )
