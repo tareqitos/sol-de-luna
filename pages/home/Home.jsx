@@ -2,7 +2,7 @@ import { ScrollView, Switch, View } from "react-native";
 import { s } from "../../styles/styles.style";
 import Title from "../../components/Title";
 import * as DocumentPicker from 'expo-document-picker';
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTheme } from "../../hook/theme";
 import TabBottomMenu from "../../components/TabBottomMenu";
 import CardContainer from "../../components/CardContainer";
@@ -18,13 +18,15 @@ export default function Home() {
 
     const [selectedTabName, setSelectedTabName] = useState("home")
 
-    const updateSelectedTab = (name) => {
-        setSelectedTabName(name)
-    }
+    const updateSelectedTab = useCallback((name) => {
+        setSelectedTabName(name);
+    }, []);
 
 
-    console.log(data)
-    // console.log(updatedData("flights"))
+    // const renderDataList = useCallback(() => {
+
+    // }, [selectedTabName])
+
 
     const pickDocument = async () => {
         const result = await DocumentPicker.getDocumentAsync({
@@ -47,9 +49,33 @@ export default function Home() {
             </View>
 
             <ScrollView contentContainerStyle={{ padding: 10, gap: 20 }}>
-                {Object.keys(data).map((category) => (
-                    <CardContainer key={category} category={category} pickDocument={pickDocument} />
-                ))}
+                <CardContainer
+                    key="flights"
+                    category="flights"
+                    items={data.flights || []}
+                    pickDocument={pickDocument}
+                    style={{
+                        display: (selectedTabName === "flights" || selectedTabName === "home") ? 'flex' : 'none'
+                    }}
+                />
+                <CardContainer
+                    key="hotels"
+                    category="hotels"
+                    items={data.hotels || []}
+                    pickDocument={pickDocument}
+                    style={{
+                        display: (selectedTabName === "hotels" || selectedTabName === "home") ? 'flex' : 'none'
+                    }}
+                />
+                <CardContainer
+                    key="transport"
+                    category="transport"
+                    items={data.transport || []}
+                    pickDocument={pickDocument}
+                    style={{
+                        display: (selectedTabName === "transport" || selectedTabName === "home") ? 'flex' : 'none'
+                    }}
+                />
             </ScrollView>
 
             <Switch

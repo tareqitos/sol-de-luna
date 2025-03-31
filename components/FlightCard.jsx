@@ -3,7 +3,7 @@ import Txt from "./Txt"
 import { Calendar, Clock, Hourglass, MoveRight, Plane, UploadIcon } from "lucide-react-native"
 import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
 import Collapsible from "react-native-collapsible"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import CollapseButton from "./CollapseButton"
 import { s } from "../styles/card.style"
 import { useTheme } from "../hook/theme"
@@ -13,9 +13,9 @@ export default function FlightCard({ data, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true)
     const { colors } = useTheme();
 
-    function handleCollapsible() {
-        setIsCollapse(!isCollapsed);
-    }
+    const handleCollapsible = useCallback(() => {
+        setIsCollapse(prev => !prev);
+    }, []);
 
 
     return (
@@ -47,7 +47,7 @@ export default function FlightCard({ data, onPress }) {
                     style={s.card.arrow} />
                 <Txt style={s.card.iata}>{data.arrivalAirport}</Txt>
             </View>
-            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={200} renderChildrenCollapsed={true}>
+            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
                     <Txt style={s.card.add_title}>Additionnal information</Txt>
                     <TextInput
