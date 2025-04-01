@@ -49,10 +49,42 @@ export function DataProvider({ children }) {
         ]);
     }
 
+    const updateData = (item) => {
+        if (!item || !item.id || !item.type) {
+            console.log("Invalid item for update:", item);
+            return;
+        }
+
+        setData(prevData => {
+            const newData = { ...prevData };
+
+            // Update the item in the appropriate array based on its type
+            switch (item.type) {
+                case 'flights':
+                    newData.flights = newData.flights.map(flight =>
+                        flight.id === item.id ? item : flight
+                    );
+                    break;
+                case 'hotels':
+                    newData.hotels = newData.hotels.map(hotel =>
+                        hotel.id === item.id ? item : hotel
+                    );
+                    break;
+                case 'transport':
+                    newData.transport = newData.transport.map(transport =>
+                        transport.id === item.id ? item : transport
+                    );
+                    break;
+            }
+
+            return newData;
+        });
+    };
+
     const saveData = async () => {
         try {
             await AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data))
-            console.log("SAVED: ", data)
+            // console.log("SAVED: ", data)
         } catch (error) {
             console.log("Unable to save data to AsyncStorage");
         }
@@ -65,7 +97,7 @@ export function DataProvider({ children }) {
                 const parsedData = JSON.parse(loadedData)
                 isLoadUpdate.current = true;
                 setData(parsedData)
-                console.log("LOADED: ", parsedData)
+                // console.log("LOADED: ", parsedData)
             } else {
                 setData({ flights: [], hotels: [], transport: [] })
             }
@@ -83,8 +115,6 @@ export function DataProvider({ children }) {
 
     //     console.log('Done.')
     // }
-
-
 
     useEffect(() => {
         // clearAll();
@@ -106,7 +136,7 @@ export function DataProvider({ children }) {
 
 
     return (
-        <DataContext.Provider value={{ data, setData, deleteData }}>
+        <DataContext.Provider value={{ data, setData, deleteData, updateData }}>
             {children}
         </DataContext.Provider>
     )

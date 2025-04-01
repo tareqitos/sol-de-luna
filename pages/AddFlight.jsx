@@ -32,7 +32,7 @@ export default function AddFlight() {
             title: "",
             departureAirport: "",
             arrivalAirport: "",
-            additionnalInformation: "",
+            additionalInformation: "",
         },
         mode: "onBlur"
     })

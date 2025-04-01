@@ -45,6 +45,7 @@ const CardContainer = memo(({ category, items, style = {} }) => {
         }
     };
 
+
     // Memoize the card content to prevent re-renders
     const cardContent = useMemo(() => {
         if (!items || items.length === 0) {

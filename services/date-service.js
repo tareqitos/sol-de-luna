@@ -21,12 +21,14 @@ export const DateTimeToDate = (date) => {
 export const DateTimeToTime = (time) => {
     const d = new Date(time);
     // Get the time portion and remove the seconds and milliseconds
-    return d.toISOString().split("T")[1].substring(0, 5);
+    const hours = d.getHours().toString().padStart(2, "0");
+    const minutes = d.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
 }
 
 export const MergeDateTime = (date, time) => {
     // Ensure date and time are strings before concatenating
     const dateStr = DateTimeToDate(date);
-    const timeStr = DateTimeToTime(time);
+    const timeStr = time;
     return `${dateStr}T${timeStr}`;
 }

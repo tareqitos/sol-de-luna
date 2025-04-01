@@ -3,21 +3,20 @@ import Txt from "./Txt"
 import { Calendar, Clock, MoveRight, UploadIcon } from "lucide-react-native"
 import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
 import Collapsible from "react-native-collapsible"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import CollapseButton from "./CollapseButton"
 import { s } from "../styles/card.style"
 import { useTheme } from "../hook/theme"
 import { useData } from "../hook/data"
+import AdditionalInformation from "./Cards/Information"
 
 export default function FlightCard({ item, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true)
-    const { data, setData, deleteData } = useData()
     const { colors } = useTheme();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
-
 
     return (
         <View style={[s.card.container, { backgroundColor: colors.card.background }]}>
@@ -50,15 +49,7 @@ export default function FlightCard({ item, onPress }) {
             </View>
             <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
-                    <Txt style={s.card.add_title}>Additionnal information</Txt>
-                    <TextInput
-                        style={s.card.add_infos}>{item.additionnalInformation}</TextInput>
-                    <TouchableOpacity style={s.card.upload} onPress={onPress}>
-                        <UploadIcon
-                            color="#647457"
-                            size={14} />
-                        <Txt>Add a file</Txt>
-                    </TouchableOpacity>
+                    <AdditionalInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                 </View>
             </Collapsible>
         </View>

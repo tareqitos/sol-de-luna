@@ -2,9 +2,10 @@ export const themes = {
     light: {
         background: "#ffffff",
         text: "#0F1214",
+
         iconGrey: "#818181",
         iconSelected: "#9575cd",
-        border: "#7c4dff",
+        border: "#a671f0",
         inputBorder: "#818181",
         error: "#e62c2c",
 
@@ -13,6 +14,7 @@ export const themes = {
 
         card: {
             background: "#ede7f6",
+            lightPurple: "#f3f0f8",
             icon: "#9575cd",
             time: "#5c5c5c"
         },

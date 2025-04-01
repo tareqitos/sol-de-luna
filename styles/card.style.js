@@ -51,16 +51,6 @@ const s = StyleSheet.create({
             padding: 20,
             gap: 5,
             borderRadius: 10,
-
-            // shadowColor: "#000",
-            // shadowOffset: {
-            //     width: 0,
-            //     height: 2,
-            // },
-            // shadowOpacity: 0.25,
-            // shadowRadius: 3.84,
-
-            // elevation: 5,
         },
 
         icons_container: {
@@ -121,6 +111,10 @@ const s = StyleSheet.create({
         },
 
         add_infos: {
+            marginTop: 10,
+            height: 100,
+            borderRadius: 5,
+            padding: 5
         },
 
         upload: {
