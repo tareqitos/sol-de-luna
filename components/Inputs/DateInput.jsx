@@ -1,42 +1,63 @@
 import { useState } from "react";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { s } from "../../styles/styles.style";
 import { useTheme } from "../../hook/theme";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Txt from "../Txt";
-import { ConvertDateToNum, DateTimeToDate } from "../../services/date-service";
+import { ConvertDateAndTimeToString } from "../../services/date-service";
+import DateTimePicker from "react-native-ui-datepicker";
+import Collapsible from "react-native-collapsible";
+import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
 
-export default function DateInput({ date, setDate }) {
-    const [isPickerOpen, setIsPickerOpen] = useState(false);
+export default function DateInput({ newDate, setNewDate }) {
+    const [isPickerOpen, setIsPickerOpen] = useState();
+
+    let today = new Date(Date.now());
     const { colors } = useTheme();
 
     const showDatePicker = () => {
-        setIsPickerOpen(true);
+        setIsPickerOpen(!isPickerOpen);
     };
 
-    const hideDatePicker = () => {
-        setIsPickerOpen(false);
-    };
-
-    const handleConfirm = (date) => {
-        setDate(date);
-        console.warn("A date has been picked: ", DateTimeToDate(date));
-        hideDatePicker();
-    };
-
+    const icons = {
+        IconPrev: (<ChevronLeft color={colors.text} size={18} />),
+        IconNext: (<ChevronRight color={colors.text} size={18} />),
+    }
 
     return (
         <>
             <Txt>Date</Txt>
-            <TouchableOpacity style={[s.form.input, { borderColor: colors.grey }]} onPress={showDatePicker}>
-                <Txt style={{ fontFamily: "Inter-400" }}>{ConvertDateToNum(date)}</Txt>
+            <TouchableOpacity activeOpacity={.8} style={[s.form.input, { borderColor: colors.grey }]} onPress={showDatePicker}>
+                <Txt style={{ fontFamily: "Inter-400", color: !newDate && colors.grey }}>{!newDate ? "Departure time" : ConvertDateAndTimeToString(newDate)}</Txt>
+                {isPickerOpen && <CircleCheck style={{ position: "absolute", right: "10" }} color={colors.border} size={24} />}
             </TouchableOpacity>
-            <DateTimePickerModal
-                isVisible={isPickerOpen}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-            />
+            <Collapsible collapsed={!isPickerOpen} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
+                <DateTimePicker
+                    timePicker
+                    showOutsideDays
+                    mode="single"
+                    date={newDate}
+                    minDate={today}
+                    onChange={({ date }) => {
+                        setNewDate(date)
+                    }}
+                    containerHeight={300}
+                    components={{ ...icons }}
+                    style={[s.calendar.background, { backgroundColor: colors.background }]}
+                    styles={{
+                        today: [s.calendar.day, { borderColor: "grey" }], // Add a border to today's date
+                        selected: [s.calendar.day_cell, { backgroundColor: colors.border }], // Highlight the selected day
+                        selected_label: { color: 'white' }, // Highlight the selected day label
+
+                        day_cell: s.calendar.day_cell,
+                        outside: { opacity: .5 },
+                        outside_label: { opacity: .5 },
+
+                        year_selector_label: s.calendar.header,
+                        month_selector_label: s.calendar.header,
+                        time_selector_label: s.calendar.header
+                    }}
+                />
+            </Collapsible>
         </>
     )
 }

@@ -26,9 +26,6 @@ export const DateTimeToTime = (time) => {
     return `${hours}:${minutes}`;
 }
 
-export const MergeDateTime = (date, time) => {
-    // Ensure date and time are strings before concatenating
-    const dateStr = DateTimeToDate(date);
-    const timeStr = time;
-    return `${dateStr}T${timeStr}`;
+export const ConvertDateAndTimeToString = (date) => {
+    return `${ConvertDateToNum(date)} ${ConvertTimetoString(date)}`
 }

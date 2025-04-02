@@ -1,3 +1,4 @@
+
 import { StyleSheet } from "react-native";
 
 const s = StyleSheet.create({
@@ -107,6 +108,39 @@ const s = StyleSheet.create({
             alignItems: "center",
             paddingVertical: 10,
             borderRadius: 50,
+        }
+    },
+
+    calendar: {
+        background: {
+            marginVertical: 10,
+            marginHorizontal: 1,
+            paddingBottom: 0,
+            borderRadius: 10,
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 1,
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+
+            elevation: 3,
+        },
+
+        day: {
+            borderRadius: 5,
+            borderWidth: 1
+        },
+
+        day_cell: {
+            paddingVertical: 5,
+            borderRadius: 5,
+        },
+
+        header: {
+            fontSize: 18,
+            paddingVertical: 10,
         }
     }
 })
