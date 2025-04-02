@@ -74,7 +74,7 @@ const s = StyleSheet.create({
         },
 
         title: {
-            fontSize: 18,
+            fontSize: 20,
             fontFamily: "Raleway-600"
         },
 

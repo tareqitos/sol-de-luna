@@ -4,14 +4,15 @@ import { s } from "../../styles/styles.style";
 import Txt from "../Txt";
 import { useController } from "react-hook-form";
 
-export default function TitleInput({ name, value, placeholder, maxLength, control, errors }) {
+export default function TitleInput({ name, placeholder, maxLength, control, errors }) {
     const { colors } = useTheme();
     const { field } = useController({
         control,
         defaultValue: '',
-        name: "title",
+        name: "name",
         rules: {
             required: "Title is required"
+
         }
     })
 

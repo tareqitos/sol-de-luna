@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 
-const CardContainer = memo(({ category, items, style = {} }) => {
+const CardContainer = memo(({ category, items, pickDocument, openDocument, deleteDocument, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
     const { deleteData } = useData()
     const nav = useNavigation();
@@ -55,7 +55,7 @@ const CardContainer = memo(({ category, items, style = {} }) => {
         if (category === "flights") {
             return items.map((flight) => (
                 <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
-                    <FlightCard item={flight} />
+                    <FlightCard item={flight} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
                 </TouchableOpacity>
             ));
         }

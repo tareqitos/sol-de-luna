@@ -24,9 +24,6 @@ export default function TimeInput({ time, setTime }) {
         hideTimePicker();
     };
 
-    useEffect(() => {
-        console.log(DateTimeToTime(time))
-    }, [])
     return (
         <>
             <Txt>Departure</Txt>

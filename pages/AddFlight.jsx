@@ -25,7 +25,7 @@ export default function AddFlight() {
     const iataRef = useRef();
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            title: "",
+            name: "",
             departureAirport: "",
             arrivalAirport: "",
             additionalInformation: "",
@@ -35,9 +35,23 @@ export default function AddFlight() {
 
 
     const onSubmit = (newData) => {
-        setData({ ...data, flights: [...data.flights, { "id": uuidv4(), "departureDate": date, "type": "flights", ...newData }] })
+        const dataToAdd = {
+            ...data,
+            flights: [
+                ...data.flights,
+                {
+                    "id": uuidv4(),
+                    "departureDate": date || new Date(),
+                    "type": "flights",
+                    "documents": [],
+                    ...newData
+                }]
+        }
+
+        setData(dataToAdd)
         nav.goBack()
     }
+
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>

@@ -43,7 +43,7 @@ export default function RouteInput({ iataRef, control, errors }) {
             <Txt>Route</Txt>
             <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                 <TextInput
-                    value={departureField.value}
+                    value={departureField.value?.toUpperCase()}
                     onBlur={departureField.onBlur}
                     style={[s.form.input, s.form.route_input, { borderColor: departureErrorColor }]}
                     maxLength={3}
@@ -58,9 +58,10 @@ export default function RouteInput({ iataRef, control, errors }) {
                 <MoveRight
                     color={colors.card.icon}
                     size={14} />
+
                 <TextInput
                     ref={iataRef}
-                    value={arrivalField.value}
+                    value={arrivalField.value.toUpperCase()}
                     onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}
                     style={[s.form.input, s.form.route_input, { borderColor: arrivalErrorColor }]}

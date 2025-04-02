@@ -18,7 +18,7 @@ export function DataProvider({ children }) {
     const isLoadUpdate = useRef(false)
 
     const deleteData = (item) => {
-        Alert.alert(`Delete ${item.title}`, "Do you want to delete this item?", [
+        Alert.alert(`Delete ${item.name}`, "Do you want to delete this item?", [
             {
                 text: 'Cancel',
                 onPress: () => console.log(item),
@@ -97,7 +97,7 @@ export function DataProvider({ children }) {
                 const parsedData = JSON.parse(loadedData)
                 isLoadUpdate.current = true;
                 setData(parsedData)
-                // console.log("LOADED: ", parsedData)
+                console.log("LOADED: ", parsedData)
             } else {
                 setData({ flights: [], hotels: [], transport: [] })
             }
