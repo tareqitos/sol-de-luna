@@ -15,6 +15,7 @@ export default function Home() {
     const { data, setData } = useData()
 
     const [selectedTabName, setSelectedTabName] = useState("home")
+    const [categories, category] = useState(["flights", "hotels", "transport"])
 
     const updateSelectedTab = useCallback((name) => {
         setSelectedTabName(name);
@@ -66,36 +67,19 @@ export default function Home() {
             </View>
 
             <ScrollView contentContainerStyle={{ padding: 10, gap: 20 }}>
-                <Animated.View style={[slideIn, {
-                    display: (selectedTabName === "flights" || selectedTabName === "home") ? 'flex' : 'none'
-                }]}>
-                    <CardContainer
-                        key="flights"
-                        category="flights"
-                        items={data.flights || []}
-                        pickDocument={pickDocument}
-                    />
-                </Animated.View>
-                <Animated.View style={[slideIn, {
-                    display: (selectedTabName === "hotels" || selectedTabName === "home") ? 'flex' : 'none'
-                }]}>
-                    <CardContainer
-                        key="hotels"
-                        category="hotels"
-                        items={data.hotels || []}
-                        pickDocument={pickDocument}
-                    />
-                </Animated.View>
-                <Animated.View style={[slideIn, {
-                    display: (selectedTabName === "transport" || selectedTabName === "home") ? 'flex' : 'none'
-                }]}>
-                    <CardContainer
-                        key="transport"
-                        category="transport"
-                        items={data.transport || []}
-                        pickDocument={pickDocument}
-                    />
-                </Animated.View>
+                {categories.map((category) => (
+
+                    <Animated.View key={category} style={[slideIn, {
+                        display: (selectedTabName === category || selectedTabName === "home") ? 'flex' : 'none'
+                    }]}>
+                        <CardContainer
+                            category={category}
+                            items={data[category] || []}
+                            pickDocument={pickDocument}
+                        />
+                    </Animated.View>
+
+                ))}
             </ScrollView>
 
             <Switch

@@ -30,6 +30,7 @@
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-safe-area-context": "^5.3.0",
     "react-native-screens": "~4.4.0",
+    "react-native-ui-datepicker": "^3.1.2",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
