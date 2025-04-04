@@ -77,8 +77,8 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
                         onPress={goToAddItem}
                     >
                         <PlusIcon color={colors.primary} size={typography.body.fontSize} />
-                        <Txt style={[s.card.add_item_text, typography.body, { fontFamily: "Raleway-SemiBold", color: colors.primary }]}>
-                            Add {category}
+                        <Txt style={[typography.body, { fontFamily: "Raleway-SemiBold", color: colors.primary, lineHeight: 18 }]}>
+                            add {category}
                         </Txt>
                     </TouchableOpacity>
                 </View>

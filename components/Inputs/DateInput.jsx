@@ -6,7 +6,7 @@ import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
 import Collapsible from "react-native-collapsible";
 import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
-import { useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 
 export default function DateInput({ newDate, setNewDate }) {
     const [isPickerOpen, setIsPickerOpen] = useState();
@@ -28,7 +28,6 @@ export default function DateInput({ newDate, setNewDate }) {
             <Txt style={typography.h4}>Date</Txt>
             <TouchableOpacity activeOpacity={.8} style={[s.form.input, { borderColor: typography.caption.color }]} onPress={showDatePicker}>
                 <Txt style={!newDate ? typography.caption : typography.bodyInter}>{!newDate ? "Departure time" : ConvertDateAndTimeToString(newDate)}</Txt>
-                {isPickerOpen && <CircleCheck style={{ position: "absolute", right: "10" }} color={colors.primary} size={24} />}
             </TouchableOpacity>
             <Collapsible collapsed={!isPickerOpen} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
                 <DateTimePicker
@@ -77,6 +76,12 @@ export default function DateInput({ newDate, setNewDate }) {
                         time_label: { color: colors.onBackground },
                     }}
                 />
+                {isPickerOpen &&
+                    <Button style={{ position: "absolute", right: 0, bottom: 20 }} onPress={() => setIsPickerOpen(false)}>
+                        <CircleCheck color={colors.primary} size={24} />
+                    </Button>
+                }
+
             </Collapsible>
         </>
     )

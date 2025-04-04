@@ -45,7 +45,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                 <TextInput
                     value={departureField.value?.toUpperCase()}
                     onBlur={departureField.onBlur}
-                    style={[s.form.input, s.form.route_input, { borderColor: departureErrorColor }]}
+                    style={[s.form.input, s.form.route_input, { color: colors.onBackground, borderColor: departureErrorColor }]}
                     maxLength={3}
                     placeholder="e.g BRU"
                     placeholderTextColor={typography.caption.color}
@@ -64,7 +64,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                     value={arrivalField.value.toUpperCase()}
                     onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}
-                    style={[s.form.input, s.form.route_input, { borderColor: arrivalErrorColor }]}
+                    style={[s.form.input, s.form.route_input, { color: colors.onBackground, borderColor: arrivalErrorColor }]}
                     maxLength={3}
                     placeholder="e.g NRT"
                     placeholderTextColor={typography.caption.color}

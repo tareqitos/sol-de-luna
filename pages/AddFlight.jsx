@@ -62,7 +62,7 @@ export default function AddFlight() {
                 <Title subtitle="Add flight" />
             </View>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
 
                 <View style={s.form.container}>
                     <View style={s.form.input_container}>

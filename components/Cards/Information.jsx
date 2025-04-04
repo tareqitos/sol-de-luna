@@ -9,6 +9,7 @@ export default function AdditionalInformation({ item, placeholder }) {
 
     const [height, setHeight] = useState(100); // Default height
     const [infoText, setInfoText] = useState();
+    const [prevText, setPrevText] = useState()
     const { updateData } = useData();
     const { colors, elevation, typography } = useTheme();
 
@@ -29,7 +30,12 @@ export default function AdditionalInformation({ item, placeholder }) {
                 placeholderTextColor={typography.caption.color}
                 onContentSizeChange={(e) => setHeight(Math.max(80, e.nativeEvent.contentSize.height))}
                 onChange={(e) => setInfoText(e.nativeEvent.text)}
-                onBlur={(e) => handleTextUpdate(infoText)}
+                onBlur={(e) => {
+                    if (infoText !== prevText) {
+                        setPrevText(infoText)
+                        handleTextUpdate(infoText)
+                    }
+                }}
                 style={[s.card.add_infos, elevation.level1, typography.body, { color: colors.onSurface, backgroundColor: colors.surface, height: height }]}>
 
                 {item.additionalInformation}

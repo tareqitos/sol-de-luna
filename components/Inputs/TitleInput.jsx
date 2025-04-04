@@ -15,7 +15,7 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
         }
     })
 
-    const errorBorder = errors?.title ? colors.error : typography.caption.color;
+    const errorBorder = errors?.name ? colors.error : typography.caption.color;
     return (
         <>
             <Txt style={typography.h4}>{name}</Txt>
@@ -28,7 +28,7 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
             />
-            {errors?.title && <Txt style={{ color: colors.error, marginTop: 2 }}>{name} is required</Txt>}
+            {errors?.name && <Txt style={{ color: colors.error }}>{name} is required</Txt>}
         </>
     )
 }

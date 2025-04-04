@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useTheme } from "react-native-paper";
 
 export default function InformationInput({ placeholder, control }) {
-    const [height, setHeight] = useState(200); // Default height
+    const [height, setHeight] = useState(100); // Default height
     const { colors, typography } = useTheme();
     const { field } = useController({
         control,
@@ -23,7 +23,7 @@ export default function InformationInput({ placeholder, control }) {
                 textAlignVertical="top"
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
-                onContentSizeChange={(e) => setHeight(Math.max(200, e.nativeEvent.contentSize.height))}
+                onContentSizeChange={(e) => setHeight(Math.max(100, e.nativeEvent.contentSize.height))}
                 style={[s.form.input, s.form.input_info, typography.body, { color: colors.onBackground, borderColor: typography.caption.color, height: height }]}
             />
         </>

@@ -1,4 +1,3 @@
-import { MoveRight } from "lucide-react-native";
 import { StyleSheet } from "react-native";
 
 
