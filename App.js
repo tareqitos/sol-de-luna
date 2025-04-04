@@ -1,49 +1,58 @@
-import Home from './pages/home/Home';
+import Home from './pages/Home';
 import { useFonts } from 'expo-font';
 import { useFonts as useRaleway, Raleway_400Regular, Raleway_600SemiBold, Raleway_300Light } from '@expo-google-fonts/raleway';
 import { Inter_300Light, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { ThemeProvider } from './context/ThemeContext';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AddFlight from './pages/home/AddFlight';
-import Container from './components/Container';
+import { themeHook } from './hook/theme';
+import AddFlight from './pages/AddFlight';
+import { DataProvider } from './context/DataContext';
+import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, useTheme } from 'react-native-paper';
+import { lightTheme, darkTheme } from './styles/theme';
+import { View } from 'react-native';
+
+
 const Stack = createNativeStackNavigator();
+
+function AppContent() {
+  const { theme } = themeHook();
+  const { colors } = useTheme();
+  const paperTheme = theme === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={[{ flex: 1 }, { backgroundColor: theme === 'dark' ? "#121212" : "#FDFDFD" }]}>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer>
+          <DataProvider>
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="AddFlight" component={AddFlight} />
+            </Stack.Navigator>
+          </DataProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </View>
+  );
+}
 
 export default function App() {
 
   const [isRalewayLoaded] = useRaleway({
-    "Raleway-300": Raleway_300Light,
-    "Raleway-400": Raleway_400Regular,
-    "Raleway-600": Raleway_600SemiBold
-  })
+    "Raleway-Light": Raleway_300Light,
+    "Raleway-Regular": Raleway_400Regular,
+    "Raleway-SemiBold": Raleway_600SemiBold
+  });
 
   const [isInterLoaded] = useFonts({
-    "Inter-300": Inter_300Light,
-    "inter-400": Inter_400Regular,
-    "Inter-600": Inter_600SemiBold,
-  })
-
-  const navTheme = {
-    ...DefaultTheme,
-    colors: {
-      background: "transparent"
-    }
-  }
+    "Inter-Light": Inter_300Light,
+    "inter-Regular": Inter_400Regular,
+    "Inter-SemiBold": Inter_600SemiBold,
+  });
 
   return (
-    <NavigationContainer theme={navTheme}>
-      <ThemeProvider>
-        <Container>
-          {
-            isRalewayLoaded && isInterLoaded ? (
-              <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="AddFlight" component={AddFlight} />
-              </Stack.Navigator>
-            ) : null
-          }
-        </Container>
-      </ThemeProvider >
-    </NavigationContainer>
+    <ThemeProvider>
+      {isRalewayLoaded && isInterLoaded ? <AppContent /> : null}
+    </ThemeProvider>
   );
 }

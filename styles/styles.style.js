@@ -1,3 +1,4 @@
+
 import { StyleSheet } from "react-native";
 
 const s = StyleSheet.create({
@@ -10,11 +11,11 @@ const s = StyleSheet.create({
             gap: 10,
         },
 
-        container_addItem: {
+        title_container: {
             position: "absolue",
             alignItems: "center",
             flexDirection: "row",
-            paddingLeft: 20,
+            marginBottom: 20,
             gap: 0,
         },
 
@@ -41,10 +42,13 @@ const s = StyleSheet.create({
         },
 
         tab_bottom_menu: {
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
             paddingHorizontal: 40,
             paddingTop: 20,
             paddingBottom: 40,
-            backgroundColor: "white",
 
             shadowColor: "#000",
             shadowOffset: {
@@ -77,16 +81,70 @@ const s = StyleSheet.create({
         }
     },
 
-    shadow: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
+    form: {
+        container: {
+            gap: 15
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
 
-        elevation: 5,
+        input_container: {
+            gap: 10
+        },
+
+        input: {
+            width: "auto",
+            height: 50,
+            borderRadius: 5,
+            borderWidth: 1,
+            justifyContent: "center",
+            paddingHorizontal: 10,
+        },
+
+        input_info: {
+            padding: 10
+        },
+
+        route_input: {
+            width: 100
+        },
+
+        button: {
+            alignItems: "center",
+            paddingVertical: 10,
+            borderRadius: 50,
+        }
+    },
+
+    calendar: {
+        background: {
+            marginVertical: 10,
+            marginHorizontal: 1,
+            paddingBottom: 0,
+            borderRadius: 10,
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 1,
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+
+            elevation: 3,
+        },
+
+        day: {
+            borderRadius: 5,
+            borderWidth: 1
+        },
+
+        day_cell: {
+            paddingVertical: 5,
+            borderRadius: 5,
+        },
+
+        header: {
+            fontSize: 18,
+            paddingVertical: 10,
+        }
     }
 })
 

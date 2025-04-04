@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
 
 
-export default function CollapseButton({ onPress, isCollapsed }) {
+export default function CollapseButton({ isCollapsed }) {
 
     function ChevronButtonIcon() {
         return isCollapsed ?
