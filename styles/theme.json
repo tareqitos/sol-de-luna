@@ -1,0 +1,266 @@
+{
+    "light": {
+        "colors": {
+            "primary": "#2E86AB",
+            "onPrimary": "#FFFFFF",
+            "secondary": "#3DDC97",
+            "onSecondary": "#002A20",
+            "background": "#FDFDFD",
+            "onBackground": "#1C1C1C",
+            "surface": "#FFFFFF",
+            "onSurface": "#2D2D2D",
+            "error": "#D32F2F",
+            "onError": "#FFFFFF"
+        },
+        "elevation": {
+            "level0": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 0
+                },
+                "shadowOpacity": 0,
+                "shadowRadius": 0,
+                "elevation": 0
+            },
+            "level1": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 1
+                },
+                "shadowOpacity": 0.1,
+                "shadowRadius": 3,
+                "elevation": 2
+            },
+            "level2": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 2
+                },
+                "shadowOpacity": 0.12,
+                "shadowRadius": 6,
+                "elevation": 4
+            },
+            "level3": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 4
+                },
+                "shadowOpacity": 0.14,
+                "shadowRadius": 8,
+                "elevation": 6
+            },
+            "level4": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 6
+                },
+                "shadowOpacity": 0.16,
+                "shadowRadius": 10,
+                "elevation": 8
+            },
+            "level5": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 8
+                },
+                "shadowOpacity": 0.18,
+                "shadowRadius": 12,
+                "elevation": 10
+            }
+        },
+        "typography": {
+            "h0": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 42,
+                "letterSpacing": 0.25,
+                "color": "#1C1C1C"
+            },
+            "h1": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 32,
+                "letterSpacing": 0.25,
+                "color": "#1C1C1C"
+            },
+            "h2": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 24,
+                "letterSpacing": 0,
+                "color": "#1C1C1C"
+            },
+            "h3": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 20,
+                "letterSpacing": 0,
+                "color": "#1C1C1C"
+            },
+            "h4": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 18,
+                "letterSpacing": 0,
+                "color": "#1C1C1C"
+            },
+            "body": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 16,
+                "letterSpacing": 0,
+                "color": "#2D2D2D"
+            },
+            "bodyInter": {
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+                "letterSpacing": 0,
+                "color": "#2D2D2D"
+            },
+            "caption": {
+                "fontFamily": "Inter-Light",
+                "fontSize": 14,
+                "letterSpacing": 0.4,
+                "color": "#6E6E6E"
+            }
+        },
+        "opacity": {
+            "disabled": 0.38,
+            "hover": 0.08,
+            "focus": 0.12,
+            "pressed": 0.16
+        }
+    },
+    "dark": {
+        "colors": {
+            "primary": "#82CFFD",
+            "onPrimary": "#001F2D",
+            "secondary": "#FFD86F",
+            "onSecondary": "#2D2000",
+            "background": "#121212",
+            "onBackground": "#F1F1F1",
+            "surface": "#1E1E1E",
+            "onSurface": "#F2F2F2",
+            "error": "#EF5350",
+            "onError": "#1F0000"
+        },
+        "elevation": {
+            "level0": {
+                "shadowColor": "#fff",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 0
+                },
+                "shadowOpacity": 0,
+                "shadowRadius": 0,
+                "elevation": 0
+            },
+            "level1": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 1
+                },
+                "shadowOpacity": 0.3,
+                "shadowRadius": 3,
+                "elevation": 2
+            },
+            "level2": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 2
+                },
+                "shadowOpacity": 0.32,
+                "shadowRadius": 6,
+                "elevation": 4
+            },
+            "level3": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 4
+                },
+                "shadowOpacity": 0.34,
+                "shadowRadius": 8,
+                "elevation": 6
+            },
+            "level4": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 6
+                },
+                "shadowOpacity": 0.36,
+                "shadowRadius": 10,
+                "elevation": 8
+            },
+            "level5": {
+                "shadowColor": "#000",
+                "shadowOffset": {
+                    "width": 0,
+                    "height": 8
+                },
+                "shadowOpacity": 0.38,
+                "shadowRadius": 12,
+                "elevation": 10
+            }
+        },
+        "typography": {
+            "h0": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 42,
+                "letterSpacing": 0.25,
+                "color": "#F1F1F1"
+            },
+            "h1": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 32,
+                "letterSpacing": 0.25,
+                "color": "#F1F1F1"
+            },
+            "h2": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 24,
+                "letterSpacing": 0,
+                "color": "#F1F1F1"
+            },
+            "h3": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 20,
+                "letterSpacing": 0,
+                "color": "#F1F1F1"
+            },
+            "h4": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 18,
+                "letterSpacing": 0,
+                "color": "#F1F1F1"
+            },
+            "body": {
+                "fontFamily": "Raleway-Regular",
+                "fontSize": 16,
+                "letterSpacing": 0,
+                "color": "#F2F2F2"
+            },
+            "bodyInter": {
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+                "letterSpacing": 0,
+                "color": "#F2F2F2"
+            },
+            "caption": {
+                "fontFamily": "Inter-Light",
+                "fontSize": 14,
+                "letterSpacing": 0.4,
+                "color": "#BBBBBB"
+            }
+        },
+        "opacity": {
+            "disabled": 0.4,
+            "hover": 0.08,
+            "focus": 0.12,
+            "pressed": 0.16
+        }
+    }
+}

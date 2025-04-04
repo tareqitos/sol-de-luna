@@ -2,20 +2,21 @@ import { TouchableOpacity, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import Txt from "./Txt";
 import { s } from "../styles/card.style";
-import { useTheme } from "../hook/theme";
 import CollapseButton from "./CollapseButton";
-import { Car, Hotel, Plane } from "lucide-react-native";
+import { Car, Hotel, Plane, PlusIcon } from "lucide-react-native";
 import { memo, useCallback, useMemo, useState } from "react";
 import FlightCard from "./FlightCard";
 import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
+import { useTheme } from "react-native-paper";
+
 
 const CardContainer = memo(({ category, items, pickDocument, openDocument, deleteDocument, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
     const { deleteData } = useData()
     const nav = useNavigation();
-    const { colors } = useTheme()
+    const { colors, typography } = useTheme()
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -35,11 +36,11 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
     const categoryIcon = () => {
         switch (category) {
             case "hotels":
-                return <Hotel color={colors.card.icon} size={24} />;
+                return <Hotel color={colors.primary} size={24} />;
             case "flights":
-                return <Plane color={colors.card.icon} size={24} />;
+                return <Plane color={colors.primary} size={24} />;
             case "transport":
-                return <Car color={colors.card.icon} size={24} />;
+                return <Car color={colors.primary} size={24} />;
             default:
                 return null;
         }
@@ -49,7 +50,7 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
     // Memoize the card content to prevent re-renders
     const cardContent = useMemo(() => {
         if (!items || items.length === 0) {
-            return <Txt style={{ color: colors.grey }}>No {category} added yet.</Txt>;
+            return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
         }
 
         if (category === "flights") {
@@ -61,22 +62,24 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
         }
 
         return null;
-    }, [items, category, colors.grey]);
+    }, [items, category, colors.onSurface]);
 
     return (
-        <View style={[s.card_container.container, style, { backgroundColor: colors.background }]}>
+        <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
             <View style={s.card_container.title_container}>
                 <View style={s.card_container.title}>
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <Txt style={{ fontSize: 20 }}></Txt>
                     <TouchableOpacity
                         activeOpacity={1}
-                        style={[s.card_container.add_item, { borderColor: colors.border }]}
+                        style={[s.card_container.add_item, { borderColor: colors.primary }]}
                         onPress={goToAddItem}
                     >
-                        <Txt style={{ color: colors.border }}>+ Add {category}</Txt>
+                        <PlusIcon color={colors.primary} size={typography.body.fontSize} />
+                        <Txt style={[s.card.add_item_text, typography.body, { fontFamily: "Raleway-SemiBold", color: colors.primary }]}>
+                            Add {category}
+                        </Txt>
                     </TouchableOpacity>
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />

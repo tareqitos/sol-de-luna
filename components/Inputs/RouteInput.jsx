@@ -1,12 +1,12 @@
 import { MoveRight } from "lucide-react-native";
 import Txt from "../Txt";
 import { TextInput, View } from "react-native";
-import { useTheme } from "../../hook/theme";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
+import { useTheme } from "react-native-paper";
 
 export default function RouteInput({ iataRef, control, errors }) {
-    const { colors } = useTheme();
+    const { colors, typography } = useTheme();
 
     const { field: departureField } = useController({
         control,
@@ -33,14 +33,14 @@ export default function RouteInput({ iataRef, control, errors }) {
         }
     }
 
-    const departureErrorColor = errors?.departureAirport ? colors.error : colors.grey;
-    const arrivalErrorColor = errors?.arrivalAirport ? colors.error : colors.grey;
+    const departureErrorColor = errors?.departureAirport ? colors.error : typography.caption.color;
+    const arrivalErrorColor = errors?.arrivalAirport ? colors.error : typography.caption.color;
     const errorMessage = "Min 3 characters"
 
 
     return (
         <>
-            <Txt>Route</Txt>
+            <Txt style={typography.h4}>Route</Txt>
             <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                 <TextInput
                     value={departureField.value?.toUpperCase()}
@@ -48,7 +48,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                     style={[s.form.input, s.form.route_input, { borderColor: departureErrorColor }]}
                     maxLength={3}
                     placeholder="e.g BRU"
-                    placeholderTextColor={colors.grey}
+                    placeholderTextColor={typography.caption.color}
                     autoCapitalize="characters"
                     inputMode="text"
                     autoCorrect={false}
@@ -56,7 +56,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                 />
 
                 <MoveRight
-                    color={colors.card.icon}
+                    color={colors.primary}
                     size={14} />
 
                 <TextInput
@@ -67,7 +67,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                     style={[s.form.input, s.form.route_input, { borderColor: arrivalErrorColor }]}
                     maxLength={3}
                     placeholder="e.g NRT"
-                    placeholderTextColor={colors.grey}
+                    placeholderTextColor={typography.caption.color}
                     autoCapitalize="characters"
                     inputMode="text"
                     autoCorrect={false}

@@ -6,16 +6,19 @@ import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { useCallback, useEffect, useState } from "react";
-import { useTheme } from "../hook/theme";
+
 import TabBottomMenu from "../components/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
+import { useTheme } from "react-native-paper";
+import { themeHook } from "../hook/theme";
 
 
 export default function Home() {
-    const { colors, toggleTheme } = useTheme();
+    const { colors, typography } = useTheme();
+    const { toggleTheme } = themeHook();
     const { data, updateData, deleteData } = useData()
 
     const [selectedTabName, setSelectedTabName] = useState("home")
@@ -76,7 +79,6 @@ export default function Home() {
                 });
             }
 
-            console.log(mimeType)
 
         } catch (error) {
             console.error("Error opening document:", error);
@@ -128,9 +130,9 @@ export default function Home() {
     };
 
     return (
-        <Container>
+        <Container style={{ padding: 10 }}>
             <View style={s.home.title} >
-                <Title title={"Trips"} subtitle={"Overview"} textColor={colors} />
+                <Title title={"Trips"} subtitle={"Overview"} textColor={colors.onBackground} />
             </View>
 
             <ScrollView contentContainerStyle={{ padding: 10, gap: 20 }}>

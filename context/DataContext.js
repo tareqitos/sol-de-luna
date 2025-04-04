@@ -84,7 +84,7 @@ export function DataProvider({ children }) {
     const saveData = async () => {
         try {
             await AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data))
-            // console.log("SAVED: ", data)
+            console.log("SAVED: ", data)
         } catch (error) {
             console.log("Unable to save data to AsyncStorage");
         }
@@ -97,7 +97,7 @@ export function DataProvider({ children }) {
                 const parsedData = JSON.parse(loadedData)
                 isLoadUpdate.current = true;
                 setData(parsedData)
-                console.log("LOADED: ", parsedData)
+                // console.log("LOADED: ", parsedData)
             } else {
                 setData({ flights: [], hotels: [], transport: [] })
             }

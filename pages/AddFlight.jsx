@@ -3,7 +3,6 @@ import Txt from "../components/Txt";
 import Title from "../components/Title";
 import { s } from "../styles/styles.style";
 import { ArrowLeft } from "lucide-react-native";
-import { useTheme } from "../hook/theme";
 import { useNavigation } from "@react-navigation/native";
 import Container from "../components/Container";
 
@@ -16,11 +15,12 @@ import { useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
+import { useTheme } from "react-native-paper";
 
 export default function AddFlight() {
     const { data, setData } = useData()
     const [date, setDate] = useState();
-    const { colors } = useTheme();
+    const { colors, typography } = useTheme();
     const nav = useNavigation();
     const iataRef = useRef();
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -57,7 +57,7 @@ export default function AddFlight() {
         <Container style={{ paddingHorizontal: 20 }}>
             <View style={s.header.title_container}>
                 <TouchableOpacity onPress={() => nav.goBack()}>
-                    <ArrowLeft color={colors.text} size={20} />
+                    <ArrowLeft color={colors.onBackground} size={20} />
                 </TouchableOpacity>
                 <Title subtitle="Add flight" />
             </View>
@@ -82,8 +82,8 @@ export default function AddFlight() {
                         <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                     </View>
 
-                    <TouchableOpacity onPress={handleSubmit(onSubmit)} activeOpacity={1} style={[s.form.button, { backgroundColor: colors.iconSelected }]}>
-                        <Txt style={{ color: "white" }}>Save flight</Txt>
+                    <TouchableOpacity onPress={handleSubmit(onSubmit)} activeOpacity={1} style={[s.form.button, { backgroundColor: colors.primary }]}>
+                        <Txt style={[typography.h3, { color: colors.onPrimary }]}>Save</Txt>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

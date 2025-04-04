@@ -42,14 +42,17 @@ const s = StyleSheet.create({
         add_item: {
             paddingVertical: 5,
             paddingHorizontal: 10,
-            borderWidth: 2,
+            borderWidth: 1,
             borderRadius: 50,
-        }
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row"
+        },
     },
     card: {
         container: {
             padding: 20,
-            gap: 5,
+            gap: 10,
             borderRadius: 10,
         },
 
@@ -86,15 +89,19 @@ const s = StyleSheet.create({
         date: {
             fontFamily: "Inter-400",
             alignItems: "center",
-            gap: 2,
+            gap: 4,
             flexDirection: "row",
         },
 
         destination_container: {
             flexDirection: "row",
             alignItems: "center",
+            alignSelf: "flex-start",
+            borderRadius: 5,
+            padding: 10,
             gap: 5
         },
+
         iata: {
             fontSize: 18,
         },
@@ -114,7 +121,7 @@ const s = StyleSheet.create({
             marginTop: 10,
             height: 100,
             borderRadius: 5,
-            padding: 5
+            padding: 10
         },
 
         upload: {

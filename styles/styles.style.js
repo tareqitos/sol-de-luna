@@ -83,25 +83,28 @@ const s = StyleSheet.create({
 
     form: {
         container: {
-            gap: 20
+            gap: 15
         },
 
         input_container: {
-            gap: 5
+            gap: 10
         },
 
         input: {
             width: "auto",
-            height: 40,
+            height: 50,
             borderRadius: 5,
             borderWidth: 1,
             justifyContent: "center",
             paddingHorizontal: 10,
-            fontFamily: "Raleway-400",
+        },
+
+        input_info: {
+            padding: 10
         },
 
         route_input: {
-            width: 80
+            width: 100
         },
 
         button: {

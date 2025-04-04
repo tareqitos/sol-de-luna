@@ -2,19 +2,19 @@
 import { TouchableOpacity, View } from "react-native";
 import Txt from "./Txt";
 import { CarIcon, HotelIcon, HouseIcon, PlaneIcon } from "lucide-react-native";
-import { useTheme } from "../hook/theme";
 import { s } from "../styles/styles.style";
-const iconSize = 25;
+import { useTheme } from "react-native-paper";
+const iconSize = 24;
 
 export default function TabBottomMenu({ selectedTabName, onPress }) {
-    const { colors } = useTheme();
+    const { colors, typography } = useTheme();
 
     function getTextStyle(tabName) {
-        return tabName === selectedTabName ? colors.iconSelected : colors.iconGrey
+        return tabName === selectedTabName ? colors.primary : typography.caption.color
     }
 
     return (
-        <View style={s.footer.container}>
+        <View style={[s.footer.container]}>
             <TouchableOpacity onPress={() => onPress("home")} style={s.footer.tab}>
                 <HouseIcon color={getTextStyle("home")} size={iconSize} />
                 <Txt style={{ color: getTextStyle("home") }}>Home</Txt>
