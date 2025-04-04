@@ -18,7 +18,7 @@ import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 
 export default function AddFlight() {
-    const { data, setData } = useData()
+    const { flights, setFlights } = useData()
     const [date, setDate] = useState();
     const { colors, typography } = useTheme();
     const nav = useNavigation();
@@ -35,20 +35,16 @@ export default function AddFlight() {
 
 
     const onSubmit = (newData) => {
-        const dataToAdd = {
-            ...data,
-            flights: [
-                ...data.flights,
-                {
-                    "id": uuidv4(),
-                    "departureDate": date || new Date(),
-                    "type": "flights",
-                    "documents": [],
-                    ...newData
-                }]
-        }
+        setFlights([
+            ...flights,
+            {
+                "id": uuidv4(),
+                "departureDate": date || new Date(),
+                "type": "flights",
+                "documents": [],
+                ...newData
+            }])
 
-        setData(dataToAdd)
         nav.goBack()
     }
 

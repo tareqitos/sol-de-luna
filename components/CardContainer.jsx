@@ -12,9 +12,9 @@ import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 
 
-const CardContainer = memo(({ category, items, pickDocument, openDocument, deleteDocument, style = {} }) => {
+const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
-    const { deleteData } = useData()
+    const { flights, deleteData } = useData()
     const nav = useNavigation();
     const { colors, typography } = useTheme()
 
@@ -49,12 +49,12 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
 
     // Memoize the card content to prevent re-renders
     const cardContent = useMemo(() => {
-        if (!items || items.length === 0) {
+        if (!flights || flights.length === 0) {
             return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
         }
 
         if (category === "flights") {
-            return items.map((flight) => (
+            return flights.map((flight) => (
                 <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
                     <FlightCard item={flight} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
                 </TouchableOpacity>
@@ -62,7 +62,7 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
         }
 
         return null;
-    }, [items, category, colors.onSurface]);
+    }, [flights, category, colors.onSurface]);
 
     return (
         <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>

@@ -17,9 +17,9 @@ import { themeHook } from "../hook/theme";
 
 
 export default function Home() {
-    const { colors, typography } = useTheme();
+    const { colors } = useTheme();
     const { toggleTheme } = themeHook();
-    const { data, updateData, deleteData } = useData()
+    const { updateData } = useData()
 
     const [selectedTabName, setSelectedTabName] = useState("home")
     const categories = ["flights", "hotels", "transport"]
@@ -142,7 +142,6 @@ export default function Home() {
                     }]}>
                         <CardContainer
                             category={category}
-                            items={data[category] || []}
                             pickDocument={pickDocument}
                             openDocument={openDocument}
                             deleteDocument={deleteDocument}
