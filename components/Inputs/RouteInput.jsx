@@ -1,9 +1,9 @@
 import { MoveRight } from "lucide-react-native";
 import Txt from "../Txt";
-import { TextInput, View } from "react-native";
+import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
-import { useTheme } from "react-native-paper";
+import { PaperProvider, TextInput, useTheme } from "react-native-paper";
 
 export default function RouteInput({ iataRef, control, errors }) {
     const { colors, typography } = useTheme();
@@ -40,12 +40,17 @@ export default function RouteInput({ iataRef, control, errors }) {
 
     return (
         <>
-            <Txt style={typography.h4}>Route</Txt>
             <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                 <TextInput
+                    label={"Route"}
+                    mode="outlined"
                     value={departureField.value?.toUpperCase()}
                     onBlur={departureField.onBlur}
-                    style={[s.form.input, s.form.route_input, { color: colors.onBackground, borderColor: departureErrorColor }]}
+                    style={[
+                        s.form.input,
+                        departureField.value.length == 0 ? typography.caption : typography.body,
+                        { color: colors.onBackground }
+                    ]}
                     maxLength={3}
                     placeholder="e.g BRU"
                     placeholderTextColor={typography.caption.color}
@@ -53,6 +58,9 @@ export default function RouteInput({ iataRef, control, errors }) {
                     inputMode="text"
                     autoCorrect={false}
                     onChangeText={onNextIataInput}
+
+                    theme={PaperProvider}
+                    outlineColor={departureErrorColor}
                 />
 
                 <MoveRight
@@ -61,16 +69,25 @@ export default function RouteInput({ iataRef, control, errors }) {
 
                 <TextInput
                     ref={iataRef}
+                    label={"Route"}
+                    mode="outlined"
                     value={arrivalField.value.toUpperCase()}
                     onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}
-                    style={[s.form.input, s.form.route_input, { color: colors.onBackground, borderColor: arrivalErrorColor }]}
+                    style={[
+                        s.form.input,
+                        arrivalField.value.length == 0 ? typography.caption : typography.body,
+                        { color: colors.onBackground }
+                    ]}
                     maxLength={3}
                     placeholder="e.g NRT"
                     placeholderTextColor={typography.caption.color}
                     autoCapitalize="characters"
                     inputMode="text"
                     autoCorrect={false}
+
+                    theme={PaperProvider}
+                    outlineColor={arrivalErrorColor}
                 />
 
             </View>

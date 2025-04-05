@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { s } from "../../styles/styles.style";
-import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import Txt from "../Txt";
 import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
 import Collapsible from "react-native-collapsible";
 import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Button, TextInput, useTheme } from "react-native-paper";
 
-export default function DateInput({ newDate, setNewDate }) {
+export default function DateInput({ label, newDate, setNewDate }) {
     const [isPickerOpen, setIsPickerOpen] = useState();
+    const [isEditable, setIsEditable] = useState(true)
 
     let today = new Date(Date.now());
     const { colors, opacity, typography } = useTheme();
 
     const showDatePicker = () => {
         setIsPickerOpen(!isPickerOpen);
+        setIsEditable(!isEditable)
     };
 
     const icons = {
@@ -25,10 +25,18 @@ export default function DateInput({ newDate, setNewDate }) {
 
     return (
         <>
-            <Txt style={typography.h4}>Date</Txt>
-            <TouchableOpacity activeOpacity={.8} style={[s.form.input, { borderColor: typography.caption.color }]} onPress={showDatePicker}>
-                <Txt style={!newDate ? typography.caption : typography.bodyInter}>{!newDate ? "Departure time" : ConvertDateAndTimeToString(newDate)}</Txt>
-            </TouchableOpacity>
+            <TextInput
+                label={label}
+                mode="outlined"
+                onFocus={showDatePicker}
+                style={[s.form.input, !newDate ? typography.caption : typography.bodyInter]}
+                value={!newDate ? ConvertDateAndTimeToString(new Date(Date.now())) : ConvertDateAndTimeToString(newDate)}
+                outlineColor={typography.caption.color}
+                editable={isEditable}
+                placeholder={ConvertDateAndTimeToString(new Date(Date.now()))}
+
+            />
+
             <Collapsible collapsed={!isPickerOpen} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
                 <DateTimePicker
                     timePicker
@@ -77,7 +85,7 @@ export default function DateInput({ newDate, setNewDate }) {
                     }}
                 />
                 {isPickerOpen &&
-                    <Button style={{ position: "absolute", right: 0, bottom: 20 }} onPress={() => setIsPickerOpen(false)}>
+                    <Button style={{ position: "absolute", right: 0, bottom: 20 }} onPress={showDatePicker}>
                         <CircleCheck color={colors.primary} size={24} />
                     </Button>
                 }

@@ -20,7 +20,7 @@ const s = StyleSheet.create({
         },
 
         collapsible: {
-            paddingHorizontal: 10,
+            paddingHorizontal: 5,
             paddingVertical: 20,
             // marginTop: 20,
             gap: 15,

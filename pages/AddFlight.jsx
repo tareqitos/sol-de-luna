@@ -67,7 +67,7 @@ export default function AddFlight() {
 
                     <View style={{ flexDirection: "row", gap: 20 }}>
                         <View style={[s.form.input_container, { flex: 1 }]}>
-                            <DateInput newDate={date} setNewDate={setDate} />
+                            <DateInput label="Departure time" newDate={date} setNewDate={setDate} />
                         </View>
                     </View>
                     <View style={s.form.input_container}>

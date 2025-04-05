@@ -3,7 +3,7 @@ import Txt from "../Txt";
 import { FileText } from "lucide-react-native";
 import { useTheme } from "react-native-paper";
 
-export default function Files({ file, openDocument }) {
+export default function CardFiles({ file, openDocument }) {
     const { colors } = useTheme()
 
     function File() {

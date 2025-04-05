@@ -48,7 +48,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
 
 
     // Memoize the card content to prevent re-renders
-    const cardContent = useMemo(() => {
+    const flightsContent = useMemo(() => {
         if (category === "flights") {
             if (flights.length === 0) {
                 return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
@@ -60,20 +60,34 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
             ));
         }
 
-        // if (category === "hotels") {
-        //     if (hotels.length === 0) {
-        //         return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
-        //     }
-        // }
-
-        // if (category === "transport") {
-        //     if (transport.length === 0) {
-        //         return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
-        //     }
-        // }
-
         return null;
-    }, [flights, hotels, transport, category, colors.onSurface]);
+    }, [flights, category]);
+
+    const hotelsContent = useMemo(() => {
+        if (category === "hotels") {
+            if (hotels.length === 0) {
+                return <Txt style={typography.body}>No {category} added yet.</Txt>;
+            }
+
+            // return hotels.map((hotel) => (
+            //     <TouchableOpacity onLongPress={() => deleteData(hotel)} activeOpacity={1} key={hotel.id || `hotel-${hotel.from}-${hotel.to}`} >
+            //     </TouchableOpacity>
+            // ));
+        }
+    }, [hotels, category])
+
+    const transportContent = useMemo(() => {
+        if (category === "transport") {
+            if (transport.length === 0) {
+                return <Txt style={typography.body}>No {category} added yet.</Txt>;
+            }
+
+            // return transport.map((trans) => (
+            //     <TouchableOpacity onLongPress={() => deleteData(trans)} activeOpacity={1} key={trans.id || `trans-${trans.from}-${trans.to}`} >
+            //     </TouchableOpacity>
+            // ));
+        }
+    }, [transport, category])
 
     return (
         <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
@@ -96,7 +110,9 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
-                {cardContent}
+                {flightsContent}
+                {hotelsContent}
+                {transportContent}
             </Collapsible>
         </View >
     )

@@ -9,6 +9,7 @@
             "onBackground": "#1C1C1C",
             "surface": "#FFFFFF",
             "onSurface": "#2D2D2D",
+            "onSurfaceVariant": "#6E6E6E",
             "error": "#D32F2F",
             "onError": "#FFFFFF"
         },
@@ -78,32 +79,27 @@
             "h0": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 42,
-                "letterSpacing": 0.25,
-                "color": "#1C1C1C"
+                "letterSpacing": 0.25
             },
             "h1": {
                 "fontFamily": "Raleway-SemiBold",
                 "fontSize": 32,
-                "letterSpacing": 0.25,
-                "color": "#1C1C1C"
+                "letterSpacing": 0.25
             },
             "h2": {
                 "fontFamily": "Raleway-SemiBold",
                 "fontSize": 24,
-                "letterSpacing": 0,
-                "color": "#1C1C1C"
+                "letterSpacing": 0
             },
             "h3": {
                 "fontFamily": "Raleway-SemiBold",
                 "fontSize": 20,
-                "letterSpacing": 0,
-                "color": "#1C1C1C"
+                "letterSpacing": 0
             },
             "h4": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 18,
-                "letterSpacing": 0,
-                "color": "#1C1C1C"
+                "letterSpacing": 0
             },
             "h5": {
                 "fontFamily": "Raleway-SemiBold",
@@ -113,8 +109,7 @@
             "body": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 16,
-                "letterSpacing": 0,
-                "color": "#2D2D2D"
+                "letterSpacing": 0
             },
             "bodyInter": {
                 "fontFamily": "Inter-Regular",
@@ -146,6 +141,7 @@
             "onBackground": "#F1F1F1",
             "surface": "#1E1E1E",
             "onSurface": "#F2F2F2",
+            "onSurfaceVariant": "#6E6E6E",
             "error": "#EF5350",
             "onError": "#1F0000"
         },
@@ -227,20 +223,17 @@
             "h2": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 24,
-                "letterSpacing": 0,
-                "color": "#F1F1F1"
+                "letterSpacing": 0
             },
             "h3": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 20,
-                "letterSpacing": 0,
-                "color": "#F1F1F1"
+                "letterSpacing": 0
             },
             "h4": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 18,
-                "letterSpacing": 0,
-                "color": "#F1F1F1"
+                "letterSpacing": 0
             },
             "h5": {
                 "fontFamily": "Raleway-SemiBold",
@@ -250,8 +243,7 @@
             "body": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 16,
-                "letterSpacing": 0,
-                "color": "#F2F2F2"
+                "letterSpacing": 0
             },
             "bodyInter": {
                 "fontFamily": "Inter-Regular",

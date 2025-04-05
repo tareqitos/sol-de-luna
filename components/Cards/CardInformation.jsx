@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useData } from "../../hook/data";
 import { useTheme } from "react-native-paper";
 
-export default function AdditionalInformation({ item, placeholder }) {
+export default function CardInformation({ item, placeholder }) {
 
     const [height, setHeight] = useState(100); // Default height
     const [infoText, setInfoText] = useState();

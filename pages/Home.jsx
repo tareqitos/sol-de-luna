@@ -135,7 +135,7 @@ export default function Home() {
                 <Title title={"Trips"} subtitle={"Overview"} textColor={colors.onBackground} />
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 10, gap: 20 }}>
+            <ScrollView contentContainerStyle={{ padding: 5, gap: 20 }}>
                 {categories.map((category) => (
                     <Animated.View key={category} style={[slideIn, {
                         display: (selectedTabName === category || selectedTabName === "home") ? 'flex' : 'none'
