@@ -9,12 +9,12 @@ import FlightCard from "./FlightCard";
 import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
-import { useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 
 
 const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
-    const { flights, deleteData } = useData()
+    const { flights, hotels, transport, deleteData } = useData()
     const nav = useNavigation();
     const { colors, typography } = useTheme()
 
@@ -49,11 +49,10 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
 
     // Memoize the card content to prevent re-renders
     const cardContent = useMemo(() => {
-        if (!flights || flights.length === 0) {
-            return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
-        }
-
         if (category === "flights") {
+            if (flights.length === 0) {
+                return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
+            }
             return flights.map((flight) => (
                 <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
                     <FlightCard item={flight} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
@@ -61,8 +60,20 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
             ));
         }
 
+        // if (category === "hotels") {
+        //     if (hotels.length === 0) {
+        //         return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
+        //     }
+        // }
+
+        // if (category === "transport") {
+        //     if (transport.length === 0) {
+        //         return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
+        //     }
+        // }
+
         return null;
-    }, [flights, category, colors.onSurface]);
+    }, [flights, hotels, transport, category, colors.onSurface]);
 
     return (
         <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
@@ -77,7 +88,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                         onPress={goToAddItem}
                     >
                         <PlusIcon color={colors.primary} size={typography.body.fontSize} />
-                        <Txt style={[typography.body, { fontFamily: "Raleway-SemiBold", color: colors.primary, lineHeight: 18 }]}>
+                        <Txt style={[typography.body, { color: colors.primary, lineHeight: 18 }]}>
                             add {category}
                         </Txt>
                     </TouchableOpacity>
@@ -87,7 +98,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
                 {cardContent}
             </Collapsible>
-        </View>
+        </View >
     )
 });
 

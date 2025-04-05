@@ -124,15 +124,6 @@ const s = StyleSheet.create({
         },
 
         upload: {
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 5,
-
-            borderWidth: 1,
-            borderStyle: "dashed",
-            borderRadius: 5,
-            padding: 10,
             marginTop: 20,
         }
     }

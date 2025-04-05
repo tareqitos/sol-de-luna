@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
-import { useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()
@@ -78,9 +78,9 @@ export default function AddFlight() {
                         <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                     </View>
 
-                    <TouchableOpacity onPress={handleSubmit(onSubmit)} activeOpacity={1} style={[s.form.button, { backgroundColor: colors.primary }]}>
-                        <Txt style={[typography.h3, { color: colors.onPrimary }]}>Save</Txt>
-                    </TouchableOpacity>
+                    <Button icon={"airplane-plus"} mode="contained" labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
+                        Add
+                    </Button>
                 </View>
             </ScrollView>
         </Container>

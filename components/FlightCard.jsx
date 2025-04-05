@@ -10,7 +10,7 @@ import { s } from "../styles/card.style"
 import AdditionalInformation from "./Cards/Information"
 import AddFiles from "./Cards/AddFiles"
 import Files from "./Cards/Files"
-import { useTheme } from "react-native-paper"
+import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
 
 export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
     const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
@@ -29,6 +29,8 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
             <View style={s.card.title_container}>
                 <Txt style={[s.card.title, { color: colors.onBackground, fontSize: 24 }]}>{item.name}</Txt>
             </View>
+
+            <Divider theme={MD3DarkTheme} />
 
             <View style={s.card.time_container}>
                 <View style={s.card.date}>
@@ -49,7 +51,8 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
                     style={s.card.arrow} />
                 <Txt style={[s.card.iata, typography.h4]}>{item.arrivalAirport}</Txt>
             </View>
-            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
+
+            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
                     <AdditionalInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>

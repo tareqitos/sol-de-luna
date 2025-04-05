@@ -105,6 +105,11 @@
                 "letterSpacing": 0,
                 "color": "#1C1C1C"
             },
+            "h5": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 16,
+                "letterSpacing": 0
+            },
             "body": {
                 "fontFamily": "Raleway-Regular",
                 "fontSize": 16,
@@ -236,6 +241,11 @@
                 "fontSize": 18,
                 "letterSpacing": 0,
                 "color": "#F1F1F1"
+            },
+            "h5": {
+                "fontFamily": "Raleway-SemiBold",
+                "fontSize": 16,
+                "letterSpacing": 0
             },
             "body": {
                 "fontFamily": "Raleway-Regular",
