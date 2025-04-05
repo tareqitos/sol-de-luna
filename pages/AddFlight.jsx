@@ -78,11 +78,11 @@ export default function AddFlight() {
                         <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                     </View>
 
-                    <Button icon={"airplane-plus"} mode="contained" labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
-                        Add
-                    </Button>
                 </View>
             </ScrollView>
+            <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
+                Add
+            </Button>
         </Container>
     )
 }
