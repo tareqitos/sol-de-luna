@@ -106,7 +106,6 @@ export default function Home() {
     }
 
     const [animation] = useState(new Animated.Value(0));
-
     useEffect(() => {
         // Reset animation when tab changes
         animation.setValue(0);

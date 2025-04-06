@@ -11,6 +11,7 @@ import { DataProvider } from './context/DataContext';
 import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, useTheme } from 'react-native-paper';
 import { lightTheme, darkTheme } from './styles/theme';
 import { View } from 'react-native';
+import AddHotels from './pages/AddHotel';
 
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ function AppContent() {
             <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="AddFlight" component={AddFlight} />
+              <Stack.Screen name="AddHotel" component={AddHotels} />
             </Stack.Navigator>
           </DataProvider>
         </NavigationContainer>

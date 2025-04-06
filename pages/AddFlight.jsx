@@ -1,5 +1,4 @@
-import { FlatList, FlatListComponent, ScrollView, TouchableOpacity, View } from "react-native";
-import Txt from "../components/Txt";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import Title from "../components/Title";
 import { s } from "../styles/styles.style";
 import { ArrowLeft } from "lucide-react-native";
@@ -16,6 +15,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
 import { Button, useTheme } from "react-native-paper";
+import TitlePage from "../components/TitlePage";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()
@@ -51,12 +51,7 @@ export default function AddFlight() {
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
-            <View style={s.header.title_container}>
-                <TouchableOpacity onPress={() => nav.goBack()}>
-                    <ArrowLeft color={colors.onBackground} size={20} />
-                </TouchableOpacity>
-                <Title subtitle="Add flight" />
-            </View>
+            <TitlePage title={"Add flight"} />
 
             <ScrollView showsVerticalScrollIndicator={false}>
 
