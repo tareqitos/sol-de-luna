@@ -108,7 +108,8 @@ const s = StyleSheet.create({
         // ADDITIONAL INFO
 
         add_container: {
-            marginTop: 20
+            marginTop: 20,
+            paddingHorizontal: 5
         },
 
         add_title: {

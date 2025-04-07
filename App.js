@@ -8,16 +8,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { themeHook } from './hook/theme';
 import AddFlight from './pages/AddFlight';
 import { DataProvider } from './context/DataContext';
-import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, useTheme } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, Switch, useTheme } from 'react-native-paper';
 import { lightTheme, darkTheme } from './styles/theme';
 import { View } from 'react-native';
 import AddHotels from './pages/AddHotel';
+import { SnackbarProvider } from './context/SnackbarContext';
 
 
 const Stack = createNativeStackNavigator();
 
 function AppContent() {
-  const { theme } = themeHook();
+  const { theme, toggleTheme } = themeHook();
   const { colors } = useTheme();
   const paperTheme = theme === 'dark' ? darkTheme : lightTheme;
 
@@ -26,14 +27,23 @@ function AppContent() {
       <PaperProvider theme={paperTheme}>
         <NavigationContainer>
           <DataProvider>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
-              <Stack.Screen name="Home" component={Home} />
-              <Stack.Screen name="AddFlight" component={AddFlight} />
-              <Stack.Screen name="AddHotel" component={AddHotels} />
-            </Stack.Navigator>
+            <SnackbarProvider>
+              <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="AddFlight" component={AddFlight} />
+                <Stack.Screen name="AddHotel" component={AddHotels} />
+              </Stack.Navigator>
+            </SnackbarProvider>
           </DataProvider>
         </NavigationContainer>
       </PaperProvider>
+      <Switch
+        style={{ position: "absolute", top: 70, right: 20 }}
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleTheme}
+      />
+
     </View>
   );
 }

@@ -144,6 +144,10 @@ export function DataProvider({ children }) {
 
     // Load all data on initial render
     useEffect(() => {
+        const clearAsyncStorage = async () => {
+            AsyncStorage.clear();
+        }
+        clearAsyncStorage();
         loadFlights();
         loadHotels();
         loadTransport();

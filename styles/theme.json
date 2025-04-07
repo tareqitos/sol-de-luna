@@ -7,9 +7,10 @@
             "onSecondary": "#002A20",
             "background": "#FDFDFD",
             "onBackground": "#1C1C1C",
-            "surface": "#FFFFFF",
+            "surface": "#f7f7f7",
             "onSurface": "#2D2D2D",
             "onSurfaceVariant": "#6E6E6E",
+            "inverseOnSurface": "#121212",
             "error": "#D32F2F",
             "onError": "#FFFFFF",
             "backdrop": "#FFFFFF90"
@@ -109,12 +110,12 @@
             },
             "body": {
                 "fontFamily": "Raleway-Regular",
-                "fontSize": 16,
+                "fontSize": 14,
                 "letterSpacing": 0
             },
             "bodyInter": {
                 "fontFamily": "Inter-Regular",
-                "fontSize": 16,
+                "fontSize": 14,
                 "letterSpacing": 0,
                 "color": "#2D2D2D"
             },
@@ -143,6 +144,7 @@
             "surface": "#1E1E1E",
             "onSurface": "#F2F2F2",
             "onSurfaceVariant": "#6E6E6E",
+            "inverseOnSurface": "#F1F1F1",
             "error": "#EF5350",
             "onError": "#1F0000",
             "backdrop": "#00000090"
@@ -223,12 +225,12 @@
                 "color": "#F1F1F1"
             },
             "h2": {
-                "fontFamily": "Raleway-Regular",
+                "fontFamily": "Raleway-SemiBold",
                 "fontSize": 24,
                 "letterSpacing": 0
             },
             "h3": {
-                "fontFamily": "Raleway-Regular",
+                "fontFamily": "Raleway-SemiBold",
                 "fontSize": 20,
                 "letterSpacing": 0
             },
@@ -244,12 +246,12 @@
             },
             "body": {
                 "fontFamily": "Raleway-Regular",
-                "fontSize": 16,
+                "fontSize": 14,
                 "letterSpacing": 0
             },
             "bodyInter": {
                 "fontFamily": "Inter-Regular",
-                "fontSize": 16,
+                "fontSize": 14,
                 "letterSpacing": 0,
                 "color": "#F2F2F2"
             },

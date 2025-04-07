@@ -32,7 +32,6 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     };
 
 
-
     const categoryIcon = () => {
         switch (category) {
             case "hotels":
@@ -45,7 +44,6 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                 return null;
         }
     };
-
 
     // Memoize the card content to prevent re-renders
     const flightsContent = useMemo(() => {

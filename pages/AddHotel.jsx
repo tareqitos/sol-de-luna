@@ -1,28 +1,35 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import Container from "../components/Container";
-import { s } from "../styles/styles.style";
+import { useState } from "react";
+import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Button, useTheme } from "react-native-paper";
-import TitlePage from "../components/TitlePage";
-import HotelSearchMap from "../components/HotelSearchMap";
-import { useEffect, useState } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
+import { useSnackbar } from "../hook/useSnackbar";
+import { useData } from "../hook/data";
+
+import Container from "../components/Container";
+import TitlePage from "../components/TitlePage";
 import TitleInput from "../components/Inputs/TitleInput";
 import AddressInput from "../components/Inputs/AddressInput";
 import DateInput from "../components/Inputs/DateInput";
-import DateRangeInput from "../components/Inputs/DateRangeInput";
-import { MoveRight } from "lucide-react-native";
 import InformationInput from "../components/Inputs/InformationInput";
 import StarInput from "../components/Inputs/StarInput";
+import Txt from "../components/Txt";
+
+import { MoveRight } from "lucide-react-native";
+import { s } from "../styles/styles.style";
+
 
 export default function AddHotels() {
-    const [checkIn, setCheckIn] = useState()
-    const [checkOut, setCheckOut] = useState()
-
-
     const nav = useNavigation();
     const { colors, typography } = useTheme();
+    const { setMessage, toggleBar } = useSnackbar();
+    const { hotels, setHotels } = useData()
+
+    const [checkIn, setCheckIn] = useState();
+    const [checkOut, setCheckOut] = useState();
+    const [stars, setStars] = useState(0);
+
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
@@ -33,13 +40,34 @@ export default function AddHotels() {
         mode: "onBlur"
     })
 
+    const onSubmit = (newData) => {
+        setHotels([
+            ...hotels, {
+                "id": uuidv4(),
+                "type": "hotels",
+                "documents": [],
+                "checkIn": checkIn || new Date(),
+                "checkOut": checkOut || new Date(),
+                "stars": stars + 1,
+                ...newData,
+            }])
+
+        console.log("PRESS")
+        setMessage("Hotel has successfully been added")
+        toggleBar();
+        // nav.goBack()
+    }
+
     return (
         <Container style={{ paddingHorizontal: 20 }}>
             <TitlePage title={"Add hotel"} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={s.form.container}>
-                    <TitleInput name="Hotel name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
-                    <StarInput />
+                    <TitleInput name="Hotel / stay name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                        <Txt style={{ color: typography.caption.color }}>If hotel, how many stars?</Txt>
+                        <StarInput stars={stars} setStars={setStars} />
+                    </View>
                     <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
 
                     <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
@@ -59,7 +87,7 @@ export default function AddHotels() {
                 mode="contained"
                 style={{ marginBottom: 20 }}
                 labelStyle={[typography.h4, { color: colors.onPrimary }]}
-                onPress={"handleSubmit(onSubmit)"}>
+                onPress={handleSubmit(onSubmit)}>
                 Add
             </Button>
         </Container>

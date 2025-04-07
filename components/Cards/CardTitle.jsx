@@ -4,5 +4,5 @@ import Txt from "../Txt";
 
 export default function CardTitle({ title }) {
     const { colors, typography } = useTheme()
-    return <Txt style={[s.card.title, typography.h2]}>{title}</Txt>
+    return <Txt style={[s.card.title, typography.h3]}>{title}</Txt>
 }

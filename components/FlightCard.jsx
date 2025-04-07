@@ -1,15 +1,11 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
 import Txt from "./Txt"
-import { Calendar, Clock, MoveRight, UploadIcon } from "lucide-react-native"
-import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
+
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"
 import CollapseButton from "./CollapseButton"
 import { s } from "../styles/card.style"
 
-import AdditionalInformation from "./Cards/CardInformation"
-import AddFiles from "./Cards/CardAddFiles"
-import Files from "./Cards/CardFiles"
 import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
 import CardTitle from "./Cards/CardTitle"
 import CardDate from "./Cards/CardDate"
@@ -18,9 +14,10 @@ import CardRoute from "./Cards/CardRoute"
 import CardFiles from "./Cards/CardFiles"
 import CardInformation from "./Cards/CardInformation"
 import CardAddFiles from "./Cards/CardAddFiles"
+import CardPassengers from "./Cards/CardPassengers"
 
 export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
-    const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
+    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
 
     const handleCollapsible = useCallback(() => {
@@ -47,6 +44,13 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
             <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
 
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+
+                {item.passengers.length !== 0 &&
+                    <View style={s.card.add_container}>
+                        <Txt style={[typography.h4, { marginBottom: 10 }]}>Passengers</Txt>
+                        <CardPassengers item={item} passengers={item.passengers} />
+                    </View>}
+
                 <View style={s.card.add_container}>
                     <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -67,8 +71,8 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
 
                 </View>
                 <CardAddFiles item={item} pickDocument={pickDocument} />
-            </Collapsible>
-        </View>
+            </Collapsible >
+        </View >
     )
 }
 

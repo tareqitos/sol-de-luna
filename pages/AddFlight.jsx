@@ -1,7 +1,5 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import Title from "../components/Title";
+import { ScrollView, View } from "react-native";
 import { s } from "../styles/styles.style";
-import { ArrowLeft } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import Container from "../components/Container";
 
@@ -10,16 +8,22 @@ import DateInput from "../components/Inputs/DateInput";
 import TitleInput from "../components/Inputs/TitleInput";
 import RouteInput from "../components/Inputs/RouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Portal, useTheme } from "react-native-paper";
 import TitlePage from "../components/TitlePage";
+import PeopleInput from "../components/Inputs/PeopleInput";
+import { useSnackbar } from "../hook/useSnackbar";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()
     const [date, setDate] = useState();
+    const [passengers, setPassengers] = useState([])
+
+    const { setMessage, toggleBar } = useSnackbar();
+
     const { colors, typography } = useTheme();
     const nav = useNavigation();
     const iataRef = useRef();
@@ -36,15 +40,16 @@ export default function AddFlight() {
 
     const onSubmit = (newData) => {
         setFlights([
-            ...flights,
-            {
+            ...flights, {
                 "id": uuidv4(),
                 "departureDate": date || new Date(),
                 "type": "flights",
+                "passengers": passengers,
                 "documents": [],
                 ...newData
             }])
-
+        setMessage("Flight has successfully been added")
+        toggleBar();
         nav.goBack()
     }
 
@@ -67,6 +72,8 @@ export default function AddFlight() {
                     <View style={s.form.input_container}>
                         <RouteInput iataRef={iataRef} control={control} errors={errors} />
                     </View>
+
+                    <PeopleInput passengers={passengers} setPassengers={setPassengers} />
 
                     <View style={[s.form.input_container, s.form.input_addInfos]}>
                         <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />

@@ -12,8 +12,9 @@ import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
-import { useTheme } from "react-native-paper";
+import { Portal, useTheme } from "react-native-paper";
 import { themeHook } from "../hook/theme";
+import SnackbarMessage from "../components/Snackbar";
 
 
 export default function Home() {
@@ -134,7 +135,8 @@ export default function Home() {
                 <Title title={"Trips"} subtitle={"Overview"} textColor={colors.onBackground} />
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 5, gap: 20 }}>
+            <SnackbarMessage />
+            <ScrollView contentContainerStyle={{ padding: 5, gap: 20 }} showsVerticalScrollIndicator={false}>
                 {categories.map((category) => (
                     <Animated.View key={category} style={[slideIn, {
                         display: (selectedTabName === category || selectedTabName === "home") ? 'flex' : 'none'
@@ -148,17 +150,11 @@ export default function Home() {
                     </Animated.View>
                 ))}
             </ScrollView>
-
-            <Switch
-                style={{ position: "absolute", top: 70, right: 20 }}
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleTheme}
-            />
-
             <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background }]}>
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
+
+
         </Container>
     )
 }
