@@ -1,35 +1,74 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "react-native-paper";
+import { FlatList, ScrollView, View } from "react-native";
+import { Button, IconButton, TextInput, TouchableRipple, useTheme } from "react-native-paper";
+import Txt from "./Txt";
+import { s } from "../styles/hotel.style";
+import { API } from "../api/api";
 
-const MAPBOX_API_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_API
+export default function HotelSearchMap({ query, setQuery, setCoords }) {
 
-export default function HotelSearchMap() {
-
-    const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
-    const [selectedCoord, setSelectedCoord] = useState(null)
-    const { colors } = useTheme();
+    const { colors, typography } = useTheme();
 
     // REPLACE WITH OPENSTREETMAP
     const searchHotel = async () => {
         try {
-            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-                "the platinum 2 kuala lumpur" + " hotel"
-            )}.json?access_token=${MAPBOX_API_TOKEN}&limit=5`;
-
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log(data.features);
-            setResults(data.features);
+            const data = await API.fetchAddressFromQuery(query);
+            console.log(data);
+            setResults(data)
 
         } catch (error) {
             console.log("Could not fetch the api", error)
         }
-
     }
 
-    useEffect(() => {
-        searchHotel();
-    }, [])
-    return null
+    const handleSelectedAddress = (lat, lon, address) => {
+        if (lat && lon) {
+            setCoords({
+                latitude: lat,
+                longitude: lon
+            })
+
+            setQuery(address)
+        }
+        setResults([])
+    }
+
+    return (
+        <>
+            <View style={s.addhotel.search}>
+                <TextInput
+                    label="Search for a hotel..."
+                    value={query}
+                    onChangeText={setQuery}
+                    mode="outlined"
+                    outlineColor={typography.caption.color}
+                    style={s.addhotel.input}
+                />
+                <IconButton
+                    icon="magnify"
+                    iconColor={colors.onPrimary}
+                    onPress={searchHotel}
+                    size={24}
+                    mode="contained"
+                    style={[s.icon_button, { backgroundColor: colors.primary }]}
+                />
+            </View>
+            <FlatList
+                data={results}
+                keyExtractor={(item) => item.place_id}
+                renderItem={({ item }) => (
+                    <TouchableRipple
+                        onPress={() => handleSelectedAddress(item.lat, item.lon, item.display_name)}
+                        rippleColor="rgba(255, 255, 255, .32)"
+                    >
+                        <Txt style={[s.addhotel.result, { color: colors.onSurface }]}>
+                            {item.display_name}
+                        </Txt>
+                    </TouchableRipple>
+                )}
+                style={{ marginTop: 10 }}
+            />
+        </>
+    )
 }

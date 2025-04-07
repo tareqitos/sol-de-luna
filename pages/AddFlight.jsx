@@ -54,7 +54,6 @@ export default function AddFlight() {
             <TitlePage title={"Add flight"} />
 
             <ScrollView showsVerticalScrollIndicator={false}>
-
                 <View style={s.form.container}>
                     <View style={s.form.input_container}>
                         <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
@@ -69,10 +68,9 @@ export default function AddFlight() {
                         <RouteInput iataRef={iataRef} control={control} errors={errors} />
                     </View>
 
-                    <View style={s.form.input_container}>
+                    <View style={[s.form.input_container, s.form.input_addInfos]}>
                         <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                     </View>
-
                 </View>
             </ScrollView>
             <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>

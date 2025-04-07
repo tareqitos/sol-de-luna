@@ -43,7 +43,7 @@ export default function RouteInput({ iataRef, control, errors }) {
             <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                 <TextInput
                     label={"Route"}
-                    mode="outlined"
+                    mode="flat"
                     value={departureField.value?.toUpperCase()}
                     onBlur={departureField.onBlur}
                     style={[
@@ -70,7 +70,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                 <TextInput
                     ref={iataRef}
                     label={"Route"}
-                    mode="outlined"
+                    mode="flat"
                     value={arrivalField.value.toUpperCase()}
                     onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}

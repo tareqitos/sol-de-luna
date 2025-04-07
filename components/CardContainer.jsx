@@ -51,7 +51,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     const flightsContent = useMemo(() => {
         if (category === "flights") {
             if (flights.length === 0) {
-                return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
+                return <Txt style={typography.body}>No {category} added yet.</Txt>;
             }
             return flights.map((flight) => (
                 <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >

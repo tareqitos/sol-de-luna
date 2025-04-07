@@ -65,8 +65,8 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
                         </View>
                     </ScrollView>
 
-                    <CardAddFiles item={item} pickDocument={pickDocument} />
                 </View>
+                <CardAddFiles item={item} pickDocument={pickDocument} />
             </Collapsible>
         </View>
     )

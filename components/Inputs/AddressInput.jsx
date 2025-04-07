@@ -4,24 +4,23 @@ import Txt from "../Txt";
 import { useController } from "react-hook-form";
 import { useTheme } from "react-native-paper";
 
-export default function TitleInput({ name, placeholder, maxLength, control, errors }) {
+export default function AddressInput({ name, placeholder, maxLength, control, errors }) {
     const { colors, typography } = useTheme();
     const { field } = useController({
         control,
         defaultValue: '',
-        name: "name",
+        name: "address",
         rules: {
-            required: "Name is required"
+            required: "Address is required"
         }
     })
 
-    const errorBorder = errors?.name ? colors.error : typography.caption.color;
+    const errorBorder = errors?.address ? colors.error : typography.caption.color;
     return (
         <>
             <TextInput
                 label={name}
                 mode="flat"
-                focusable
                 value={field.value}
                 onBlur={field.onBlur}
                 onChangeText={field.onChange}
@@ -33,11 +32,11 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                     field.value.length == 0 ? typography.caption : typography.body,
                     { color: colors.onBackground }
                 ]}
-                maxLength={maxLength || 50}
+                maxLength={maxLength || 200}
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
             />
-            {errors?.name && <Txt style={{ color: colors.error }}>{errors.name.message}</Txt>}
+            {errors?.address && <Txt style={{ color: colors.error }}>{errors.address.message}</Txt>}
         </>
     )
 }

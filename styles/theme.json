@@ -11,7 +11,8 @@
             "onSurface": "#2D2D2D",
             "onSurfaceVariant": "#6E6E6E",
             "error": "#D32F2F",
-            "onError": "#FFFFFF"
+            "onError": "#FFFFFF",
+            "backdrop": "#FFFFFF90"
         },
         "elevation": {
             "level0": {
@@ -143,7 +144,8 @@
             "onSurface": "#F2F2F2",
             "onSurfaceVariant": "#6E6E6E",
             "error": "#EF5350",
-            "onError": "#1F0000"
+            "onError": "#1F0000",
+            "backdrop": "#00000090"
         },
         "elevation": {
             "level0": {

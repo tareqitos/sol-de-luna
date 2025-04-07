@@ -83,11 +83,15 @@ const s = StyleSheet.create({
 
     form: {
         container: {
-            gap: 20
+            gap: 10
         },
 
         input_container: {
             gap: 5
+        },
+
+        input_addInfos: {
+            marginTop: 20
         },
 
         input: {
@@ -96,10 +100,6 @@ const s = StyleSheet.create({
             justifyContent: "center",
             paddingHorizontal: 10,
         },
-
-        // input_info: {
-        //     padding: 10
-        // },
 
         route_input: {
             width: 120
@@ -136,6 +136,7 @@ const s = StyleSheet.create({
 
         day_cell: {
             paddingVertical: 5,
+            paddingHorizontal: 8,
             borderRadius: 5,
         },
 
