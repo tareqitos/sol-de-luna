@@ -10,11 +10,13 @@ import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
 import CardTitle from "./Cards/CardTitle"
 import CardDate from "./Cards/CardDate"
 import CardTime from "./Cards/CardTime"
-import CardRoute from "./Cards/CardRoute"
+import CardRoute from "./FlightCards/CardRoute"
 import CardFiles from "./Cards/CardFiles"
 import CardInformation from "./Cards/CardInformation"
 import CardAddFiles from "./Cards/CardAddFiles"
-import CardPassengers from "./Cards/CardPassengers"
+import CardPassengers from "./FlightCards/CardPassengers"
+import CardSubtitle from "./Cards/CardSubtitle"
+import CardSection from "./Cards/CardSection"
 
 export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
@@ -44,31 +46,34 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
             <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
 
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
-
                 {item.passengers.length !== 0 &&
                     <View style={s.card.add_container}>
-                        <Txt style={[typography.h4, { marginBottom: 10 }]}>Passengers</Txt>
-                        <CardPassengers item={item} passengers={item.passengers} />
+                        <CardSection style={styles.cardSection} text="Passengers">
+                            <CardPassengers item={item} passengers={item.passengers} />
+                        </CardSection>
                     </View>}
 
                 <View style={s.card.add_container}>
-                    <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <View style={styles.container}>
+                    <CardSection style={styles.cardSection} text={"Additional information"}>
+                        <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
+                    </CardSection>
+                    <CardSection style={styles.cardSection}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <View style={styles.container}>
 
-                            {item.documents.length > 0 && item.documents.map((file) => (
-                                <TouchableOpacity
-                                    key={file.uri}
-                                    activeOpacity={0.9}
-                                    onPress={() => openDocument(file.uri)}
-                                    onLongPress={() => deleteDocument(item, file.name)}
-                                >
-                                    <CardFiles file={file} openDocument={openDocument} />
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </ScrollView>
-
+                                {item.documents.length > 0 && item.documents.map((file) => (
+                                    <TouchableOpacity
+                                        key={file.uri}
+                                        activeOpacity={0.9}
+                                        onPress={() => openDocument(file.uri)}
+                                        onLongPress={() => deleteDocument(item, file.name)}
+                                    >
+                                        <CardFiles file={file} openDocument={openDocument} />
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
+                    </CardSection>
                 </View>
                 <CardAddFiles item={item} pickDocument={pickDocument} />
             </Collapsible >
@@ -79,8 +84,13 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        marginTop: 20,
         alignItems: "center",
+        gap: 10
+    },
+
+    cardSection: {
+        marginVertical: 10,
+        paddingHorizontal: 5,
         gap: 10
     }
 })

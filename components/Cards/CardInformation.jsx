@@ -20,8 +20,6 @@ export default function CardInformation({ item, placeholder }) {
 
     return (
         <>
-            <Txt style={[s.card.add_title, typography.h4, { color: colors.onBackground }]}>Additional information</Txt>
-
             <TextInput
                 editable
                 multiline

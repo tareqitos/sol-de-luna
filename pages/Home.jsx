@@ -1,29 +1,26 @@
-import { Alert, Animated, Platform, ScrollView, Switch, View } from "react-native";
-import { s } from "../styles/styles.style";
-import Title from "../components/Title";
+import { Alert, Animated, Platform, ScrollView, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
-import * as Sharing from 'expo-sharing'
+import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
-import { useCallback, useEffect, useState } from "react";
+import { useTheme } from "react-native-paper";
 
+import { s } from "../styles/styles.style";
+import { useData } from "../hook/data";
+
+import Title from "../components/Title";
 import TabBottomMenu from "../components/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
-import 'react-native-get-random-values';
-import { useData } from "../hook/data";
-import { Portal, useTheme } from "react-native-paper";
-import { themeHook } from "../hook/theme";
 import SnackbarMessage from "../components/Snackbar";
 
-
 export default function Home() {
+    const { updateData } = useData();
     const { colors } = useTheme();
-    const { toggleTheme } = themeHook();
-    const { updateData } = useData()
 
-    const [selectedTabName, setSelectedTabName] = useState("home")
-    const categories = ["flights", "hotels", "transport"]
+    const [selectedTabName, setSelectedTabName] = useState("home");
+    const categories = ["flights", "hotels", "transport"];
 
     const updateSelectedTab = useCallback((name) => {
         setSelectedTabName(name);

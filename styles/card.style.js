@@ -76,8 +76,7 @@ const s = StyleSheet.create({
         },
 
         title: {
-            fontSize: 20,
-            fontFamily: "Raleway-600"
+
         },
 
         time_container: {
@@ -86,7 +85,6 @@ const s = StyleSheet.create({
         },
 
         date: {
-            fontFamily: "Inter-400",
             alignItems: "center",
             gap: 4,
             flexDirection: "row",
@@ -101,24 +99,9 @@ const s = StyleSheet.create({
             gap: 5
         },
 
-        iata: {
-            fontSize: 18,
-        },
-
         // ADDITIONAL INFO
 
-        add_container: {
-            marginTop: 20,
-            paddingHorizontal: 5
-        },
-
-        add_title: {
-            fontSize: 16,
-            fontFamily: "Raleway-600"
-        },
-
         add_infos: {
-            marginTop: 10,
             height: 100,
             borderRadius: 5,
             padding: 10

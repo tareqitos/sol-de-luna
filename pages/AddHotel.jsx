@@ -28,7 +28,7 @@ export default function AddHotels() {
 
     const [checkIn, setCheckIn] = useState();
     const [checkOut, setCheckOut] = useState();
-    const [stars, setStars] = useState(0);
+    const [stars, setStars] = useState(-1);
 
 
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -52,10 +52,9 @@ export default function AddHotels() {
                 ...newData,
             }])
 
-        console.log("PRESS")
         setMessage("Hotel has successfully been added")
         toggleBar();
-        // nav.goBack()
+        nav.goBack()
     }
 
     return (
@@ -78,7 +77,7 @@ export default function AddHotels() {
                         <DateInput label="Check-out" newDate={checkOut} setNewDate={setCheckOut} />
                     </View>
                     <View style={[s.form.input_container, s.form.input_addInfos]}>
-                        <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
+                        <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
                     </View>
                 </View>
             </ScrollView>

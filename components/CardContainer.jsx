@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
+import HotelCard from "./HotelCard";
 
 
 const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
@@ -67,10 +68,11 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                 return <Txt style={typography.body}>No {category} added yet.</Txt>;
             }
 
-            // return hotels.map((hotel) => (
-            //     <TouchableOpacity onLongPress={() => deleteData(hotel)} activeOpacity={1} key={hotel.id || `hotel-${hotel.from}-${hotel.to}`} >
-            //     </TouchableOpacity>
-            // ));
+            return hotels.map((hotel) => (
+                <TouchableOpacity onLongPress={() => deleteData(hotel)} activeOpacity={1} key={hotel.id || `hotel-${hotel.from}-${hotel.to}`} >
+                    <HotelCard item={hotel} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
+                </TouchableOpacity>
+            ));
         }
     }, [hotels, category])
 

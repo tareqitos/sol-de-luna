@@ -5,11 +5,11 @@ import Txt from "../Txt";
 import { Clock } from "lucide-react-native";
 import { ConvertTimetoString } from "../../services/date-service";
 
-export default function CardTime({ time }) {
+export default function CardTime({ time, hasIcon = true }) {
     const { colors, typography } = useTheme()
     return (
         <View style={s.card.date}>
-            <Clock color={colors.primary} size={16} />
+            {hasIcon && <Clock color={colors.primary} size={16} />}
             <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertTimetoString(time)}</Txt>
         </View>
     )
