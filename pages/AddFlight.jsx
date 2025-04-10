@@ -16,6 +16,7 @@ import { Button, Portal, useTheme } from "react-native-paper";
 import TitlePage from "../components/TitlePage";
 import PeopleInput from "../components/Inputs/PeopleInput";
 import { useSnackbar } from "../hook/useSnackbar";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()
@@ -59,26 +60,28 @@ export default function AddFlight() {
             <TitlePage title={"Add flight"} />
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={s.form.container}>
-                    <View style={s.form.input_container}>
-                        <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
-                    </View>
+                <KeyboardAwareScrollView>
+                    <View style={s.form.container}>
+                        <View style={s.form.input_container}>
+                            <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
+                        </View>
 
-                    <View style={{ flexDirection: "row", gap: 20 }}>
-                        <View style={[s.form.input_container, { flex: 1 }]}>
-                            <DateInput label="Departure time" newDate={date} setNewDate={setDate} />
+                        <View style={{ flexDirection: "row", gap: 20 }}>
+                            <View style={[s.form.input_container, { flex: 1 }]}>
+                                <DateInput label="Departure time" newDate={date} setNewDate={setDate} />
+                            </View>
+                        </View>
+                        <View style={s.form.input_container}>
+                            <RouteInput iataRef={iataRef} control={control} errors={errors} />
+                        </View>
+
+                        <PeopleInput passengers={passengers} setPassengers={setPassengers} />
+
+                        <View style={[s.form.input_container, s.form.input_addInfos]}>
+                            <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                         </View>
                     </View>
-                    <View style={s.form.input_container}>
-                        <RouteInput iataRef={iataRef} control={control} errors={errors} />
-                    </View>
-
-                    <PeopleInput passengers={passengers} setPassengers={setPassengers} />
-
-                    <View style={[s.form.input_container, s.form.input_addInfos]}>
-                        <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
-                    </View>
-                </View>
+                </KeyboardAwareScrollView>
             </ScrollView>
             <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
                 Add

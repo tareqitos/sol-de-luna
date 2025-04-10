@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Button, useTheme } from "react-native-paper";
@@ -18,6 +18,7 @@ import Txt from "../components/Txt";
 
 import { MoveRight } from "lucide-react-native";
 import { s } from "../styles/styles.style";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 
 export default function AddHotels() {
@@ -57,29 +58,40 @@ export default function AddHotels() {
         nav.goBack()
     }
 
+    const memoizedCheckOut = useMemo(() => {
+        setCheckOut(checkIn);
+        console.log("CHECKOUT DATE CHANGED: ", checkIn);
+    }, [checkIn]);
+
+    useEffect(() => {
+        memoizedCheckOut
+    }, [checkIn]);
+
     return (
         <Container style={{ paddingHorizontal: 20 }}>
             <TitlePage title={"Add hotel"} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={s.form.container}>
-                    <TitleInput name="Hotel / stay name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                        <Txt style={{ color: typography.caption.color }}>If hotel, how many stars?</Txt>
-                        <StarInput stars={stars} setStars={setStars} />
-                    </View>
-                    <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
+                <KeyboardAwareScrollView>
+                    <View style={s.form.container}>
+                        <TitleInput name="Hotel / stay name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <Txt style={{ color: typography.caption.color }}>If hotel, how many stars?</Txt>
+                            <StarInput stars={stars} setStars={setStars} />
+                        </View>
+                        <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
 
-                    <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-                        <DateInput label="Check-in" newDate={checkIn} setNewDate={setCheckIn} />
-                        <MoveRight
-                            color={colors.primary}
-                            size={14} />
-                        <DateInput label="Check-out" newDate={checkOut} setNewDate={setCheckOut} />
+                        <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+                            <DateInput label="Check-in" newDate={checkIn} setNewDate={setCheckIn} />
+                            <MoveRight
+                                color={colors.primary}
+                                size={14} />
+                            <DateInput label="Check-out" checkInDate={checkIn} newDate={checkOut} setNewDate={setCheckOut} />
+                        </View>
+                        <View style={[s.form.input_container, s.form.input_addInfos]}>
+                            <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
+                        </View>
                     </View>
-                    <View style={[s.form.input_container, s.form.input_addInfos]}>
-                        <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
-                    </View>
-                </View>
+                </KeyboardAwareScrollView>
             </ScrollView>
             <Button
                 icon={"plus-box"}

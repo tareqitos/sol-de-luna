@@ -1,4 +1,4 @@
-import { Alert, Animated, Platform, ScrollView, View } from "react-native";
+import { Alert, Animated, Platform, ScrollView, useWindowDimensions, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
@@ -14,10 +14,13 @@ import TabBottomMenu from "../components/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
 import SnackbarMessage from "../components/Snackbar";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import FABMenu from "../components/FABMenu";
 
 export default function Home() {
     const { updateData } = useData();
     const { colors } = useTheme();
+    const { height } = useWindowDimensions();
 
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
@@ -133,7 +136,8 @@ export default function Home() {
             </View>
 
             <SnackbarMessage />
-            <ScrollView contentContainerStyle={{ padding: 5, gap: 20 }} showsVerticalScrollIndicator={false}>
+
+            <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 200 }} showsVerticalScrollIndicator={false}>
                 {categories.map((category) => (
                     <Animated.View key={category} style={[slideIn, {
                         display: (selectedTabName === category || selectedTabName === "home") ? 'flex' : 'none'
@@ -151,6 +155,7 @@ export default function Home() {
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 
+            <FABMenu style={{ position: "absolute", bottom: "10%" }} />
 
         </Container>
     )

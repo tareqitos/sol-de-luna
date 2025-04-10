@@ -57,26 +57,29 @@ export default function PeopleInput({ passengers, setPassengers }) {
         <>
             <View style={[s.inputContainer]}>
                 <View style={[s.itemContainer, { flex: 1 }]}>
-                    <Icon source="account" size={20} />
+                    <Icon source="account" color={colors.primary} size={20} />
                     <TextInput
                         label="Person name"
                         mode
                         value={name}
                         onChangeText={setName}
-                        style={[typography.body, { flex: 1 }]}
+                        style={[typography.body, { flex: 1, backgroundColor: colors.background }]}
+                        autoCorrect={false}
                     />
                 </View>
 
-                <View style={s.itemContainer}>
-                    <Icon source="car-seat" size={20} />
+                <View style={[s.itemContainer, { width: 80 }]}>
+                    <Icon source="car-seat" color={colors.primary} size={20} />
                     <TextInput
                         label="Seat"
                         value={seat}
                         onChangeText={setSeat}
-                        style={typography.body}
+                        style={[typography.body, { backgroundColor: colors.background }]}
+                        maxLength={4}
+                        autoCorrect={false}
                     />
                 </View>
-                <IconButton icon="plus" mode="contained" size={30} onPress={addPassenger} />
+                <IconButton icon="plus" mode="flat" iconColor={colors.primary} size={30} onPress={addPassenger} style={{ backgroundColor: colors.background }} />
             </View>
             <ShowPassengers />
         </>
@@ -90,7 +93,6 @@ const s = StyleSheet.create({
         justifyContent: "space-between",
         borderRadius: 10,
         paddingVertical: 5,
-        paddingHorizontal: 10,
         gap: 10
     },
 

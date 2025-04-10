@@ -49,7 +49,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                     style={[
                         s.form.input,
                         departureField.value.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground }
+                        { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
                     maxLength={3}
                     placeholder="e.g BRU"
@@ -59,7 +59,6 @@ export default function RouteInput({ iataRef, control, errors }) {
                     autoCorrect={false}
                     onChangeText={onNextIataInput}
 
-                    theme={PaperProvider}
                     outlineColor={departureErrorColor}
                 />
 
@@ -77,7 +76,7 @@ export default function RouteInput({ iataRef, control, errors }) {
                     style={[
                         s.form.input,
                         arrivalField.value.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground }
+                        { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
                     maxLength={3}
                     placeholder="e.g NRT"
@@ -86,7 +85,6 @@ export default function RouteInput({ iataRef, control, errors }) {
                     inputMode="text"
                     autoCorrect={false}
 
-                    theme={PaperProvider}
                     outlineColor={arrivalErrorColor}
                 />
 

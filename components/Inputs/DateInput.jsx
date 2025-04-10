@@ -29,11 +29,12 @@ export default function DateInput({ label, newDate, setNewDate, style }) {
                 label={label}
                 mode="flat"
                 onFocus={toggleDatePicker}
-                style={[s.form.input, style, !newDate ? typography.caption : typography.bodyInter]}
-                value={!newDate ? ConvertDateAndTimeToString(new Date(Date.now())) : ConvertDateAndTimeToString(newDate)}
+                style={[s.form.input, style, !newDate ? typography.caption : typography.bodyInter, { backgroundColor: colors.background }]}
+                value={!newDate ? ConvertDateAndTimeToString(new Date().setHours(12, 0, 0)) : ConvertDateAndTimeToString(newDate)}
                 outlineColor={typography.caption.color}
                 editable={isEditable}
-                placeholder={ConvertDateAndTimeToString(new Date(Date.now()))}
+                // placeholder={ConvertDateAndTimeToString(new Date(Date.now()))}
+                autoCorrect={false}
 
             />
 
@@ -44,7 +45,7 @@ export default function DateInput({ label, newDate, setNewDate, style }) {
                         showOutsideDays
                         mode="single"
                         date={newDate}
-                        minDate={today}
+                        minDate={today.setHours(12, 0, 0)}
                         onChange={({ date }) => {
                             setNewDate(date)
                         }}

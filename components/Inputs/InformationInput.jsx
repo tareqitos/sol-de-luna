@@ -29,6 +29,7 @@ export default function InformationInput({ placeholder, control }) {
                 { color: colors.onBackground, height: height }
                 ]}
                 outlineColor={typography.caption.color}
+                autoCorrect={false}
             />
         </>
     )

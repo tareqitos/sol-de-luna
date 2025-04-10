@@ -24,17 +24,17 @@ export default function AddressInput({ name, placeholder, maxLength, control, er
                 value={field.value}
                 onBlur={field.onBlur}
                 onChangeText={field.onChange}
-                theme={PaperProvider}
                 textColor={colors.onBackground}
                 outlineColor={errorBorder}
                 style={[
                     s.form.input,
                     field.value.length == 0 ? typography.caption : typography.body,
-                    { color: colors.onBackground }
+                    { color: colors.onBackground, backgroundColor: colors.background }
                 ]}
                 maxLength={maxLength || 200}
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
+                autoCorrect={false}
             />
             {errors?.address && <Txt style={{ color: colors.error }}>{errors.address.message}</Txt>}
         </>

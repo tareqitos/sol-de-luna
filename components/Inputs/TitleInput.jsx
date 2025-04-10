@@ -1,4 +1,4 @@
-import { PaperProvider, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
 import Txt from "../Txt";
 import { useController } from "react-hook-form";
@@ -25,17 +25,17 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                 value={field.value}
                 onBlur={field.onBlur}
                 onChangeText={field.onChange}
-                theme={PaperProvider}
                 textColor={colors.onBackground}
                 outlineColor={errorBorder}
                 style={[
                     s.form.input,
                     field.value.length == 0 ? typography.caption : typography.body,
-                    { color: colors.onBackground }
+                    { color: colors.onBackground, backgroundColor: colors.background }
                 ]}
                 maxLength={maxLength || 50}
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
+                autoCorrect={false}
             />
             {errors?.name && <Txt style={{ color: colors.error }}>{errors.name.message}</Txt>}
         </>

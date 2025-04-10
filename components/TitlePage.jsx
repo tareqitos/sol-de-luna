@@ -3,17 +3,20 @@ import { s } from "../styles/styles.style";
 import { ArrowLeft } from "lucide-react-native";
 import Title from "./Title";
 import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
+import Txt from "./Txt";
 
 export default function TitlePage({ title }) {
     const nav = useNavigation();
-    const { colors } = useTheme();
+    const { colors, typography } = useTheme();
     return (
         <View style={s.header.title_container}>
-            <TouchableOpacity onPress={() => nav.goBack()}>
+            {/* <TouchableOpacity onPress={() => nav.goBack()}>
                 <ArrowLeft color={colors.onBackground} size={20} />
-            </TouchableOpacity>
-            <Title subtitle={title} />
+            </TouchableOpacity> */}
+            <IconButton icon="arrow-left" iconColor={colors.onBackground} size={20} onPress={() => nav.goBack()} />
+
+            <Txt style={[typography.h2, { fontFamily: "Raleway-Light" }]}>{title}</Txt>
         </View>
     )
 }

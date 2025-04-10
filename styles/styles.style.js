@@ -4,28 +4,18 @@ import { StyleSheet } from "react-native";
 const s = StyleSheet.create({
     header: {
         container: {
-            position: "absolue",
             alignItems: "baseline",
             flexDirection: "row",
             paddingLeft: 20,
+            marginBottom: 20,
             gap: 10,
         },
 
         title_container: {
-            position: "absolue",
             alignItems: "center",
             flexDirection: "row",
-            marginBottom: 20,
-            gap: 0,
+            marginBottom: 10,
         },
-
-        title: {
-            fontSize: 42,
-        },
-
-        subtitle: {
-            fontSize: 24
-        }
     },
 
     home: {
@@ -83,6 +73,7 @@ const s = StyleSheet.create({
 
     form: {
         container: {
+            marginBottom: 50,
             gap: 10
         },
 
@@ -98,7 +89,7 @@ const s = StyleSheet.create({
             width: "auto",
             borderRadius: 5,
             justifyContent: "center",
-            paddingHorizontal: 10,
+            paddingHorizontal: 0,
         },
 
         route_input: {

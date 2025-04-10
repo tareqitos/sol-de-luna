@@ -1,5 +1,4 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
-import Txt from "./Txt"
 
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"
@@ -15,7 +14,6 @@ import CardFiles from "./Cards/CardFiles"
 import CardInformation from "./Cards/CardInformation"
 import CardAddFiles from "./Cards/CardAddFiles"
 import CardPassengers from "./FlightCards/CardPassengers"
-import CardSubtitle from "./Cards/CardSubtitle"
 import CardSection from "./Cards/CardSection"
 
 export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
@@ -54,26 +52,30 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
                     </View>}
 
                 <View style={s.card.add_container}>
+
                     <CardSection style={styles.cardSection} text={"Additional information"}>
                         <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                     </CardSection>
-                    <CardSection style={styles.cardSection}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <View style={styles.container}>
 
-                                {item.documents.length > 0 && item.documents.map((file) => (
-                                    <TouchableOpacity
-                                        key={file.uri}
-                                        activeOpacity={0.9}
-                                        onPress={() => openDocument(file.uri)}
-                                        onLongPress={() => deleteDocument(item, file.name)}
-                                    >
-                                        <CardFiles file={file} openDocument={openDocument} />
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </ScrollView>
-                    </CardSection>
+
+                    {item.documents.length > 0 &&
+                        <CardSection style={styles.cardSection}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <View style={styles.container}>
+
+                                    {item.documents.map((file) => (
+                                        <TouchableOpacity
+                                            key={file.uri}
+                                            activeOpacity={0.9}
+                                            onPress={() => openDocument(file.uri)}
+                                            onLongPress={() => deleteDocument(item, file.name)}
+                                        >
+                                            <CardFiles file={file} openDocument={openDocument} />
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </CardSection>}
                 </View>
                 <CardAddFiles item={item} pickDocument={pickDocument} />
             </Collapsible >

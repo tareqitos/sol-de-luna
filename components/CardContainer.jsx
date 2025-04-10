@@ -11,6 +11,8 @@ import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 import HotelCard from "./HotelCard";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import FABMenu from "./FABMenu";
 
 
 const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
@@ -90,13 +92,15 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     }, [transport, category])
 
     return (
+
         <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
             <View style={s.card_container.title_container}>
                 <View style={s.card_container.title}>
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <TouchableOpacity
+                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
+                    {/* <TouchableOpacity
                         activeOpacity={1}
                         style={[s.card_container.add_item, { borderColor: colors.primary }]}
                         onPress={goToAddItem}
@@ -105,7 +109,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                         <Txt style={[typography.body, { color: colors.primary, lineHeight: 18 }]}>
                             add {category}
                         </Txt>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>

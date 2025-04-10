@@ -16,6 +16,7 @@ import CardStars from "./HotelCards/CardStars"
 import CardTime from "./Cards/CardTime"
 import CardDate from "./Cards/CardDate"
 import { MoveRight } from "lucide-react-native"
+import CardAddress from "./HotelCards/CardAddress"
 
 export default function HotelCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
@@ -25,7 +26,7 @@ export default function HotelCard({ item, onPress, pickDocument, openDocument, d
         setIsCollapse(prev => !prev);
     }, []);
 
-    console.log("******", item)
+    // console.log("******", item)
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -62,25 +63,34 @@ export default function HotelCard({ item, onPress, pickDocument, openDocument, d
 
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
+                    {/* ADDRESS */}
+                    <CardSection style={styles.cardSection} text="Address">
+                        <CardAddress address={item.address} />
+                    </CardSection>
 
                     {/* ADDITIONAL INFORMATION */}
-                    <CardInformation item={item} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {/* ADDED FILES */}
-                        <View style={styles.container}>
-                            {item.documents.length > 0 && item.documents.map((file) => (
-                                <TouchableOpacity
-                                    key={file.uri}
-                                    activeOpacity={0.9}
-                                    onPress={() => openDocument(file.uri)}
-                                    onLongPress={() => deleteDocument(item, file.name)}
-                                >
-                                    <CardFiles file={file} openDocument={openDocument} />
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </ScrollView>
+                    <CardSection style={styles.cardSection} text={"Additional information"}>
+                        <CardInformation item={item} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                    </CardSection>
 
+                    {item.documents.length > 0 &&
+                        <CardSection style={styles.cardSection} >
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                {/* ADDED FILES */}
+                                <View style={styles.container}>
+                                    {item.documents.map((file) => (
+                                        <TouchableOpacity
+                                            key={file.uri}
+                                            activeOpacity={0.9}
+                                            onPress={() => openDocument(file.uri)}
+                                            onLongPress={() => deleteDocument(item, file.name)}
+                                        >
+                                            <CardFiles file={file} openDocument={openDocument} />
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </CardSection>}
                 </View>
 
                 {/* ADD FILE BUTTON */}
