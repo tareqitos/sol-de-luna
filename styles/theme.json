@@ -6,6 +6,8 @@
             "secondary": "#3DDC97",
             "onSecondary": "#002A20",
             "background": "#FDFDFD",
+            "tertiary": "#FFB84C",
+            "onTertiary": "#1A1100",
             "onBackground": "#1C1C1C",
             "surface": "#f7f7f7",
             "onSurface": "#2D2D2D",
@@ -136,6 +138,7 @@
     "dark": {
         "colors": {
             "primary": "#82CFFD",
+            "primaryLight": "#d8e8ef",
             "onPrimary": "#001F2D",
             "secondary": "#FFD86F",
             "onSecondary": "#2D2000",

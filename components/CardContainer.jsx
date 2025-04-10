@@ -11,8 +11,6 @@ import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 import HotelCard from "./HotelCard";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import FABMenu from "./FABMenu";
 
 
 const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
@@ -38,11 +36,11 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     const categoryIcon = () => {
         switch (category) {
             case "hotels":
-                return <Hotel color={colors.primary} size={24} />;
+                return <Hotel color={colors.onBackground} size={24} />;
             case "flights":
-                return <Plane color={colors.primary} size={24} />;
+                return <Plane color={colors.onBackground} size={24} />;
             case "transport":
-                return <Car color={colors.primary} size={24} />;
+                return <Car color={colors.onBackground} size={24} />;
             default:
                 return null;
         }
@@ -99,17 +97,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
-                    {/* <TouchableOpacity
-                        activeOpacity={1}
-                        style={[s.card_container.add_item, { borderColor: colors.primary }]}
-                        onPress={goToAddItem}
-                    >
-                        <PlusIcon color={colors.primary} size={typography.body.fontSize} />
-                        <Txt style={[typography.body, { color: colors.primary, lineHeight: 18 }]}>
-                            add {category}
-                        </Txt>
-                    </TouchableOpacity> */}
+                    <Txt style={[typography.h3]}>{category}</Txt>
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>

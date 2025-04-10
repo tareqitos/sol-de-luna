@@ -1,4 +1,4 @@
-import { Alert, Animated, Platform, ScrollView, useWindowDimensions, View } from "react-native";
+import { Alert, Animated, Platform, ScrollView, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
@@ -14,13 +14,12 @@ import TabBottomMenu from "../components/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
 import SnackbarMessage from "../components/Snackbar";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import FABMenu from "../components/FABMenu";
+import SearchCard from "../components/SearchCard";
 
 export default function Home() {
     const { updateData } = useData();
     const { colors } = useTheme();
-    const { height } = useWindowDimensions();
 
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
@@ -28,8 +27,6 @@ export default function Home() {
     const updateSelectedTab = useCallback((name) => {
         setSelectedTabName(name);
     }, []);
-
-
 
     const pickDocument = async (item) => {
         const result = await DocumentPicker.getDocumentAsync({
@@ -45,9 +42,6 @@ export default function Home() {
 
             const updateItem = { ...item, documents: [...item.documents || [], newFile] };
             updateData(updateItem)
-
-            console.log("*** Document added!")
-
         } else {
             console.log('Document picking was cancelled')
         }
