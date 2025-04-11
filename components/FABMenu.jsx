@@ -33,7 +33,7 @@ export default function FABMenu({ style }) {
                 },
                 {
                     icon: 'train-car',
-                    onPress: () => console.log('Transport pressed'),
+                    onPress: () => nav.navigate('AddTransport'),
                     color: colors.onPrimary,
                     style: { backgroundColor: colors.primary }
                 }

@@ -1,0 +1,123 @@
+import { useCallback, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Divider, Icon, useTheme } from "react-native-paper";
+import CollapseButton from "./CollapseButton";
+import CardTitle from "./Cards/CardTitle";
+import { s } from "../styles/card.style";
+import CardDate from "./Cards/CardDate";
+import CardTime from "./Cards/CardTime";
+import CardInformation from "./Cards/CardInformation";
+import CardFiles from "./Cards/CardFiles";
+import CardAddFiles from "./Cards/CardAddFiles";
+import Collapsible from "react-native-collapsible";
+import CardSection from "./Cards/CardSection";
+import CardAddress from "./HotelCards/CardAddress";
+
+export default function TransportCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
+    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const { colors, elevation, typography } = useTheme()
+
+    const handleCollapsible = useCallback(() => {
+        setIsCollapse(prev => !prev);
+    }, []);
+
+    return (
+        <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
+            <View style={s.card.icons_container}>
+                <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
+            </View>
+
+            {/* TITLE */}
+            <View style={[styles.row, styles.alignBottom]}>
+                <Icon source={item.transportType} size={24} color={colors.primary} />
+                <View>
+                    <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
+                    <CardTime time={item.departureTime} hasIcon={false} />
+                </View>
+                {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
+            </View>
+            <View style={styles.rowCenter}>
+                <Icon source="arrow-down-thin" size={24} color={colors.primary} />
+                <CardTime time={(item.arrivalTime - item.departureTime)} hasIcon={true} />
+            </View>
+
+            <View style={styles.row}>
+                <Icon source="flag-checkered" size={24} color={colors.primary} />
+                <View>
+                    <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
+                    <CardTime time={item.arrivalTime} hasIcon={false} />
+                </View>
+            </View>
+
+            <Divider theme={colors.onSurface} style={{ marginTop: 10 }} />
+            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+                <View style={s.card.add_container}>
+
+                    {/* ADDITIONAL INFORMATION */}
+                    <CardSection style={styles.cardSection} text={"Additional information"}>
+                        <CardInformation item={item} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                    </CardSection>
+
+                    {item.documents.length > 0 &&
+                        <CardSection style={styles.cardSection} >
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                {/* ADDED FILES */}
+                                <View style={styles.container}>
+                                    {item.documents.map((file) => (
+                                        <TouchableOpacity
+                                            key={file.uri}
+                                            activeOpacity={0.9}
+                                            onPress={() => openDocument(file.uri)}
+                                            onLongPress={() => deleteDocument(item, file.name)}
+                                        >
+                                            <CardFiles file={file} openDocument={openDocument} />
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </CardSection>}
+                </View>
+
+                {/* ADD FILE BUTTON */}
+                <CardAddFiles item={item} pickDocument={pickDocument} />
+            </Collapsible >
+
+        </View>
+    )
+}
+
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        marginTop: 20,
+        alignItems: "center",
+        gap: 10
+    },
+
+    cardSection: {
+        marginVertical: 10,
+        paddingHorizontal: 5,
+        gap: 10
+    },
+
+    title: {
+        width: "250"
+    },
+
+    row: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: 5
+    },
+
+    rowCenter: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5
+    },
+
+    alignBottom: {
+        alignItems: "flex-end"
+    }
+})

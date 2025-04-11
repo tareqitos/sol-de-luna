@@ -11,6 +11,7 @@ import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 import HotelCard from "./HotelCard";
+import TransportCard from "./TransportCard";
 
 
 const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
@@ -36,11 +37,11 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     const categoryIcon = () => {
         switch (category) {
             case "hotels":
-                return <Hotel color={colors.onBackground} size={24} />;
+                return <Hotel color={colors.primary} size={24} />;
             case "flights":
-                return <Plane color={colors.onBackground} size={24} />;
+                return <Plane color={colors.primary} size={24} />;
             case "transport":
-                return <Car color={colors.onBackground} size={24} />;
+                return <Car color={colors.primary} size={24} />;
             default:
                 return null;
         }
@@ -82,10 +83,11 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                 return <Txt style={typography.body}>No {category} added yet.</Txt>;
             }
 
-            // return transport.map((trans) => (
-            //     <TouchableOpacity onLongPress={() => deleteData(trans)} activeOpacity={1} key={trans.id || `trans-${trans.from}-${trans.to}`} >
-            //     </TouchableOpacity>
-            // ));
+            return transport.map((trans) => (
+                <TouchableOpacity onLongPress={() => deleteData(trans)} activeOpacity={1} key={trans.id || `trans-${trans.from}-${trans.to}`} >
+                    <TransportCard item={trans} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
+                </TouchableOpacity>
+            ));
         }
     }, [transport, category])
 
@@ -97,7 +99,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <Txt style={[typography.h3]}>{category}</Txt>
+                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>

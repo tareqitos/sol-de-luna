@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Icon, useTheme } from "react-native-paper";
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "../hook/useSnackbar";
@@ -16,7 +16,6 @@ import InformationInput from "../components/Inputs/InformationInput";
 import StarInput from "../components/Inputs/StarInput";
 import Txt from "../components/Txt";
 
-import { MoveRight } from "lucide-react-native";
 import { s } from "../styles/styles.style";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -50,6 +49,7 @@ export default function AddHotels() {
                 "checkIn": checkIn || new Date(),
                 "checkOut": checkOut || new Date(),
                 "stars": stars + 1,
+                "completed": false,
                 ...newData,
             }])
 
@@ -60,7 +60,6 @@ export default function AddHotels() {
 
     const memoizedCheckOut = useMemo(() => {
         setCheckOut(checkIn);
-        console.log("CHECKOUT DATE CHANGED: ", checkIn);
     }, [checkIn]);
 
     useEffect(() => {
@@ -80,11 +79,12 @@ export default function AddHotels() {
                         </View>
                         <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
 
-                        <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
                             <DateInput label="Check-in" newDate={checkIn} setNewDate={setCheckIn} />
-                            <MoveRight
+                            <Icon
+                                source="arrow-right"
                                 color={colors.primary}
-                                size={14} />
+                                size={24} />
                             <DateInput label="Check-out" checkInDate={checkIn} newDate={checkOut} setNewDate={setCheckOut} />
                         </View>
                         <View style={[s.form.input_container, s.form.input_addInfos]}>

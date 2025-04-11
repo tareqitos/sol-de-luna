@@ -11,7 +11,7 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
         defaultValue: '',
         name: "name",
         rules: {
-            required: "Name is required"
+            required: "Required"
         }
     })
 

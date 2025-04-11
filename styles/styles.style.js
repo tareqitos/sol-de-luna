@@ -86,7 +86,6 @@ const s = StyleSheet.create({
         },
 
         input: {
-            width: "auto",
             borderRadius: 5,
             justifyContent: "center",
             paddingHorizontal: 0,

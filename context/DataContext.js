@@ -147,7 +147,7 @@ export function DataProvider({ children }) {
         const clearAsyncStorage = async () => {
             AsyncStorage.clear();
         }
-        // clearAsyncStorage();
+        clearAsyncStorage();
         loadFlights();
         loadHotels();
         loadTransport();

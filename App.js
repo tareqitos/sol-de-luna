@@ -13,6 +13,7 @@ import { lightTheme, darkTheme } from './styles/theme';
 import { View } from 'react-native';
 import AddHotels from './pages/AddHotel';
 import { SnackbarProvider } from './context/SnackbarContext';
+import AddTransport from './pages/AddTransport';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,6 +33,7 @@ function AppContent() {
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="AddFlight" component={AddFlight} />
                 <Stack.Screen name="AddHotel" component={AddHotels} />
+                <Stack.Screen name="AddTransport" component={AddTransport} />
               </Stack.Navigator>
             </SnackbarProvider>
           </DataProvider>

@@ -10,7 +10,7 @@ export const ConvertDateToNum = (date) => {
 
 export const ConvertTimetoString = (time) => {
     const d = new Date(time)
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleTimeString("us-US", { hour: '2-digit', minute: '2-digit', timeZone: "UTC" });
 }
 
 export const DateTimeToDate = (date) => {
@@ -28,4 +28,10 @@ export const DateTimeToTime = (time) => {
 
 export const ConvertDateAndTimeToString = (date) => {
     return `${ConvertDateToNum(date)} ${ConvertTimetoString(date)}`
+}
+
+export const getTimeDifference = (time2, time1) => {
+
+    const result = (Date.parse(time2) - Date.parse(time1));
+    return new Date(result).getHours()
 }

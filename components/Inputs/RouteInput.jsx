@@ -3,7 +3,7 @@ import Txt from "../Txt";
 import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
-import { PaperProvider, TextInput, useTheme } from "react-native-paper";
+import { Icon, PaperProvider, TextInput, useTheme } from "react-native-paper";
 
 export default function RouteInput({ iataRef, control, errors }) {
     const { colors, typography } = useTheme();
@@ -40,7 +40,7 @@ export default function RouteInput({ iataRef, control, errors }) {
 
     return (
         <>
-            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
                 <TextInput
                     label={"Route"}
                     mode="flat"
@@ -62,9 +62,10 @@ export default function RouteInput({ iataRef, control, errors }) {
                     outlineColor={departureErrorColor}
                 />
 
-                <MoveRight
+                <Icon
+                    source="arrow-right"
                     color={colors.primary}
-                    size={14} />
+                    size={24} />
 
                 <TextInput
                     ref={iataRef}

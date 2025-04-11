@@ -47,6 +47,7 @@ export default function AddFlight() {
                 "type": "flights",
                 "passengers": passengers,
                 "documents": [],
+                "completed": false,
                 ...newData
             }])
         setMessage("Flight has successfully been added")

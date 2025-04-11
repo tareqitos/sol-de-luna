@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { s } from "../../styles/styles.style";
 import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
-import Collapsible from "react-native-collapsible";
 import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
 import { Button, Icon, IconButton, Modal, Portal, TextInput, useTheme } from "react-native-paper";
 
@@ -10,7 +9,7 @@ export default function DateInput({ label, newDate, setNewDate, style }) {
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(true)
 
-    let today = new Date(Date.now());
+    let today = new Date().setHours(12, 0, 0);
     const { colors, opacity, typography } = useTheme();
 
     const toggleDatePicker = () => {
@@ -23,19 +22,27 @@ export default function DateInput({ label, newDate, setNewDate, style }) {
         IconNext: (<ChevronRight color={colors.primary} size={18} />),
     }
 
+    useEffect(() => {
+        setNewDate(today)
+    }, [])
+
     return (
         <>
             <TextInput
                 label={label}
                 mode="flat"
                 onFocus={toggleDatePicker}
-                style={[s.form.input, style, !newDate ? typography.caption : typography.bodyInter, { backgroundColor: colors.background }]}
-                value={!newDate ? ConvertDateAndTimeToString(new Date().setHours(12, 0, 0)) : ConvertDateAndTimeToString(newDate)}
+                style={[
+                    s.form.input,
+                    !newDate ? typography.caption : typography.bodyInter,
+                    { backgroundColor: colors.background }
+                ]}
+
+                contentStyle={{ letterSpacing: 1 }}
+                value={!newDate ? ConvertDateAndTimeToString(today) : ConvertDateAndTimeToString(newDate)}
                 outlineColor={typography.caption.color}
                 editable={isEditable}
-                // placeholder={ConvertDateAndTimeToString(new Date(Date.now()))}
                 autoCorrect={false}
-
             />
 
             <Portal>
@@ -44,10 +51,11 @@ export default function DateInput({ label, newDate, setNewDate, style }) {
                         timePicker
                         showOutsideDays
                         mode="single"
+                        timeZone="UTC"
                         date={newDate}
-                        minDate={today.setHours(12, 0, 0)}
+                        minDate={newDate}
                         onChange={({ date }) => {
-                            setNewDate(date)
+                            setNewDate(Date.parse(date))
                         }}
                         containerHeight={300}
                         components={{ ...icons }}
