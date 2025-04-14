@@ -17,10 +17,15 @@ import TitlePage from "../components/TitlePage";
 import PeopleInput from "../components/Inputs/PeopleInput";
 import { useSnackbar } from "../hook/useSnackbar";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DateInput2 from "../components/Inputs/DateTimeInput";
+import TimeInput from "../components/Inputs/TimeInput";
+import DateTimeInput from "../components/Inputs/DateTimeInput";
+import { mergeDateAndTime } from "../services/date-service";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()
-    const [date, setDate] = useState();
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
     const [passengers, setPassengers] = useState([])
 
     const { setMessage, toggleBar } = useSnackbar();
@@ -38,12 +43,11 @@ export default function AddFlight() {
         mode: "onBlur"
     })
 
-
     const onSubmit = (newData) => {
         setFlights([
             ...flights, {
                 "id": uuidv4(),
-                "departureDate": date || new Date(),
+                "departureDate": mergeDateAndTime(date, time) || new Date(),
                 "type": "flights",
                 "passengers": passengers,
                 "documents": [],
@@ -69,7 +73,7 @@ export default function AddFlight() {
 
                         <View style={{ flexDirection: "row", gap: 20 }}>
                             <View style={[s.form.input_container, { flex: 1 }]}>
-                                <DateInput label="Departure time" newDate={date} setNewDate={setDate} />
+                                <DateTimeInput label="Select date" time={time} setTime={setTime} date={date} setDate={setDate} />
                             </View>
                         </View>
                         <View style={s.form.input_container}>

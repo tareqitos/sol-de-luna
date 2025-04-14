@@ -4,7 +4,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
-import { useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 
 import { s } from "../styles/styles.style";
 import { useData } from "../hook/data";
@@ -150,6 +150,7 @@ export default function Home() {
             </View>
 
             <FABMenu style={{ position: "absolute", bottom: "10%" }} />
+
 
         </Container>
     )

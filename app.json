@@ -42,13 +42,38 @@
     "plugins": [
       "expo-font",
       "expo-file-system",
+      "react-native-map-link",
       [
         "expo-document-picker",
         {
           "iCloudContainerEnvironment": "Production"
         }
       ],
-      "react-native-map-link"
+      [
+        "@react-native-community/datetimepicker",
+        {
+          "android": {
+            "datePicker": {
+              "colorAccent": {
+                "light": "#FF5722"
+              },
+              "textColorPrimary": {
+                "light": "#FF5722"
+              }
+            },
+            "timePicker": {
+              "background": {
+                "light": "#FF5722",
+                "dark": "#383838"
+              },
+              "numbersBackgroundColor": {
+                "light": "#FF5722",
+                "dark": "#383838"
+              }
+            }
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

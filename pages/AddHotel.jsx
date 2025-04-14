@@ -18,6 +18,8 @@ import Txt from "../components/Txt";
 
 import { s } from "../styles/styles.style";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DateTimeInput from "../components/Inputs/DateTimeInput";
+import { mergeDateAndTime } from "../services/date-service";
 
 
 export default function AddHotels() {
@@ -26,8 +28,8 @@ export default function AddHotels() {
     const { setMessage, toggleBar } = useSnackbar();
     const { hotels, setHotels } = useData()
 
-    const [checkIn, setCheckIn] = useState();
-    const [checkOut, setCheckOut] = useState();
+    const [checkIn, setCheckIn] = useState(new Date());
+    const [checkOut, setCheckOut] = useState(new Date());
     const [stars, setStars] = useState(-1);
 
 
@@ -46,8 +48,8 @@ export default function AddHotels() {
                 "id": uuidv4(),
                 "type": "hotels",
                 "documents": [],
-                "checkIn": checkIn || new Date(),
-                "checkOut": checkOut || new Date(),
+                "checkIn": mergeDateAndTime(checkIn, checkIn) || new Date(),
+                "checkOut": mergeDateAndTime(checkOut, checkOut) || new Date(),
                 "stars": stars + 1,
                 "completed": false,
                 ...newData,
@@ -79,13 +81,9 @@ export default function AddHotels() {
                         </View>
                         <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
 
-                        <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
-                            <DateInput label="Check-in" newDate={checkIn} setNewDate={setCheckIn} />
-                            <Icon
-                                source="arrow-right"
-                                color={colors.primary}
-                                size={24} />
-                            <DateInput label="Check-out" checkInDate={checkIn} newDate={checkOut} setNewDate={setCheckOut} />
+                        <View style={{ gap: 20 }}>
+                            <DateTimeInput label="Select check-in time" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
+                            <DateTimeInput label="Select check-out time" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
                         </View>
                         <View style={[s.form.input_container, s.form.input_addInfos]}>
                             <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
@@ -101,6 +99,6 @@ export default function AddHotels() {
                 onPress={handleSubmit(onSubmit)}>
                 Add
             </Button>
-        </Container>
+        </Container >
     )
 }

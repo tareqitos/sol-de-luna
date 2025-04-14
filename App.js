@@ -10,18 +10,21 @@ import AddFlight from './pages/AddFlight';
 import { DataProvider } from './context/DataContext';
 import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, Switch, useTheme } from 'react-native-paper';
 import { lightTheme, darkTheme } from './styles/theme';
-import { View } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 import AddHotels from './pages/AddHotel';
 import { SnackbarProvider } from './context/SnackbarContext';
 import AddTransport from './pages/AddTransport';
+import Settings from './pages/Settings';
+import { useEffect } from 'react';
 
 
 const Stack = createNativeStackNavigator();
 
 function AppContent() {
-  const { theme, toggleTheme } = themeHook();
+  const { theme, setTheme, toggleTheme } = themeHook();
   const { colors } = useTheme();
-  const paperTheme = theme === 'dark' ? darkTheme : lightTheme;
+  const deviceTheme = useColorScheme()
+  let paperTheme = theme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <View style={[{ flex: 1 }, { backgroundColor: theme === 'dark' ? "#121212" : "#FDFDFD" }]}>
@@ -34,17 +37,18 @@ function AppContent() {
                 <Stack.Screen name="AddFlight" component={AddFlight} />
                 <Stack.Screen name="AddHotel" component={AddHotels} />
                 <Stack.Screen name="AddTransport" component={AddTransport} />
+                <Stack.Screen name="Settings" component={Settings} />
               </Stack.Navigator>
             </SnackbarProvider>
           </DataProvider>
         </NavigationContainer>
       </PaperProvider>
-      <Switch
+      {/* <Switch
         style={{ position: "absolute", top: 70, right: 20 }}
         trackColor={{ false: '#767577', true: '#81b0ff' }}
         ios_backgroundColor="#3e3e3e"
         onValueChange={toggleTheme}
-      />
+      /> */}
 
     </View>
   );
