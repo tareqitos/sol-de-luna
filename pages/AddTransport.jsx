@@ -17,6 +17,8 @@ import DateInput from "../components/Inputs/DateInput";
 import InformationInput from "../components/Inputs/InformationInput";
 
 import { s } from "../styles/styles.style";
+import { mergeDateAndTime } from "../services/date-service";
+import DateTimeInput from "../components/Inputs/DateTimeInput";
 
 
 export default function AddTransport() {
@@ -25,8 +27,8 @@ export default function AddTransport() {
     const { setMessage, toggleBar } = useSnackbar();
     const { transport, setTransport } = useData()
 
-    const [departDate, setDepartDate] = useState();
-    const [arriveDate, setArriveDate] = useState();
+    const [departDate, setDepartDate] = useState(new Date());
+    const [arriveDate, setArriveDate] = useState(new Date());
     const [transportType, setTransportType] = useState('train')
 
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -45,8 +47,8 @@ export default function AddTransport() {
                 "id": uuidv4(),
                 "type": "transport",
                 "transportType": transportType,
-                "departureTime": departDate || null,
-                "arrivalTime": arriveDate || null,
+                "departureTime": mergeDateAndTime(departDate, departDate) || null,
+                "arrivalTime": mergeDateAndTime(arriveDate, arriveDate) || null,
                 "documents": [],
                 "completed": false,
                 ...newData
@@ -78,12 +80,10 @@ export default function AddTransport() {
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
                 <TransportRouteInput control={control} errors={errors} />
                 <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginTop: 10 }}>
-                    <DateInput label="Departs at" newDate={departDate} setNewDate={setDepartDate} />
-                    <Icon
-                        source="arrow-right"
-                        color={colors.primary}
-                        size={24} />
-                    <DateInput label="Arrives at" checkInDate={departDate} newDate={arriveDate} setNewDate={setArriveDate} />
+                    <View style={{ gap: 20 }}>
+                        <DateTimeInput label="Select departure time" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
+                        <DateTimeInput label="Select arrival time" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
+                    </View>
                 </View>
                 <View style={[s.form.input_container, s.form.input_addInfos]}>
                     <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />

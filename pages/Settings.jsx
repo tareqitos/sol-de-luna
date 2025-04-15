@@ -13,6 +13,7 @@ import TitlePage from '../components/TitlePage';
 import Container from '../components/Container';
 import { Icon, RadioButton, useTheme } from 'react-native-paper';
 import { themeHook } from '../hook/theme';
+import Txt from '../components/Txt';
 
 const Settings = ({ navigation }) => {
     const deviceTheme = useColorScheme();
@@ -26,7 +27,6 @@ const Settings = ({ navigation }) => {
         { id: 'system', label: 'System', icon: 'phone-portrait-outline' }
     ];
 
-
     const SettingsCard = ({ title, children }) => (
         <View style={[styles.card, { backgroundColor: colors.surface }]}>
             <Text style={[styles.cardTitle, { color: colors.onSurface }]}>{title}</Text>
@@ -34,7 +34,7 @@ const Settings = ({ navigation }) => {
         </View>
     );
 
-    const SettingsItem = ({ icon, title, onPress, value, type }) => (
+    const SettingsItem = ({ icon, title, onPress, value, type, rightText }) => (
         <TouchableOpacity
             style={styles.settingsItem}
             onPress={onPress}
@@ -52,11 +52,15 @@ const Settings = ({ navigation }) => {
                     thumbColor="#ffffff"
                 />
             ) : type === 'radio' ? (
-                <View >
-                    <RadioButton.Item style={{ paddingVertical: 0 }} value={value} color={colors.primary} mode="ios" status='unchecked' />
-                </View>
+                <RadioButton.Item
+                    value={value}
+                    color={colors.primary}
+                    mode="android"
+                    status='unchecked'
+                    style={{ height: 0, paddingHorizontal: 0, flex: 1 }}
+                />
             ) : (
-                ""
+                <Txt>{rightText}</Txt>
             )}
         </TouchableOpacity>
     );
@@ -74,8 +78,8 @@ const Settings = ({ navigation }) => {
                                 title={option.label}
                                 value={option.id}
                                 icon={option.icon}
-                                type="radio"
-                                onPress={() => option.id === "system" ? setTheme(deviceTheme) : setTheme(option.id)}
+                                type={option.id !== "system" && "radio"}
+                                onPress={() => setTheme(option.id === "system" ? deviceTheme : option.id)}
                             />
                         ))}
                     </RadioButton.Group>
@@ -86,6 +90,7 @@ const Settings = ({ navigation }) => {
                         icon="information-circle-outline"
                         title="App Info"
                         onPress={() => {/* Navigate to app info */ }}
+                        rightText="Sol de Luna"
                     />
                     <SettingsItem
                         icon="code-slash-outline"
@@ -125,9 +130,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 5
+        paddingVertical: 10,
     },
+
     settingsItemLeft: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -138,7 +145,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     radioButton: {
-        height: 20,
         width: 20,
         borderRadius: 10,
         borderWidth: 2,

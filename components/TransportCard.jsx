@@ -4,14 +4,14 @@ import { Divider, Icon, useTheme } from "react-native-paper";
 import CollapseButton from "./CollapseButton";
 import CardTitle from "./Cards/CardTitle";
 import { s } from "../styles/card.style";
-import CardDate from "./Cards/CardDate";
 import CardTime from "./Cards/CardTime";
 import CardInformation from "./Cards/CardInformation";
 import CardFiles from "./Cards/CardFiles";
 import CardAddFiles from "./Cards/CardAddFiles";
 import Collapsible from "react-native-collapsible";
 import CardSection from "./Cards/CardSection";
-import CardAddress from "./HotelCards/CardAddress";
+import { getDayDifference } from "../services/date-service";
+import Txt from "./Txt";
 
 export default function TransportCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
@@ -21,6 +21,9 @@ export default function TransportCard({ item, onPress, pickDocument, openDocumen
         setIsCollapse(prev => !prev);
     }, []);
 
+    const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
+    const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()
+
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
             <View style={s.card.icons_container}>
@@ -28,8 +31,8 @@ export default function TransportCard({ item, onPress, pickDocument, openDocumen
             </View>
 
             {/* TITLE */}
-            <View style={[styles.row, styles.alignBottom]}>
-                <Icon source={item.transportType} size={24} color={colors.primary} />
+            <View style={[styles.row]}>
+                <Icon source={item.transportType} size={32} color={colors.primary} />
                 <View>
                     <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
                     <CardTime time={item.departureTime} hasIcon={false} />
@@ -37,19 +40,19 @@ export default function TransportCard({ item, onPress, pickDocument, openDocumen
                 {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
             </View>
             <View style={styles.rowCenter}>
-                <Icon source="arrow-down-thin" size={24} color={colors.primary} />
-                <CardTime time={(item.arrivalTime - item.departureTime)} hasIcon={true} />
+                <Icon source="arrow-down-thin" size={32} color={colors.primary} />
+                {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
+                {duration && <CardTime time={duration} hasIcon={false} />}
             </View>
 
             <View style={styles.row}>
-                <Icon source="flag-checkered" size={24} color={colors.primary} />
+                <Icon source="flag-checkered" size={32} color={colors.primary} />
                 <View>
                     <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
                     <CardTime time={item.arrivalTime} hasIcon={false} />
                 </View>
             </View>
 
-            <Divider theme={colors.onSurface} style={{ marginTop: 10 }} />
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
 
@@ -107,7 +110,7 @@ const styles = StyleSheet.create({
 
     row: {
         flexDirection: "row",
-        alignItems: "flex-start",
+        alignItems: "center",
         gap: 5
     },
 
@@ -116,8 +119,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 5
     },
-
-    alignBottom: {
-        alignItems: "flex-end"
-    }
 })

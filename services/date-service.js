@@ -40,3 +40,8 @@ export const mergeDateAndTime = (date, time) => {
     const localTime = new Date(time.getTime() - timeZoneOffset);
     return localDate.toISOString().split("T")[0] + "T" + localTime.toISOString().split("T")[1]
 }
+
+export const getDayDifference = (day2, day1) => {
+    return new Date(day2).toLocaleDateString('en-US', { day: "numeric" }) - new Date(day1).toLocaleDateString('en-US', { day: "numeric" })
+}
+

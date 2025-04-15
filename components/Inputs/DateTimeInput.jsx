@@ -50,7 +50,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
         }
     };
 
-    console.log(mergeDateAndTime(date, time))
+    // console.log(mergeDateAndTime(date, time))
 
     return (
         <View>
@@ -104,7 +104,6 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                         value={time || new Date()}
                         onChange={handleChange}
                         themeVariant={theme}
-                        locale="en"
                         minimumDate={today}
                     />
                 </View>

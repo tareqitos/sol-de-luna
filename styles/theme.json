@@ -150,6 +150,8 @@
             "onSurface": "#F2F2F2",
             "onSurfaceVariant": "#6E6E6E",
             "inverseOnSurface": "#F1F1F1",
+            "secondaryContainer": "#d7edfb",
+            "onSecondaryContainer": "#002A20",
             "error": "#EF5350",
             "onError": "#1F0000",
             "backdrop": "#00000090"

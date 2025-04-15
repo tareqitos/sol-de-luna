@@ -10,7 +10,7 @@ export default function CardTime({ time, hasIcon = true }) {
     return (
         <View style={s.card.date}>
             {hasIcon && <Clock color={colors.primary} size={16} />}
-            <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertTimetoString(time)}</Txt>
+            <Txt style={[s.card.date, typography.caption]}>{ConvertTimetoString(time)}</Txt>
         </View>
     )
 }
