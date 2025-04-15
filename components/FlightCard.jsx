@@ -15,10 +15,13 @@ import CardInformation from "./Cards/CardInformation"
 import CardAddFiles from "./Cards/CardAddFiles"
 import CardPassengers from "./FlightCards/CardPassengers"
 import CardSection from "./Cards/CardSection"
+import { useDocument } from "../hook/document"
+import { useData } from "../hook/data"
 
-export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+export default function FlightCard({ item, onPress }) {
+    const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
+    const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -70,14 +73,14 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
                                             onPress={() => openDocument(file.uri)}
                                             onLongPress={() => deleteDocument(item, file.name)}
                                         >
-                                            <CardFiles file={file} openDocument={openDocument} />
+                                            <CardFiles file={file} />
                                         </TouchableOpacity>
                                     ))}
                                 </View>
                             </ScrollView>
                         </CardSection>}
                 </View>
-                <CardAddFiles item={item} pickDocument={pickDocument} />
+                <CardAddFiles item={item} />
             </Collapsible >
         </View >
     )

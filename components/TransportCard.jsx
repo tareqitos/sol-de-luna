@@ -12,10 +12,12 @@ import Collapsible from "react-native-collapsible";
 import CardSection from "./Cards/CardSection";
 import { getDayDifference } from "../services/date-service";
 import Txt from "./Txt";
+import { useDocument } from "../hook/document";
 
-export default function TransportCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
+export default function TransportCard({ item, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
+    const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -73,7 +75,7 @@ export default function TransportCard({ item, onPress, pickDocument, openDocumen
                                             onPress={() => openDocument(file.uri)}
                                             onLongPress={() => deleteDocument(item, file.name)}
                                         >
-                                            <CardFiles file={file} openDocument={openDocument} />
+                                            <CardFiles file={file} />
                                         </TouchableOpacity>
                                     ))}
                                 </View>
@@ -82,7 +84,7 @@ export default function TransportCard({ item, onPress, pickDocument, openDocumen
                 </View>
 
                 {/* ADD FILE BUTTON */}
-                <CardAddFiles item={item} pickDocument={pickDocument} />
+                <CardAddFiles item={item} />
             </Collapsible >
 
         </View>

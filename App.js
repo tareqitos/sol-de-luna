@@ -15,7 +15,7 @@ import AddHotels from './pages/AddHotel';
 import { SnackbarProvider } from './context/SnackbarContext';
 import AddTransport from './pages/AddTransport';
 import Settings from './pages/Settings';
-import { useEffect } from 'react';
+import { DocumentProvider } from './context/DocumentContext';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,13 +32,15 @@ function AppContent() {
         <NavigationContainer>
           <DataProvider>
             <SnackbarProvider>
-              <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="AddFlight" component={AddFlight} />
-                <Stack.Screen name="AddHotel" component={AddHotels} />
-                <Stack.Screen name="AddTransport" component={AddTransport} />
-                <Stack.Screen name="Settings" component={Settings} />
-              </Stack.Navigator>
+              <DocumentProvider>
+                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
+                  <Stack.Screen name="Home" component={Home} />
+                  <Stack.Screen name="AddFlight" component={AddFlight} />
+                  <Stack.Screen name="AddHotel" component={AddHotels} />
+                  <Stack.Screen name="AddTransport" component={AddTransport} />
+                  <Stack.Screen name="Settings" component={Settings} />
+                </Stack.Navigator>
+              </DocumentProvider>
             </SnackbarProvider>
           </DataProvider>
         </NavigationContainer>

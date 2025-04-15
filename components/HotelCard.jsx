@@ -17,10 +17,12 @@ import CardTime from "./Cards/CardTime"
 import CardDate from "./Cards/CardDate"
 import { MoveRight } from "lucide-react-native"
 import CardAddress from "./HotelCards/CardAddress"
+import { useDocument } from "../hook/document"
 
-export default function HotelCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
+export default function HotelCard({ item, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
+    const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -85,7 +87,7 @@ export default function HotelCard({ item, onPress, pickDocument, openDocument, d
                                             onPress={() => openDocument(file.uri)}
                                             onLongPress={() => deleteDocument(item, file.name)}
                                         >
-                                            <CardFiles file={file} openDocument={openDocument} />
+                                            <CardFiles file={file} />
                                         </TouchableOpacity>
                                     ))}
                                 </View>

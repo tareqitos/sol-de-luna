@@ -14,7 +14,7 @@ import HotelCard from "./HotelCard";
 import TransportCard from "./TransportCard";
 
 
-const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocument, style = {} }) => {
+const CardContainer = memo(({ category, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
     const { flights, hotels, transport, deleteData } = useData()
     const nav = useNavigation();
@@ -23,16 +23,6 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, [])
-
-    const goToAddItem = () => {
-        const navPath =
-            category === "flights" ? "AddFlight" :
-                category === "hotels" ? "AddHotel" :
-                    category === "transport" ? "AddTransport" : "";
-
-        nav.navigate(navPath);
-    };
-
 
     const categoryIcon = () => {
         switch (category) {
@@ -48,48 +38,40 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
     };
 
     // Memoize the card content to prevent re-renders
-    const flightsContent = useMemo(() => {
-        if (category === "flights") {
-            if (flights.length === 0) {
-                return <Txt style={typography.body}>No {category} added yet.</Txt>;
-            }
-            return flights.map((flight) => (
-                <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
-                    <FlightCard item={flight} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
-                </TouchableOpacity>
-            ));
+    const categoryContent = useMemo(() => {
+        const dataMap = {
+            flights: flights,
+            hotels: hotels,
+            transport: transport,
+        };
+
+        const cardMap = {
+            flights: FlightCard,
+            hotels: HotelCard,
+            transport: TransportCard,
+        };
+
+        const data = dataMap[category];
+        const CardComponent = cardMap[category];
+
+        if (!data || !CardComponent) return null;
+
+        if (data.length === 0) {
+            return <Txt style={typography.body}>No {category} added yet.</Txt>;
         }
 
-        return null;
-    }, [flights, category]);
-
-    const hotelsContent = useMemo(() => {
-        if (category === "hotels") {
-            if (hotels.length === 0) {
-                return <Txt style={typography.body}>No {category} added yet.</Txt>;
-            }
-
-            return hotels.map((hotel) => (
-                <TouchableOpacity onLongPress={() => deleteData(hotel)} activeOpacity={1} key={hotel.id || `hotel-${hotel.from}-${hotel.to}`} >
-                    <HotelCard item={hotel} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
-                </TouchableOpacity>
-            ));
-        }
-    }, [hotels, category])
-
-    const transportContent = useMemo(() => {
-        if (category === "transport") {
-            if (transport.length === 0) {
-                return <Txt style={typography.body}>No {category} added yet.</Txt>;
-            }
-
-            return transport.map((trans) => (
-                <TouchableOpacity onLongPress={() => deleteData(trans)} activeOpacity={1} key={trans.id || `trans-${trans.from}-${trans.to}`} >
-                    <TransportCard item={trans} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
-                </TouchableOpacity>
-            ));
-        }
-    }, [transport, category])
+        return data.map((item) => (
+            <TouchableOpacity
+                onLongPress={() => deleteData(item)}
+                activeOpacity={1}
+                key={item.id || `${category}-${item.from}-${item.to}`}
+            >
+                <CardComponent
+                    item={item}
+                />
+            </TouchableOpacity>
+        ));
+    }, [flights, hotels, transport, category, deleteData]);
 
     return (
 
@@ -104,9 +86,7 @@ const CardContainer = memo(({ category, pickDocument, openDocument, deleteDocume
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
-                {flightsContent}
-                {hotelsContent}
-                {transportContent}
+                {categoryContent}
             </Collapsible>
         </View >
     )
