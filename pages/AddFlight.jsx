@@ -4,23 +4,21 @@ import { useNavigation } from "@react-navigation/native";
 import Container from "../components/Container";
 
 import { useRef, useState } from "react";
-import DateInput from "../components/Inputs/DateInput";
 import TitleInput from "../components/Inputs/TitleInput";
 import RouteInput from "../components/Inputs/RouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
-import { Button, Portal, useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import TitlePage from "../components/TitlePage";
 import PeopleInput from "../components/Inputs/PeopleInput";
 import { useSnackbar } from "../hook/useSnackbar";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateInput2 from "../components/Inputs/DateTimeInput";
-import TimeInput from "../components/Inputs/TimeInput";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { mergeDateAndTime } from "../services/date-service";
+import IataInput from "../components/Inputs/IataInput";
 
 export default function AddFlight() {
     const { flights, setFlights } = useData()

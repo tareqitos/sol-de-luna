@@ -96,7 +96,7 @@ export default function HotelCard({ item, onPress }) {
                 </View>
 
                 {/* ADD FILE BUTTON */}
-                <CardAddFiles item={item} pickDocument={pickDocument} />
+                <CardAddFiles item={item} />
             </Collapsible >
         </View >
     )

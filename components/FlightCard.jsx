@@ -19,7 +19,7 @@ import { useDocument } from "../hook/document"
 import { useData } from "../hook/data"
 
 export default function FlightCard({ item, onPress }) {
-    const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
+    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
