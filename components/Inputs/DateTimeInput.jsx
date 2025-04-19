@@ -74,7 +74,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                             onChange={handleChange}
                             themeVariant={theme}
                             minimumDate={today}
-                            design="material"
+                            display="default"
                             style={{ background: colors.primary }}
                         />
                     )}
@@ -84,7 +84,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                             value={time || new Date()}
                             onChange={handleChange}
                             themeVariant={theme}
-                            design="material"
+                            display="default"
                         />
                     )}
                 </>

@@ -1,11 +1,13 @@
 import axios from "axios";
 
 export class API {
-    static async fetchAddressFromQuery(query) {
+    static async getIATA() {
         return (
             await axios.get(
-                `https://nominatim.openstreetmap.org/search?q=${query.replaceAll(" ", "+")}&addressdetails=1&format=json`
-            )
-        ).data;
+                "https://cdn.jsdelivr.net/gh/fawazahmed0/iata-list@main/iata.json", {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })).data
     }
 }

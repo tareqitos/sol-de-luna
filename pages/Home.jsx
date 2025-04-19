@@ -73,11 +73,6 @@ export default function Home() {
                     </View>
 
                     <Txt style={[typography.h2, { marginBottom: 10 }]}>Upcoming trips</Txt>
-                    <View contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 350 }} showsVerticalScrollIndicator={false}>
-                        {/* <Upcoming categories={categories} /> */}
-                        <IataInput />
-                    </View>
-
 
                 </View>
                 :

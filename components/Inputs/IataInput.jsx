@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Txt";
+import { API } from "../../api/api";
 
 export default function IataInput({ label, city, setCity }) {
     const { colors, typography } = useTheme();
@@ -15,19 +16,14 @@ export default function IataInput({ label, city, setCity }) {
 
     const getIataApi = async () => {
         try {
-            const response = await fetch("https://cdn.jsdelivr.net/gh/fawazahmed0/iata-list@main/iata.json", {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            const result = await response.json();
+            const result = await API.getIATA()
             setAirports(result);
 
         } catch (error) {
             console.log("Error fetching API")
         }
     }
+
 
     const saveSelectedCity = (city, iata) => {
         setDeparture({ city: city, iata: iata })
@@ -39,7 +35,6 @@ export default function IataInput({ label, city, setCity }) {
 
     useEffect(() => {
         getIataApi();
-        // console.log("*****", value)
     }, [])
 
     const getFilterAirports = (value) => {

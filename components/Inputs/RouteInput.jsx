@@ -1,98 +1,202 @@
-import { MoveRight } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Divider, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Txt";
-import { View } from "react-native";
+import { API } from "../../api/api";
 import { s } from "../../styles/styles.style";
-import { useController } from "react-hook-form";
-import { Icon, PaperProvider, TextInput, useTheme } from "react-native-paper";
 
-export default function RouteInput({ iataRef, control, errors }) {
+export default function RouteInput({ iataRef, setRoute }) {
     const { colors, typography } = useTheme();
 
-    const { field: departureField } = useController({
-        control,
-        name: "departureAirport",
-        rules: {
-            required: "Departure airport is required",
-            minLength: { value: 3, message: "Airport code must be 3 characters" }
+    const [airports, setAirports] = useState({});
+    const [filteredAirports, setFilteredAirports] = useState([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const [activeField, setActiveField] = useState(null);
+
+    const [departureAirport, setDepartureAirport] = useState({ city: "", iata: "" });
+    const [arrivalAirport, setArrivalAirport] = useState({ city: "", iata: "" });
+
+    const [errors, setErrors] = useState({
+        departureAirport: "",
+        arrivalAirport: "",
+    });
+
+    // Fetch airport data
+    useEffect(() => {
+        const getIataApi = async () => {
+            try {
+                const result = await API.getIATA();
+                setAirports(result);
+            } catch (error) {
+                console.error("Error fetching API:", error);
+            }
+        };
+        getIataApi();
+    }, []);
+
+    // Filter airports based on input
+    const getFilterAirports = (value) => {
+        const filtered = Object.values(airports).filter((airport) =>
+            airport.City.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredAirports(filtered);
+    };
+
+    // Handle input changes and show filtered list
+    const showList = (value, field) => {
+        if (field === "departureAirport") {
+            setDepartureAirport({ city: value, iata: "" });
+        } else if (field === "arrivalAirport") {
+            setArrivalAirport({ city: value, iata: "" });
         }
-    })
 
-    const { field: arrivalField } = useController({
-        control,
-        name: "arrivalAirport",
-        rules: {
-            required: "Arrival airport is required",
-            minLength: { value: 3, message: "Airport code must be 3 characters" }
+        if (value.length > 1) {
+            getFilterAirports(value);
+            setIsVisible(true);
+            setActiveField(field);
+        } else {
+            setIsVisible(false);
         }
-    })
+    };
 
-    const onNextIataInput = (text) => {
-        departureField.onChange(text)
-        if (text.length >= 3) {
-            iataRef.current.focus();
+    // Save selected city and IATA code
+    const saveSelectedCity = (city, iata) => {
+        if (activeField === "departureAirport") {
+            setDepartureAirport({ city, iata });
+            setErrors((prev) => ({ ...prev, departureAirport: "" }));
+        } else if (activeField === "arrivalAirport") {
+            setArrivalAirport({ city, iata });
+            setErrors((prev) => ({ ...prev, arrivalAirport: "" }));
         }
-    }
+        setIsVisible(false);
+    };
 
-    const departureErrorColor = errors?.departureAirport ? colors.error : typography.caption.color;
-    const arrivalErrorColor = errors?.arrivalAirport ? colors.error : typography.caption.color;
-    const errorMessage = "Min 3 characters"
+    // Validate inputs
+    const validate = () => {
+        let valid = true;
+        const newErrors = { departureAirport: "", arrivalAirport: "" };
 
+        if (!departureAirport.city || !departureAirport.iata || !arrivalAirport.city || !arrivalAirport.iata) {
+            newErrors.departureAirport = "Please select a valid departure and arrival airport";
+            valid = false;
+        }
+        setErrors(newErrors);
+        return valid;
+    };
+
+    // Trigger setRoute callback when airports are updated
+    useEffect(() => {
+        setRoute({ departureAirport, arrivalAirport }); 2
+    }, [departureAirport, arrivalAirport]);
+
+    // Render individual airport item
+    const Item = ({ city, iata }) => (
+        <View>
+            <TouchableOpacity
+                onPress={() => saveSelectedCity(city, iata)}
+                activeOpacity={1}
+                style={[{ backgroundColor: colors.surface }]}
+            >
+                <List.Item
+                    title={`${city} - ${iata}`}
+                    style={[styles.item, typography.body]}
+                />
+            </TouchableOpacity>
+            <Divider />
+        </View>
+    );
+
+    // Render filtered airport list
+    const ResultList = () => (
+        <View>
+            <FlatList
+                data={filteredAirports}
+                renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
+                keyExtractor={(item) => item.IATA}
+                style={styles.container}
+                keyboardShouldPersistTaps="always"
+            />
+        </View>
+    );
+
+    // Handle keyboard dismissal
+    const handleCloseKeyboard = () => {
+        Keyboard.dismiss();
+        setIsVisible(false);
+    };
 
     return (
-        <>
+        <View>
             <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
+
                 <TextInput
-                    label={"Route"}
+                    label={"Departure"}
                     mode="flat"
-                    value={departureField.value?.toUpperCase()}
-                    onBlur={departureField.onBlur}
+                    value={departureAirport.city && departureAirport.iata ? `${departureAirport.city} (${departureAirport.iata})` : null}
+                    onChangeText={(text) => showList(text, "departureAirport")}
                     style={[
-                        s.form.input,
-                        departureField.value.length == 0 ? typography.caption : typography.body,
+                        styles.input,
+                        departureAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    maxLength={3}
                     placeholder="e.g BRU"
                     placeholderTextColor={typography.caption.color}
-                    autoCapitalize="characters"
                     inputMode="text"
                     autoCorrect={false}
-                    onChangeText={onNextIataInput}
-
-                    outlineColor={departureErrorColor}
+                    outlineColor={errors.departureAirport ? colors.error : colors.outline}
                 />
 
-                <Icon
-                    source="arrow-right"
-                    color={colors.primary}
-                    size={24} />
+
 
                 <TextInput
                     ref={iataRef}
-                    label={"Route"}
+                    label={"Arrival"}
                     mode="flat"
-                    value={arrivalField.value.toUpperCase()}
-                    onBlur={arrivalField.onBlur}
-                    onChangeText={arrivalField.onChange}
+                    value={arrivalAirport.city && arrivalAirport.iata ? `${arrivalAirport.city} (${arrivalAirport.iata})` : null}
+                    onChangeText={(text) => showList(text, "arrivalAirport")}
+                    onBlur={validate}
                     style={[
-                        s.form.input,
-                        arrivalField.value.length == 0 ? typography.caption : typography.body,
+                        styles.input,
+                        arrivalAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    maxLength={3}
                     placeholder="e.g NRT"
                     placeholderTextColor={typography.caption.color}
-                    autoCapitalize="characters"
                     inputMode="text"
                     autoCorrect={false}
-
-                    outlineColor={arrivalErrorColor}
+                    outlineColor={errors.arrivalAirport ? colors.error : colors.outline}
                 />
 
             </View>
-            {errors?.departureAirport || errors?.arrivalAirport ?
-                <Txt style={{ color: colors.error }}>{errorMessage}</Txt> : null
-            }
-        </>
-    )
+
+            {errors.departureAirport && (
+                <Txt style={{ color: colors.error, marginTop: 5 }}>
+                    {errors.departureAirport}
+                </Txt>
+            )}
+
+            {isVisible && <ResultList />}
+
+        </View>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        position: "absolute",
+        width: "100%",
+        zIndex: 10,
+        maxHeight: 300,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+    },
+    item: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+    },
+    input: {
+        flex: 1,
+        paddingHorizontal: 0
+    },
+});

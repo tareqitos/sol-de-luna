@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
+import { ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"
@@ -16,16 +16,17 @@ import CardAddFiles from "./Cards/CardAddFiles"
 import CardPassengers from "./FlightCards/CardPassengers"
 import CardSection from "./Cards/CardSection"
 import { useDocument } from "../hook/document"
-import { useData } from "../hook/data"
+
 
 export default function FlightCard({ item, onPress }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
-    const { colors, elevation, typography } = useTheme()
+    const { colors, elevation } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
+
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
