@@ -1,12 +1,14 @@
-import { List } from "react-native-paper";
+import { List, Surface, useTheme } from "react-native-paper";
 import { useData } from "../hook/data";
 import Txt from "./Txt";
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
-export default function Upcoming({ updateTabName, categories }) {
+export default function Upcoming({ updatedTab, categories }) {
     const { flights, hotels, transport } = useData();
 
-    const sortedFlights = flights.sort((x, y) => {
+    const { colors, typography } = useTheme();
+
+    const sortItems = flights.sort((x, y) => {
         return new Date(x) - new Date(y);
     });
 
@@ -40,20 +42,30 @@ export default function Upcoming({ updateTabName, categories }) {
     return (
         <>
             {categories.map((category) => (
+                categoryContent[category].data.length > 0 &&
                 <List.Section key={category}>
                     <List.Subheader>{categoryContent[category].title}</List.Subheader>
-                    {categoryContent[category].data.map((item) => (
-                        <List.Item
-                            key={item.id}
-                            title={item.name || item.arrival}
-                            left={() => <List.Icon icon={categoryContent[category].icon} />}
-                            right={() => <Txt>{new Date(item.departureDate || item.checkIn || item.departureTime).toDateString()}</Txt>}
-                            contentContainerStyle={{ justifyContent: "center" }}
-                        />
-
-                    ))}
+                    <Surface style={[styles.section, { backgroundColor: colors.surface }]} elevation={1}>
+                        {categoryContent[category].data.map((item) => (
+                            <List.Item
+                                key={item.id}
+                                title={item.name || item.arrival}
+                                left={() => <List.Icon icon={categoryContent[category].icon} />}
+                                right={() => <Txt>{new Date(item.departureDate || item.checkIn || item.departureTime).toDateString()}</Txt>}
+                                contentContainerStyle={{ justifyContent: "center" }}
+                            />
+                        ))}
+                    </Surface>
                 </List.Section>
             ))}
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    section: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10
+    }
+})

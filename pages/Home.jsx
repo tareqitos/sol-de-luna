@@ -73,6 +73,9 @@ export default function Home() {
                     </View>
 
                     <Txt style={[typography.h2, { marginBottom: 10 }]}>Upcoming trips</Txt>
+                    <View>
+                        <Upcoming updatedTab={updateSelectedTab} categories={categories} />
+                    </View>
 
                 </View>
                 :
@@ -88,7 +91,7 @@ export default function Home() {
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 
-            <FABMenu style={{ position: "absolute", bottom: "10%" }} />
+            <FABMenu tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
 
 
         </Container>

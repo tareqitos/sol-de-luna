@@ -1,24 +1,39 @@
 import { useState } from "react";
-import { DefaultTheme, FAB, MD3Colors, PaperProvider, Portal, useTheme } from "react-native-paper";
-import { themeHook } from "../hook/theme";
+import { FAB, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FABMenu({ style }) {
+export default function FABMenu({ tab, style }) {
     const [open, setOpen] = useState(false);
     const nav = useNavigation()
     const { colors } = useTheme();
+
+    const adaptIconTab = () => {
+        switch (tab) {
+
+            case "flights":
+                return "airplane";
+            case "hotels":
+                return "home-city";
+            case "transport":
+                return "train-car";
+            default:
+                return "plus";
+        }
+    };
+
+    const icon = adaptIconTab();
 
     return (
         <FAB.Group
             open={open}
             visible
-            icon='plus'
+            icon={icon}
             color={colors.onPrimary}
             style={[style]}
             fabStyle={{ backgroundColor: colors.primary }}
             backdropColor="none"
             variant="primary"
-            actions={[
+            actions={icon == "plus" ? [
                 {
                     icon: 'airplane',
                     onPress: () => nav.navigate('AddFlight'),
@@ -37,8 +52,14 @@ export default function FABMenu({ style }) {
                     color: colors.onPrimary,
                     style: { backgroundColor: colors.primary }
                 }
-            ]}
-            onStateChange={({ open }) => setOpen(open)}
+            ] : []}
+            onPress={
+                tab == "flights" ? () => nav.navigate('AddFlight') :
+                    tab == "hotels" ? () => nav.navigate('AddHotel') :
+                        tab == "transport" ? () => nav.navigate('AddTransport') :
+                            null
+            }
+            onStateChange={({ open }) => setOpen(tab == "home" && open)}
         />
     )
 }

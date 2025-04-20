@@ -22,6 +22,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "userInterfaceStyle": "automatic",
+      "theme": {
+        "name": "MaterialYou"
+      },
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
@@ -34,6 +38,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET"
       ],
+      "compileSdkVersion": 33,
+      "targetSdkVersion": 33,
       "package": "com.tareqitos.soldeluna"
     },
     "web": {

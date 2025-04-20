@@ -15,8 +15,8 @@ export default function SnackbarMessage() {
                 action={{
                     label: 'Yay'
                 }}
-                elevation={1}
-                style={[styles.container, { backgroundColor: colors.surface, borderColor: colors.primary }]}
+                elevation={2}
+                style={[styles.container, { color: colors.primary, backgroundColor: colors.surface, borderColor: colors.primary }]}
             >
 
                 {message}
