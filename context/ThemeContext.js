@@ -33,15 +33,24 @@ export function ThemeProvider({ children }) {
     const toggleTheme = async () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
+    }
+
+    const saveTheme = async () => {
         try {
-            await AsyncStorage.setItem(THEME_STORAGE_KEY, newTheme)
+            await AsyncStorage.setItem(THEME_STORAGE_KEY, theme || systemColorScheme)
+            console.log("theme saved: ", theme)
         } catch (error) {
             console.log("Failed to save theme: ", error)
         }
     }
 
+    useEffect(() => {
+        saveTheme();
+
+    }, [theme, systemColorScheme])
+
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     )

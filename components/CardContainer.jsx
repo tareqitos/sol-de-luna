@@ -10,28 +10,19 @@ import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
+import HotelCard from "./HotelCard";
+import TransportCard from "./TransportCard";
 
 
-const CardContainer = memo(({ category, items, pickDocument, openDocument, deleteDocument, style = {} }) => {
+const CardContainer = memo(({ category, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
-    const { deleteData } = useData()
+    const { flights, hotels, transport, deleteData } = useData()
     const nav = useNavigation();
     const { colors, typography } = useTheme()
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, [])
-
-    const goToAddItem = () => {
-        const navPath =
-            category === "flights" ? "AddFlight" :
-                category === "hotels" ? "AddHotel" :
-                    category === "transport" ? "AddTransport" : "";
-
-        nav.navigate(navPath);
-    };
-
-
 
     const categoryIcon = () => {
         switch (category) {
@@ -46,48 +37,58 @@ const CardContainer = memo(({ category, items, pickDocument, openDocument, delet
         }
     };
 
-
     // Memoize the card content to prevent re-renders
-    const cardContent = useMemo(() => {
-        if (!items || items.length === 0) {
-            return <Txt style={{ color: colors.onSurface }}>No {category} added yet.</Txt>;
+    const categoryContent = useMemo(() => {
+        const dataMap = {
+            flights: flights,
+            hotels: hotels,
+            transport: transport,
+        };
+
+        const cardMap = {
+            flights: FlightCard,
+            hotels: HotelCard,
+            transport: TransportCard,
+        };
+
+        const data = dataMap[category];
+        const CardComponent = cardMap[category];
+
+        if (!data || !CardComponent) return null;
+
+        if (data.length === 0) {
+            return <Txt style={typography.body}>No {category} added yet.</Txt>;
         }
 
-        if (category === "flights") {
-            return items.map((flight) => (
-                <TouchableOpacity onLongPress={() => deleteData(flight)} activeOpacity={1} key={flight.id || `flight-${flight.from}-${flight.to}`} >
-                    <FlightCard item={flight} pickDocument={pickDocument} openDocument={openDocument} deleteDocument={deleteDocument} />
-                </TouchableOpacity>
-            ));
-        }
-
-        return null;
-    }, [items, category, colors.onSurface]);
+        return data.map((item) => (
+            <TouchableOpacity
+                onLongPress={() => deleteData(item)}
+                activeOpacity={1}
+                key={item.id || `${category}-${item.from}-${item.to}`}
+            >
+                <CardComponent
+                    item={item}
+                />
+            </TouchableOpacity>
+        ));
+    }, [flights, hotels, transport, category, deleteData]);
 
     return (
+
         <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
             <View style={s.card_container.title_container}>
                 <View style={s.card_container.title}>
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={[s.card_container.add_item, { borderColor: colors.primary }]}
-                        onPress={goToAddItem}
-                    >
-                        <PlusIcon color={colors.primary} size={typography.body.fontSize} />
-                        <Txt style={[typography.body, { fontFamily: "Raleway-SemiBold", color: colors.primary, lineHeight: 18 }]}>
-                            add {category}
-                        </Txt>
-                    </TouchableOpacity>
+                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
-                {cardContent}
+                {categoryContent}
             </Collapsible>
-        </View>
+        </View >
     )
 });
 

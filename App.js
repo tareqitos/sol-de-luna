@@ -8,30 +8,50 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { themeHook } from './hook/theme';
 import AddFlight from './pages/AddFlight';
 import { DataProvider } from './context/DataContext';
-import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, useTheme } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, MD3DarkTheme, MD3LightTheme, PaperProvider, Switch, useTheme } from 'react-native-paper';
 import { lightTheme, darkTheme } from './styles/theme';
-import { View } from 'react-native';
+import { useColorScheme, View } from 'react-native';
+import AddHotels from './pages/AddHotel';
+import { SnackbarProvider } from './context/SnackbarContext';
+import AddTransport from './pages/AddTransport';
+import Settings from './pages/Settings';
+import { DocumentProvider } from './context/DocumentContext';
 
 
 const Stack = createNativeStackNavigator();
 
 function AppContent() {
-  const { theme } = themeHook();
+  const { theme, setTheme, toggleTheme } = themeHook();
   const { colors } = useTheme();
-  const paperTheme = theme === 'dark' ? darkTheme : lightTheme;
+  const deviceTheme = useColorScheme()
+  let paperTheme = theme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <View style={[{ flex: 1 }, { backgroundColor: theme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
         <NavigationContainer>
           <DataProvider>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
-              <Stack.Screen name="Home" component={Home} />
-              <Stack.Screen name="AddFlight" component={AddFlight} />
-            </Stack.Navigator>
+            <SnackbarProvider>
+              <DocumentProvider>
+                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
+                  <Stack.Screen name="Home" component={Home} />
+                  <Stack.Screen name="AddFlight" component={AddFlight} />
+                  <Stack.Screen name="AddHotel" component={AddHotels} />
+                  <Stack.Screen name="AddTransport" component={AddTransport} />
+                  <Stack.Screen name="Settings" component={Settings} />
+                </Stack.Navigator>
+              </DocumentProvider>
+            </SnackbarProvider>
           </DataProvider>
         </NavigationContainer>
       </PaperProvider>
+      {/* <Switch
+        style={{ position: "absolute", top: 70, right: 20 }}
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleTheme}
+      /> */}
+
     </View>
   );
 }

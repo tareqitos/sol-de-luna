@@ -1,4 +1,4 @@
-import { TextInput } from "react-native";
+import { TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
 import Txt from "../Txt";
 import { useController } from "react-hook-form";
@@ -11,24 +11,33 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
         defaultValue: '',
         name: "name",
         rules: {
-            required: "Title is required"
+            required: "Required"
         }
     })
 
     const errorBorder = errors?.name ? colors.error : typography.caption.color;
     return (
         <>
-            <Txt style={typography.h4}>{name}</Txt>
             <TextInput
+                label={name}
+                mode="flat"
+                focusable
                 value={field.value}
                 onBlur={field.onBlur}
                 onChangeText={field.onChange}
-                style={[s.form.input, field.value.length == 0 ? typography.caption : typography.body, { color: colors.onBackground, borderColor: errorBorder }]}
-                maxLength={maxLength}
+                textColor={colors.onBackground}
+                outlineColor={errorBorder}
+                style={[
+                    s.form.input,
+                    field.value.length == 0 ? typography.caption : typography.body,
+                    { color: colors.onBackground, backgroundColor: colors.background }
+                ]}
+                maxLength={maxLength || 50}
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
+                autoCorrect={false}
             />
-            {errors?.name && <Txt style={{ color: colors.error }}>{name} is required</Txt>}
+            {errors?.name && <Txt style={{ color: colors.error }}>{errors.name.message}</Txt>}
         </>
     )
 }

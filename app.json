@@ -17,14 +17,30 @@
       "usesIcloudStorage": true
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "userInterfaceStyle": "automatic",
+      "theme": {
+        "name": "MaterialYou"
+      },
       "permissions": [
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
+      ],
+      "compileSdkVersion": 33,
+      "targetSdkVersion": 33,
+      "package": "com.tareqitos.soldeluna"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,12 +48,23 @@
     "plugins": [
       "expo-font",
       "expo-file-system",
+      "react-native-map-link",
       [
         "expo-document-picker",
         {
           "iCloudContainerEnvironment": "Production"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b1310730-82b4-4b23-b98c-5a30c9029321"
+      }
+    },
+    "owner": "tareqitos",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/b1310730-82b4-4b23-b98c-5a30c9029321"
+    }
   }
 }

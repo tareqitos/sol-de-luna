@@ -4,8 +4,9 @@ import { s } from "../../styles/card.style";
 import { useState } from "react";
 import { useData } from "../../hook/data";
 import { useTheme } from "react-native-paper";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function AdditionalInformation({ item, placeholder }) {
+export default function CardInformation({ item, placeholder }) {
 
     const [height, setHeight] = useState(100); // Default height
     const [infoText, setInfoText] = useState();
@@ -20,8 +21,6 @@ export default function AdditionalInformation({ item, placeholder }) {
 
     return (
         <>
-            <Txt style={[s.card.add_title, typography.h4, { color: colors.onBackground }]}>Additional information</Txt>
-
             <TextInput
                 editable
                 multiline

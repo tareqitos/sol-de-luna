@@ -1,13 +1,9 @@
-import { FlatList, FlatListComponent, ScrollView, TouchableOpacity, View } from "react-native";
-import Txt from "../components/Txt";
-import Title from "../components/Title";
+import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from "react-native";
 import { s } from "../styles/styles.style";
-import { ArrowLeft } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import Container from "../components/Container";
 
-import { useRef, useState } from "react";
-import DateInput from "../components/Inputs/DateInput";
+import { useEffect, useRef, useState } from "react";
 import TitleInput from "../components/Inputs/TitleInput";
 import RouteInput from "../components/Inputs/RouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
@@ -15,78 +11,132 @@ import { useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
-import { useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
+import TitlePage from "../components/TitlePage";
+import PeopleInput from "../components/Inputs/PeopleInput";
+import { useSnackbar } from "../hook/useSnackbar";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DateTimeInput from "../components/Inputs/DateTimeInput";
+import { mergeDateAndTime } from "../services/date-service";
 
 export default function AddFlight() {
-    const { data, setData } = useData()
-    const [date, setDate] = useState();
+    const { flights, setFlights } = useData()
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
+    const [route, setRoute] = useState({
+        departureAirport: { city: "", iata: "" },
+        arrivalAirport: { city: "", iata: "" }
+    });
+
+    const [passengers, setPassengers] = useState([])
+
+    const { setMessage, toggleBar } = useSnackbar();
+
     const { colors, typography } = useTheme();
     const nav = useNavigation();
     const iataRef = useRef();
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             name: "",
-            departureAirport: "",
-            arrivalAirport: "",
+            departureAirport: { city: "", iata: "" },
+            arrivalAirport: { city: "", iata: "" },
             additionalInformation: "",
         },
         mode: "onBlur"
-    })
-
+    });
 
     const onSubmit = (newData) => {
-        const dataToAdd = {
-            ...data,
-            flights: [
-                ...data.flights,
-                {
-                    "id": uuidv4(),
-                    "departureDate": date || new Date(),
-                    "type": "flights",
-                    "documents": [],
-                    ...newData
-                }]
+        console.log(newData)
+        if (!route.departureAirport.city || !route.departureAirport.iata) {
+            return console.log("DEPARTURE REQUIRED")
         }
 
-        setData(dataToAdd)
+        if (!route.arrivalAirport.city || !route.arrivalAirport.iata) {
+            return console.log("ARRIVAL REQUIRED")
+        }
+
+        setFlights([
+            ...flights, {
+                "id": uuidv4(),
+                "departureDate": mergeDateAndTime(date, time) || new Date(),
+                "type": "flights",
+                "passengers": passengers,
+                "documents": [],
+                "completed": false,
+                "departureAirport": route?.departureAirport || {},
+                "arrivalAirport": route?.arrivalAirport || {},
+                ...newData
+            }])
+        setMessage("Flight has successfully been added")
+        toggleBar();
         nav.goBack()
     }
 
+    // Handle keyboard dismissal
+    const handleCloseKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
+
+    useEffect(() => {
+        if (route?.departureAirport && route?.arrivalAirport) {
+            reset({
+                ...control._defaultValues,
+                departureAirport: route.departureAirport,
+                arrivalAirport: route.arrivalAirport,
+            });
+        }
+    }, [route, reset]); // Don't forget to add reset to the dependency array
 
     return (
+
         <Container style={{ paddingHorizontal: 20 }}>
-            <View style={s.header.title_container}>
-                <TouchableOpacity onPress={() => nav.goBack()}>
-                    <ArrowLeft color={colors.onBackground} size={20} />
-                </TouchableOpacity>
-                <Title subtitle="Add flight" />
-            </View>
+            <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
+                <View style={{ flex: 1 }}>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
 
-                <View style={s.form.container}>
+                    <TitlePage title={"Add flight"} />
+
                     <View style={s.form.input_container}>
-                        <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
+                        <RouteInput
+                            iataRef={iataRef}
+                            setRoute={setRoute}
+                        />
                     </View>
 
-                    <View style={{ flexDirection: "row", gap: 20 }}>
-                        <View style={[s.form.input_container, { flex: 1 }]}>
-                            <DateInput newDate={date} setNewDate={setDate} />
+
+
+                    <KeyboardAwareScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="always"
+                    >
+
+                        <View style={s.form.container}>
+                            <View style={s.form.input_container}>
+                                <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
+                            </View>
+
+                            <View style={{ flexDirection: "row", gap: 20 }}>
+                                <View style={[s.form.input_container, { flex: 1 }]}>
+                                    <DateTimeInput label="Select date" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                </View>
+                            </View>
+
+
+                            <PeopleInput passengers={passengers} setPassengers={setPassengers} />
+
+                            <View style={[s.form.input_container, s.form.input_addInfos]}>
+                                <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
+                            </View>
                         </View>
-                    </View>
-                    <View style={s.form.input_container}>
-                        <RouteInput iataRef={iataRef} control={control} errors={errors} />
-                    </View>
+                    </KeyboardAwareScrollView>
 
-                    <View style={s.form.input_container}>
-                        <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
-                    </View>
-
-                    <TouchableOpacity onPress={handleSubmit(onSubmit)} activeOpacity={1} style={[s.form.button, { backgroundColor: colors.primary }]}>
-                        <Txt style={[typography.h3, { color: colors.onPrimary }]}>Save</Txt>
-                    </TouchableOpacity>
+                    <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
+                        Add
+                    </Button>
                 </View>
-            </ScrollView>
+            </TouchableWithoutFeedback>
         </Container>
+
     )
 }

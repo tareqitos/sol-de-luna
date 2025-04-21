@@ -1,24 +1,32 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
-import Txt from "./Txt"
-import { Calendar, Clock, MoveRight, UploadIcon } from "lucide-react-native"
-import { ConvertDateToString, ConvertTimetoString } from "../services/date-service"
+import { ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"
 import CollapseButton from "./CollapseButton"
 import { s } from "../styles/card.style"
 
-import AdditionalInformation from "./Cards/Information"
-import AddFiles from "./Cards/AddFiles"
-import Files from "./Cards/Files"
-import { useTheme } from "react-native-paper"
+import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
+import CardTitle from "./Cards/CardTitle"
+import CardDate from "./Cards/CardDate"
+import CardTime from "./Cards/CardTime"
+import CardRoute from "./FlightCards/CardRoute"
+import CardFiles from "./Cards/CardFiles"
+import CardInformation from "./Cards/CardInformation"
+import CardAddFiles from "./Cards/CardAddFiles"
+import CardPassengers from "./FlightCards/CardPassengers"
+import CardSection from "./Cards/CardSection"
+import { useDocument } from "../hook/document"
 
-export default function FlightCard({ item, onPress, pickDocument, openDocument, deleteDocument }) {
-    const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
-    const { colors, elevation, typography } = useTheme()
+
+export default function FlightCard({ item, onPress }) {
+    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const { colors, elevation } = useTheme()
+    const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
+
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -27,59 +35,68 @@ export default function FlightCard({ item, onPress, pickDocument, openDocument, 
             </View>
 
             <View style={s.card.title_container}>
-                <Txt style={[s.card.title, { color: colors.onBackground, fontSize: 24 }]}>{item.name}</Txt>
+                <CardTitle title={item.name} />
             </View>
+
+            <Divider theme={MD3DarkTheme} />
 
             <View style={s.card.time_container}>
-                <View style={s.card.date}>
-                    <Calendar color={colors.primary} size={16} />
-                    <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertDateToString(item.departureDate)}</Txt>
-                </View>
-                <View style={s.card.date}>
-                    <Clock color={colors.primary} size={16} />
-                    <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertTimetoString(item.departureDate)}</Txt>
-                </View>
+                <CardDate date={item.departureDate} />
+                <CardTime time={item.departureDate} />
             </View>
 
-            <View style={[s.card.destination_container, { borderWidth: 1, borderColor: colors.primary }]}>
-                <Txt style={[s.card.iata, typography.h4]}>{item.departureAirport}</Txt>
-                <MoveRight
-                    color={colors.primary}
-                    size={14}
-                    style={s.card.arrow} />
-                <Txt style={[s.card.iata, typography.h4]}>{item.arrivalAirport}</Txt>
-            </View>
-            <Collapsible collapsed={isCollapsed} collapsedHeight={0} duration={300} renderChildrenCollapsed={true}>
+            <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
+
+            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+                {item.passengers.length !== 0 &&
+                    <View style={s.card.add_container}>
+                        <CardSection style={styles.cardSection} text="Passengers">
+                            <CardPassengers item={item} passengers={item.passengers} />
+                        </CardSection>
+                    </View>}
+
                 <View style={s.card.add_container}>
-                    <AdditionalInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <View style={styles.container}>
 
-                            {item.documents.length > 0 && item.documents.map((file) => (
-                                <TouchableOpacity
-                                    key={file.uri}
-                                    activeOpacity={0.9}
-                                    onPress={() => openDocument(file.uri)}
-                                    onLongPress={() => deleteDocument(item, file.name)}
-                                >
-                                    <Files file={file} openDocument={openDocument} />
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </ScrollView>
+                    <CardSection style={styles.cardSection} text={"Additional information"}>
+                        <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
+                    </CardSection>
 
-                    <AddFiles item={item} pickDocument={pickDocument} />
+
+                    {item.documents.length > 0 &&
+                        <CardSection style={styles.cardSection}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <View style={styles.container}>
+
+                                    {item.documents.map((file) => (
+                                        <TouchableOpacity
+                                            key={file.uri}
+                                            activeOpacity={0.9}
+                                            onPress={() => openDocument(file.uri)}
+                                            onLongPress={() => deleteDocument(item, file.name)}
+                                        >
+                                            <CardFiles file={file} />
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </CardSection>}
                 </View>
-            </Collapsible>
-        </View>
+                <CardAddFiles item={item} />
+            </Collapsible >
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        marginTop: 20,
         alignItems: "center",
+        gap: 10
+    },
+
+    cardSection: {
+        marginVertical: 10,
+        paddingHorizontal: 5,
         gap: 10
     }
 })

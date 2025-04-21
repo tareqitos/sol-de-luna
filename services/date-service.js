@@ -9,8 +9,7 @@ export const ConvertDateToNum = (date) => {
 }
 
 export const ConvertTimetoString = (time) => {
-    const d = new Date(time)
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return time.split("T")[1].substr(0, 5)
 }
 
 export const DateTimeToDate = (date) => {
@@ -26,6 +25,23 @@ export const DateTimeToTime = (time) => {
     return `${hours}:${minutes}`;
 }
 
-export const ConvertDateAndTimeToString = (date) => {
-    return `${ConvertDateToNum(date)} ${ConvertTimetoString(date)}`
+export const ConvertDateAndTimeToString = (date, time) => {
+    return `${ConvertDateToNum(date)} ${ConvertTimetoString(time)}`
 }
+
+export const getTimeDifference = (time2, time1) => {
+    const result = (Date.parse(time2) - Date.parse(time1));
+    return new Date(result).getHours()
+}
+
+export const mergeDateAndTime = (date, time) => {
+    const timeZoneOffset = new Date().getTimezoneOffset() * 60000;
+    const localDate = new Date(date.getTime() - timeZoneOffset);
+    const localTime = new Date(time.getTime() - timeZoneOffset);
+    return localDate.toISOString().split("T")[0] + "T" + localTime.toISOString().split("T")[1]
+}
+
+export const getDayDifference = (day2, day1) => {
+    return new Date(day2).toLocaleDateString('en-US', { day: "numeric" }) - new Date(day1).toLocaleDateString('en-US', { day: "numeric" })
+}
+

@@ -4,28 +4,19 @@ import { StyleSheet } from "react-native";
 const s = StyleSheet.create({
     header: {
         container: {
-            position: "absolue",
             alignItems: "baseline",
             flexDirection: "row",
             paddingLeft: 20,
+            marginBottom: 20,
+            flex: 1,
             gap: 10,
         },
 
         title_container: {
-            position: "absolue",
             alignItems: "center",
             flexDirection: "row",
-            marginBottom: 20,
-            gap: 0,
+            marginBottom: 10,
         },
-
-        title: {
-            fontSize: 42,
-        },
-
-        subtitle: {
-            fontSize: 24
-        }
     },
 
     home: {
@@ -42,10 +33,10 @@ const s = StyleSheet.create({
         },
 
         tab_bottom_menu: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
+            // position: "relative",
+            // bottom: 0,
+            // left: 0,
+            // right: 0,
             paddingHorizontal: 40,
             paddingTop: 20,
             paddingBottom: 40,
@@ -53,9 +44,9 @@ const s = StyleSheet.create({
             shadowColor: "#000",
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: -5,
             },
-            shadowOpacity: 0.27,
+            shadowOpacity: 0.1,
             shadowRadius: 4.65,
 
             elevation: 6,
@@ -83,28 +74,26 @@ const s = StyleSheet.create({
 
     form: {
         container: {
-            gap: 15
-        },
-
-        input_container: {
+            marginBottom: 50,
             gap: 10
         },
 
-        input: {
-            width: "auto",
-            height: 50,
-            borderRadius: 5,
-            borderWidth: 1,
-            justifyContent: "center",
-            paddingHorizontal: 10,
+        input_container: {
+            gap: 5,
         },
 
-        input_info: {
-            padding: 10
+        input_addInfos: {
+            marginTop: 20
+        },
+
+        input: {
+            borderRadius: 5,
+            justifyContent: "center",
+            paddingHorizontal: 0,
         },
 
         route_input: {
-            width: 100
+            width: 120
         },
 
         button: {
@@ -138,6 +127,7 @@ const s = StyleSheet.create({
 
         day_cell: {
             paddingVertical: 5,
+            paddingHorizontal: 8,
             borderRadius: 5,
         },
 

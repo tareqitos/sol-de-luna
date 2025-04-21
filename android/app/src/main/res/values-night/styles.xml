@@ -1,0 +1,14 @@
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:datePickerStyle">@style/MaterialDatePicker</item>
+        <item name="android:timePickerStyle">@style/MaterialTimePicker</item>
+    </style>
+
+    <style name="MaterialDatePicker" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:datePickerMode">calendar</item>
+    </style>
+
+    <style name="MaterialTimePicker" parent="@android:style/Widget.Material.TimePicker">
+        <item name="android:timePickerMode">clock</item>
+    </style>
+</resources>
