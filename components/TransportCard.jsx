@@ -33,27 +33,30 @@ export default function TransportCard({ item, onPress }) {
             </View>
 
             {/* TITLE */}
-            <View style={[styles.row]}>
-                <Icon source={item.transportType} size={32} color={colors.primary} />
-                <View>
-                    <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
-                    <CardTime time={item.departureTime} hasIcon={false} />
-                </View>
-                {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
-            </View>
+
             <View style={styles.rowCenter}>
-                <Icon source="arrow-down-thin" size={32} color={colors.primary} />
-                {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
-                {duration && <CardTime time={duration} hasIcon={false} />}
+                <View style={[styles.row]}>
+                    <Icon source={item.transportType} size={32} color={colors.primary} />
+                    <View>
+                        <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
+                        <CardTime time={item.departureTime} hasIcon={false} />
+                    </View>
+                    {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
+                </View>
+                <Icon source="arrow-right-thin" size={32} color={colors.primary} />
+                {/* {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
+                {duration && <CardTime time={duration} hasIcon={false} />} */}
+
+                <View style={styles.row}>
+                    <Icon source="flag-checkered" size={32} color={colors.primary} />
+                    <View>
+                        <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
+                        <CardTime time={item.arrivalTime} hasIcon={false} />
+                    </View>
+                </View>
             </View>
 
-            <View style={styles.row}>
-                <Icon source="flag-checkered" size={32} color={colors.primary} />
-                <View>
-                    <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
-                    <CardTime time={item.arrivalTime} hasIcon={false} />
-                </View>
-            </View>
+
 
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
@@ -95,6 +98,7 @@ export default function TransportCard({ item, onPress }) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
+
         marginTop: 20,
         alignItems: "center",
         gap: 10
@@ -104,10 +108,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 5,
         gap: 10
-    },
-
-    title: {
-        width: "250"
     },
 
     row: {

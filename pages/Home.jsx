@@ -1,4 +1,4 @@
-import { Animated, ScrollView, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Icon, List, Surface, useTheme } from "react-native-paper";
 
@@ -58,42 +58,48 @@ export default function Home() {
     };
 
     return (
-        <Container style={{ padding: 10 }}>
-            <View style={s.home.title} >
-                <Title title={"Trips"} subtitle={selectedTabName || "Overview"} textColor={colors.onBackground} />
-            </View>
+        <Container >
+            <View style={{ flex: 1, paddingHorizontal: 10, overflow: "visible" }}>
 
-            <SnackbarMessage />
 
-            {selectedTabName === "home" ?
-                <View style={{ paddingHorizontal: 10 }}>
-                    <Txt style={[typography.h2, { marginBottom: 10 }]}>Overview</Txt>
-                    <View style={{ flexDirection: "row", gap: 10 }}>
-                        <OverviewCard updateTabName={updateSelectedTab} categories={categories} />
-                    </View>
-
-                    <Txt style={[typography.h2, { marginBottom: 10 }]}>Upcoming trips</Txt>
-                    <View>
-                        <Upcoming updatedTab={updateSelectedTab} categories={categories} />
-                    </View>
-
+                <View style={s.home.title} >
+                    <Title title={"Trips"} subtitle={selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
-                :
-                <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 200 }} showsVerticalScrollIndicator={false}>
-                    {categories.map((category) => (
-                        <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
-                            <CardContainer category={category} />
-                        </Animated.View>
-                    ))}
-                </ScrollView>
-            }
-            <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background }]}>
+
+                <SnackbarMessage />
+
+                {selectedTabName === "home" ?
+                    <View style={{ flex: 1, paddingHorizontal: 10 }} >
+                        <Txt style={[typography.h2, { marginBottom: 10 }]}>Overview</Txt>
+                        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
+                            <OverviewCard updateTabName={updateSelectedTab} categories={categories} />
+                        </View>
+
+                        <Txt style={[typography.h2]}>Upcoming trips</Txt>
+                        <ScrollView
+                            contentContainerStyle={{ paddingHorizontal: 10 }}
+                            showsVerticalScrollIndicator={false}
+                            style={{ flex: 1 }}
+                        >
+                            <Upcoming updatedTab={updateSelectedTab} categories={categories} />
+                        </ScrollView>
+
+                    </View>
+                    :
+                    <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+                        {categories.map((category) => (
+                            <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
+                                <CardContainer category={category} />
+                            </Animated.View>
+                        ))}
+                    </ScrollView>
+                }
+            </View>
+            <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, paddingBottom: Platform.OS === "ios" ? 10 : 40 }]}>
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 
             <FABMenu tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
-
-
         </Container>
     )
 }

@@ -33,10 +33,10 @@ const s = StyleSheet.create({
         },
 
         tab_bottom_menu: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
+            // position: "relative",
+            // bottom: 0,
+            // left: 0,
+            // right: 0,
             paddingHorizontal: 40,
             paddingTop: 20,
             paddingBottom: 40,
@@ -44,9 +44,9 @@ const s = StyleSheet.create({
             shadowColor: "#000",
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: -5,
             },
-            shadowOpacity: 0.27,
+            shadowOpacity: 0.1,
             shadowRadius: 4.65,
 
             elevation: 6,

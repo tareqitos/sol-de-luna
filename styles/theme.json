@@ -15,6 +15,7 @@
             "inverseOnSurface": "#121212",
             "secondaryContainer": "#d7edfb",
             "onSecondaryContainer": "#002A20",
+            "outlineVariant": "#6E6E6E",
             "error": "#D32F2F",
             "onError": "#FFFFFF",
             "backdrop": "#FFFFFF90"
@@ -152,6 +153,7 @@
             "inverseOnSurface": "#F1F1F1",
             "secondaryContainer": "#d7edfb",
             "onSecondaryContainer": "#002A20",
+            "outlineVariant": "#6E6E6E",
             "error": "#EF5350",
             "onError": "#1F0000",
             "backdrop": "#00000090"
