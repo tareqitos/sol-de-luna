@@ -61,6 +61,8 @@ const Settings = () => {
         }
     }
 
+    const dialogContent = <Txt>Importing a local backup will overwrite your current data, continue?</Txt>
+
     // Theme options
     const themeOptions = [
         { id: 'light', label: 'Light', icon: 'sunny-outline' },
@@ -142,7 +144,7 @@ const Settings = () => {
                             visible={dialogVisible}
                             onDismiss={() => setDialogVisible(false)}
                             title="Warning"
-                            content="Importing a local backup will overwrite your current data, continue?"
+                            content={dialogContent}
                             cancel={() => setDialogVisible(false)}
                             validate={() => setImportedJSONData()}
                             validateText="Confirm"

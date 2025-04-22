@@ -39,11 +39,11 @@ export default function TransportCard({ item, onPress }) {
                     <Icon source={item.transportType} size={32} color={colors.primary} />
                     <View>
                         <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
-                        <CardTime time={item.departureTime} hasIcon={false} />
+                        <CardTime time={item.departureTime} hasIcon={true} />
                     </View>
                     {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
                 </View>
-                <Icon source="arrow-right-thin" size={32} color={colors.primary} />
+                {/* <Icon source="arrow-right-thin" size={32} color={colors.primary} /> */}
                 {/* {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
                 {duration && <CardTime time={duration} hasIcon={false} />} */}
 
@@ -51,7 +51,7 @@ export default function TransportCard({ item, onPress }) {
                     <Icon source="flag-checkered" size={32} color={colors.primary} />
                     <View>
                         <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
-                        <CardTime time={item.arrivalTime} hasIcon={false} />
+                        <CardTime time={item.arrivalTime} hasIcon={true} />
                     </View>
                 </View>
             </View>
@@ -98,7 +98,6 @@ export default function TransportCard({ item, onPress }) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-
         marginTop: 20,
         alignItems: "center",
         gap: 10
@@ -110,15 +109,19 @@ const styles = StyleSheet.create({
         gap: 10
     },
 
+    title: {
+        // width: 80
+    },
+
     row: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 5
+        gap: 5,
     },
 
     rowCenter: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: "",
+        alignItems: "",
         gap: 5
     },
 })
