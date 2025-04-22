@@ -1,4 +1,4 @@
-import { Button, Dialog, Portal, Text, useTheme } from "react-native-paper";
+import { Button, Dialog, Portal, useTheme } from "react-native-paper";
 import Txt from "./Txt";
 import { View } from "react-native";
 

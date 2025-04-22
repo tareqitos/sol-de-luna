@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {
     View,
@@ -11,20 +11,38 @@ import {
 } from 'react-native';
 import TitlePage from '../components/TitlePage';
 import Container from '../components/Container';
-import { Icon, RadioButton, useTheme } from 'react-native-paper';
+import { RadioButton, useTheme } from 'react-native-paper';
 import { themeHook } from '../hook/theme';
 import Txt from '../components/Txt';
 import { exportDataToJSON, importJSONData } from '../services/import-export-service';
 import { useData } from '../hook/data';
 import DialogPopUp from '../components/Dialog';
-import { validate } from 'uuid';
+import { useSnackbar } from '../hook/useSnackbar';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Settings = () => {
     const deviceTheme = useColorScheme();
+    const nav = useNavigation();
     const { colors } = useTheme()
     const { theme, setTheme } = themeHook();
+    const { setMessage, toggleBar } = useSnackbar();
     const { flights, hotels, transport, importData } = useData()
     const [dialogVisible, setDialogVisible] = useState(false);
+
+    const exportJSON = async () => {
+        try {
+            const result = await exportDataToJSON([{ flights, hotels, transport }])
+            if (result == true) {
+                setMessage("Data successfully exported!")
+                toggleBar();
+            }
+        } catch (error) {
+            setMessage("Error exporting data")
+            toggleBar();
+            console.log("Error saving JSON", error)
+        }
+    }
 
     const setImportedJSONData = async () => {
         try {
@@ -32,8 +50,14 @@ const Settings = () => {
             const importedData = await importJSONData();
             const data = importedData[0];
             importData(data.flights, data.hotels, data.transport)
+            setMessage("Data successfully imported!")
+            toggleBar();
+            nav.goBack()
         } catch (error) {
-            console.log("Error saving JSON")
+            setMessage("Error during import")
+            toggleBar();
+            console.log("Error saving JSON", error)
+            nav.goBack()
         }
     }
 
@@ -106,7 +130,7 @@ const Settings = () => {
                     <SettingsItem
                         icon="save-outline"
                         title="Create a local backup (JSON)"
-                        onPress={() => exportDataToJSON([{ flights, hotels, transport }])}
+                        onPress={() => exportJSON()}
                     />
                     <SettingsItem
                         icon="download-outline"

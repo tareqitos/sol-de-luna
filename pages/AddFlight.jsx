@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useData } from "../hook/data";
-import { Button, useTheme } from "react-native-paper";
+import { Button, IconButton, useTheme } from "react-native-paper";
 import TitlePage from "../components/TitlePage";
 import PeopleInput from "../components/Inputs/PeopleInput";
 import { useSnackbar } from "../hook/useSnackbar";
@@ -130,10 +130,9 @@ export default function AddFlight() {
                             </View>
                         </View>
                     </KeyboardAwareScrollView>
-
-                    <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
-                        Add
-                    </Button>
+                    <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+                        <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         </Container>

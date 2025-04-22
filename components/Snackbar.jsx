@@ -12,7 +12,6 @@ export default function SnackbarMessage() {
                 onDismiss={dismissBar}
                 duration={5000}
                 action={{
-                    label: 'Yay',
                     textColor: colors.accent // Change the color of the action label here
                 }}
                 elevation={2}
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: "center", height: 60, bottom: 50,
+        borderRadius: 10,
         borderWidth: 1
     },
 });

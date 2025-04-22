@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Button, Icon, useTheme } from "react-native-paper";
+import { Button, Icon, IconButton, useTheme } from "react-native-paper";
 
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
@@ -89,14 +89,9 @@ export default function AddTransport() {
                     <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
                 </View>
             </KeyboardAwareScrollView>
-            <Button
-                icon={"plus-box"}
-                mode="contained"
-                style={{ marginBottom: 20 }}
-                labelStyle={[typography.h4, { color: colors.onPrimary }]}
-                onPress={handleSubmit(onSubmit)}>
-                Add
-            </Button>
+            <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+                <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+            </View>
         </Container>
     )
 }

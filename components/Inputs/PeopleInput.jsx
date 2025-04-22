@@ -20,7 +20,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
     }
 
     const addPassenger = () => {
-        if (name.length === 0 && seat.length === 0) return console.log("No name or seat provided")
+        if (name.length === 0) return console.log("No name provided")
         setEmoji(generateRandomEmoji())
         setPassengers([...passengers, { id: uuidv4().split("-")[0], name, seat, emoji }]);
         setName("");
@@ -45,7 +45,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
                         </TouchableOpacity>
                         {passenger.name && <Txt style={[typography.h5, { flex: 1 }]}>{passenger.name}</Txt>}
                         {passenger.seat && <Txt style={[typography.caption, { flex: 1 }]}>{passenger.seat}</Txt>}
-                        <IconButton icon="minus-box" mode="contained" size={20} onPress={() => removePassenger(passenger.id)} />
+                        <IconButton icon="minus-box" mode="contained" containerColor="none" size={20} onPress={() => removePassenger(passenger.id)} />
                     </Surface>
                 ))}
             </View>

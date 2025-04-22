@@ -2,6 +2,7 @@ import { Divider, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "r
 import { useData } from "../hook/data";
 import Txt from "./Txt";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { ConvertDateToString } from "../services/date-service";
 
 export default function Upcoming({ updatedTab, categories }) {
     const { flights, hotels, transport } = useData();
@@ -52,7 +53,7 @@ export default function Upcoming({ updatedTab, categories }) {
                                 <List.Item
                                     title={item.name || item.arrival}
                                     left={() => <List.Icon icon={categoryContent[category].icon} color={highlight(index)} />}
-                                    description={() => <Txt style={{ color: highlight(index) }}>{new Date(item.departureDate || item.checkIn || item.departureTime).toDateString()}</Txt>}
+                                    description={() => <Txt style={{ color: highlight(index) }}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime)}</Txt>}
                                     contentStyle={{ justifyContent: "center" }}
                                     titleStyle={{ color: highlight(index) }}
                                 />

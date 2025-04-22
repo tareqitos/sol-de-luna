@@ -13,11 +13,8 @@ import SnackbarMessage from "../components/Snackbar";
 import FABMenu from "../components/FABMenu";
 import Txt from "../components/Txt";
 import { useData } from "../hook/data";
-import { useNavigation } from "@react-navigation/native";
 import OverviewCard from "../components/OverviewCard";
 import Upcoming from "../components/Upcoming";
-import IataInput from "../components/Inputs/IataInput";
-import Export from "../components/Export";
 
 export default function Home() {
     const { colors, typography } = useTheme();

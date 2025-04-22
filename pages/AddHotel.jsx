@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Icon, useTheme } from "react-native-paper";
+import { Button, Icon, IconButton, useTheme } from "react-native-paper";
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "../hook/useSnackbar";
@@ -91,14 +91,9 @@ export default function AddHotels() {
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
-            <Button
-                icon={"plus-box"}
-                mode="contained"
-                style={{ marginBottom: 20 }}
-                labelStyle={[typography.h4, { color: colors.onPrimary }]}
-                onPress={handleSubmit(onSubmit)}>
-                Add
-            </Button>
+            <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+                <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+            </View>
         </Container >
     )
 }

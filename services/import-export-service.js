@@ -21,10 +21,14 @@ export const exportDataToJSON = async (data) => {
                     'application/json'
                 );
                 await FileSystem.writeAsStringAsync(uri, json);
+                return true;
             }
         } else {
             await shareAsync(fileUri);
+            return false;
         }
+
+
 
     } catch (error) {
         console.error(error);
