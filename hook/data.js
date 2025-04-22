@@ -9,7 +9,8 @@ export function useData() {
         setHotels,
         setTransport,
         deleteData,
-        updateData } = useContext(DataContext)
+        updateData,
+        importData } = useContext(DataContext)
 
     return {
         flights,
@@ -19,6 +20,7 @@ export function useData() {
         setHotels,
         setTransport,
         deleteData,
-        updateData
+        updateData,
+        importData
     }
 }

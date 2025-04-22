@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import OverviewCard from "../components/OverviewCard";
 import Upcoming from "../components/Upcoming";
 import IataInput from "../components/Inputs/IataInput";
+import Export from "../components/Export";
 
 export default function Home() {
     const { colors, typography } = useTheme();
@@ -70,14 +71,14 @@ export default function Home() {
 
                 {selectedTabName === "home" ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
-                        <Txt style={[typography.h2, { marginBottom: 10 }]}>Overview</Txt>
-                        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
+                        <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
+                        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
                             <OverviewCard updateTabName={updateSelectedTab} categories={categories} />
                         </View>
 
-                        <Txt style={[typography.h2]}>Upcoming trips</Txt>
+                        <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
                         <ScrollView
-                            contentContainerStyle={{ paddingHorizontal: 10 }}
+                            contentContainerStyle={{ paddingHorizontal: 5 }}
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1 }}
                         >

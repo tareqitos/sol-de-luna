@@ -74,6 +74,12 @@ export function DataProvider({ children }) {
         }
     };
 
+    const importData = (flights, hotels, transport) => {
+        if (flights) setFlights(flights);
+        if (hotels) setHotels(hotels);
+        if (transport) setTransport(transport);
+    }
+
     // Split the save functions for each data type
     const saveFlights = async () => {
         try {
@@ -187,7 +193,8 @@ export function DataProvider({ children }) {
             setHotels,
             setTransport,
             deleteData,
-            updateData
+            updateData,
+            importData
         }}>
             {children}
         </DataContext.Provider>

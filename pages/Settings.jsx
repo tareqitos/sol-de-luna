@@ -14,11 +14,28 @@ import Container from '../components/Container';
 import { Icon, RadioButton, useTheme } from 'react-native-paper';
 import { themeHook } from '../hook/theme';
 import Txt from '../components/Txt';
+import { exportDataToJSON, importJSONData } from '../services/import-export-service';
+import { useData } from '../hook/data';
+import DialogPopUp from '../components/Dialog';
+import { validate } from 'uuid';
 
-const Settings = ({ navigation }) => {
+const Settings = () => {
     const deviceTheme = useColorScheme();
     const { colors } = useTheme()
     const { theme, setTheme } = themeHook();
+    const { flights, hotels, transport, importData } = useData()
+    const [dialogVisible, setDialogVisible] = useState(false);
+
+    const setImportedJSONData = async () => {
+        try {
+            setDialogVisible(false)
+            const importedData = await importJSONData();
+            const data = importedData[0];
+            importData(data.flights, data.hotels, data.transport)
+        } catch (error) {
+            console.log("Error saving JSON")
+        }
+    }
 
     // Theme options
     const themeOptions = [
@@ -83,6 +100,30 @@ const Settings = ({ navigation }) => {
                             />
                         ))}
                     </RadioButton.Group>
+                </SettingsCard>
+
+                <SettingsCard title="Save and backup">
+                    <SettingsItem
+                        icon="save-outline"
+                        title="Create a local backup (JSON)"
+                        onPress={() => exportDataToJSON([{ flights, hotels, transport }])}
+                    />
+                    <SettingsItem
+                        icon="download-outline"
+                        title="Import a local backup (JSON)"
+                        onPress={() => setDialogVisible(true)}
+                    />
+                    {dialogVisible && (
+                        <DialogPopUp
+                            visible={dialogVisible}
+                            onDismiss={() => setDialogVisible(false)}
+                            title="Warning"
+                            content="Importing a local backup will overwrite your current data, continue?"
+                            cancel={() => setDialogVisible(false)}
+                            validate={() => setImportedJSONData()}
+                            validateText="Confirm"
+                        />
+                    )}
                 </SettingsCard>
 
                 <SettingsCard title="About">
