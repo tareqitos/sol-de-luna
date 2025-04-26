@@ -5,15 +5,15 @@ import { Icon, List, Surface, useTheme } from "react-native-paper";
 import { s } from "../styles/styles.style";
 
 
-import Title from "../components/Title";
-import TabBottomMenu from "../components/TabBottomMenu";
+import Title from "../components/Utils/Title";
+import TabBottomMenu from "../components/UI/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
-import Container from "../components/Container";
-import FABMenu from "../components/FABMenu";
-import Txt from "../components/Txt";
+import Container from "../components/Utils/Container";
+import FABMenu from "../components/UI/FABMenu";
+import Txt from "../components/Utils/Txt";
 import { useData } from "../hook/data";
-import OverviewCard from "../components/OverviewCard";
-import Upcoming from "../components/Upcoming";
+import OverviewCard from "../components/Home/OverviewCard";
+import Upcoming from "../components/Home/Upcoming";
 
 export default function Home({ route }) {
     const { colors, typography } = useTheme();

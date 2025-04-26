@@ -1,10 +1,8 @@
 import { Keyboard, Pressable, TextInput } from "react-native";
-import Txt from "../Txt";
 import { s } from "../../styles/card.style";
 import { useState } from "react";
 import { useData } from "../../hook/data";
 import { useTheme } from "react-native-paper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function CardInformation({ item, placeholder, destinationID }) {
 

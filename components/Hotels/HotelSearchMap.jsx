@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "./Txt";
-import { s } from "../styles/hotel.style";
-import { API } from "../api/api";
+import Txt from "../Utils/Txt";
+import { s } from "../../styles/hotel.style";
+import { API } from "../../api/api";
 
 export default function HotelSearchMap({ query, setQuery, setCoords }) {
 

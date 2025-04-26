@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FlatList, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { Divider, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
-import { s } from "../../styles/styles.style";
 
 export default function RouteInput({ iataRef, setRoute }) {
     const { colors, typography } = useTheme();

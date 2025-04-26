@@ -1,6 +1,5 @@
-import { useState } from "react"
 import { TouchableOpacity, View } from "react-native"
-import { Card, Icon, useTheme } from "react-native-paper"
+import { Icon } from "react-native-paper"
 
 export default function StarInput({ stars, setStars }) {
 

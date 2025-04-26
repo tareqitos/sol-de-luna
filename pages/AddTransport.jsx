@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button, Icon, IconButton, useTheme } from "react-native-paper";
@@ -9,10 +8,10 @@ import { Button, Icon, IconButton, useTheme } from "react-native-paper";
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
 
-import Container from "../components/Container";
-import TitlePage from "../components/TitlePage";
-import TransportInput from "../components/Inputs/TransportInput";
-import TransportRouteInput from "../components/Inputs/TransportRouteInput";
+import Container from "../components/Utils/Container";
+import TitlePage from "../components/Utils/TitlePage";
+import TransportInput from "../components/Transport/TransportInput";
+import TransportRouteInput from "../components/Transport/TransportRouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
 
 import { s } from "../styles/styles.style";

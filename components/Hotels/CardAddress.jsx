@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { IconButton, useTheme } from "react-native-paper";
 import { showLocation } from "react-native-map-link";
 

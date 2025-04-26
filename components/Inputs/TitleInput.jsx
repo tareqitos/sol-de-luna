@@ -1,6 +1,6 @@
 import { TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { useController } from "react-hook-form";
 import { useTheme } from "react-native-paper";
 

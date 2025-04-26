@@ -1,24 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
-import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, useTheme } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
 
-import Container from "../components/Container";
-import TitlePage from "../components/TitlePage";
+import Container from "../components/Utils/Container";
+import TitlePage from "../components/Utils/TitlePage";
 import TitleInput from "../components/Inputs/TitleInput";
-import AddressInput from "../components/Inputs/AddressInput";
 import InformationInput from "../components/Inputs/InformationInput";
-import StarInput from "../components/Inputs/StarInput";
-import Txt from "../components/Txt";
+import StarInput from "../components/Hotels/StarInput";
+import Txt from "../components/Utils/Txt";
 
 import { s } from "../styles/styles.style";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { mergeDateAndTime } from "../services/date-service";
-import HotelSearchMap from "../components/HotelSearchMap";
+import HotelSearchMap from "../components/Hotels/HotelSearchMap";
 
 
 export default function AddHotels({ route }) {

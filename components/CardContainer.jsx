@@ -1,17 +1,17 @@
 import { TouchableOpacity, View } from "react-native";
 import Collapsible from "react-native-collapsible";
-import Txt from "./Txt";
+import Txt from "./Utils/Txt";
 import { s } from "../styles/card.style";
-import CollapseButton from "./CollapseButton";
-import { Car, Hotel, Plane, PlusIcon } from "lucide-react-native";
+import CollapseButton from "./UI/CollapseButton";
+import { Car, Hotel, Plane } from "lucide-react-native";
 import { memo, useCallback, useMemo, useState } from "react";
-import FlightCard from "./FlightCard";
+import FlightCard from "./Flights/FlightCard";
 import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
-import HotelCard from "./HotelCard";
-import TransportCard from "./TransportCard";
+import HotelCard from "./Hotels/HotelCard";
+import TransportCard from "./Transport/TransportCard";
 
 
 const CardContainer = memo(({ category, destination, style = {} }) => {

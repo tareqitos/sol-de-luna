@@ -1,17 +1,17 @@
 import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
-import CollapseButton from "./CollapseButton";
-import CardTitle from "./Cards/CardTitle";
-import { s } from "../styles/card.style";
-import CardTime from "./Cards/CardTime";
-import CardInformation from "./Cards/CardInformation";
-import CardFiles from "./Cards/CardFiles";
-import CardAddFiles from "./Cards/CardAddFiles";
+import CollapseButton from "../UI/CollapseButton";
+import CardTitle from "../Cards/CardTitle";
+import { s } from "../../styles/card.style";
+import CardTime from "../Cards/CardTime";
+import CardInformation from "../Cards/CardInformation";
+import CardFiles from "../Cards/CardFiles";
+import CardAddFiles from "../Cards/CardAddFiles";
 import Collapsible from "react-native-collapsible";
-import CardSection from "./Cards/CardSection";
-import { getDayDifference } from "../services/date-service";
-import { useDocument } from "../hook/document";
+import CardSection from "../Cards/CardSection";
+import { getDayDifference } from "../../services/date-service";
+import { useDocument } from "../../hook/document";
 
 export default function TransportCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD

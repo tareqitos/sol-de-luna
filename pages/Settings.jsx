@@ -9,14 +9,14 @@ import {
     Switch,
     useColorScheme
 } from 'react-native';
-import TitlePage from '../components/TitlePage';
-import Container from '../components/Container';
+import TitlePage from '../components/Utils/TitlePage';
+import Container from '../components/Utils/Container';
 import { RadioButton, useTheme } from 'react-native-paper';
 import { themeHook } from '../hook/theme';
-import Txt from '../components/Txt';
+import Txt from '../components/Utils/Txt';
 import { exportDataToJSON, importJSONData } from '../services/import-export-service';
 import { useData } from '../hook/data';
-import DialogPopUp from '../components/Dialog';
+import DialogPopUp from '../components/UI/Dialog';
 import { useSnackbar } from '../hook/useSnackbar';
 import { useNavigation } from '@react-navigation/native';
 

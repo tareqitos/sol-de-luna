@@ -5,8 +5,6 @@ import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Alert, Platform } from "react-native";
 import { useData } from "../hook/data";
-import DialogPopUp from "../components/Dialog";
-
 
 export const DocumentContext = createContext({
     pickDocument: async () => { },

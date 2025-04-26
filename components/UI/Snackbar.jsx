@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { MD3Colors, PaperProvider, Portal, Snackbar, useTheme } from "react-native-paper";
-import { useSnackbar } from "../hook/useSnackbar";
+import { Portal, Snackbar, useTheme } from "react-native-paper";
+import { useSnackbar } from "../../hook/useSnackbar";
 
 export default function SnackbarMessage() {
     const { colors } = useTheme();

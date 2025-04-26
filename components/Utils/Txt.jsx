@@ -1,5 +1,5 @@
 import { Text, useWindowDimensions } from "react-native";
-import { s } from "../styles/styles.style";
+import { s } from "../../styles/styles.style";
 import { useTheme } from "react-native-paper";
 
 export default function Txt({ children, style }) {

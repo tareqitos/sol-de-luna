@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import Txt from "./Txt";
-import { s } from "../styles/styles.style";
+import { s } from "../../styles/styles.style";
 import { IconButton, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 

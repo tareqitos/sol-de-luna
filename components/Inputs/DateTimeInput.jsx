@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button, Platform, View } from "react-native";
 import { themeHook } from "../../hook/theme";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { TextInput, useTheme } from "react-native-paper";
 import { ConvertDateAndTimeToString, mergeDateAndTime } from "../../services/date-service";
 

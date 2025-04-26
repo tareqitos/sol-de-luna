@@ -1,15 +1,14 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import Title from "../components/Title";
+import Title from "../components/Utils/Title";
 import { s } from "../styles/styles.style";
 import { IconButton, Surface, TextInput, useTheme } from "react-native-paper";
-import Container from "../components/Container";
-import Txt from "../components/Txt";
-import OverviewCard from "../components/OverviewCard";
-import { useEffect, useRef, useState } from "react";
-import DialogPopUp from "../components/Dialog";
+import Container from "../components/Utils/Container";
+import Txt from "../components/Utils/Txt";
+import { useState } from "react";
+import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
-import { set } from "react-hook-form";
+
 
 export default function Destination() {
     const { colors, typography } = useTheme();

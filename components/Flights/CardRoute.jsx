@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { s } from "../../styles/card.style";
 import { Icon, useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { MoveRight } from "lucide-react-native";
 
 export default function CardRoute({ departure, arrival }) {

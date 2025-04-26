@@ -1,7 +1,7 @@
 
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Avatar, Surface, useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { generateRandomEmoji } from "../../services/services";
 import { useData } from "../../hook/data";
 

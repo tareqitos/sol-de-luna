@@ -18,7 +18,7 @@ import AddTransport from './pages/AddTransport';
 import Settings from './pages/Settings';
 import { StatusBar } from 'expo-status-bar';
 import Destination from './pages/Destination';
-import SnackbarMessage from './components/Snackbar';
+import SnackbarMessage from './components/UI/Snackbar';
 
 
 const Stack = createNativeStackNavigator();

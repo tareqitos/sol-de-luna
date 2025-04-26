@@ -1,5 +1,5 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { s } from "../styles/styles.style";
+import { s } from "../../styles/styles.style";
 import { useTheme } from "react-native-paper";
 
 export default function Container({ children, style }) {

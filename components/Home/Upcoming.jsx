@@ -1,10 +1,9 @@
 import { Divider, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "react-native-paper";
-import { useData } from "../hook/data";
-import Txt from "./Txt";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { ConvertDateToString } from "../services/date-service";
+import Txt from "../Utils/Txt";
+import { StyleSheet, View } from "react-native";
+import { ConvertDateToString } from "../../services/date-service";
 
-export default function Upcoming({ updatedTab, categories, types }) {
+export default function Upcoming({ categories, types }) {
 
     const { colors, typography } = useTheme();
     const highlight = (index) => index === 0 ? colors.primary : colors.onSurface
