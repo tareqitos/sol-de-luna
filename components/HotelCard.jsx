@@ -64,7 +64,7 @@ export default function HotelCard({ item, onPress, destination }) {
                 <View style={s.card.add_container}>
                     {/* ADDRESS */}
                     <CardSection style={styles.cardSection} text="Address">
-                        <CardAddress address={item.address} />
+                        <CardAddress item={item} />
                     </CardSection>
 
                     {/* ADDITIONAL INFORMATION */}

@@ -30,6 +30,7 @@ export default function InformationInput({ placeholder, control }) {
                 ]}
                 outlineColor={typography.caption.color}
                 autoCorrect={false}
+                right={<TextInput.Icon icon="information" style={{ alignSelf: "baseline" }} size={18} />}
             />
         </>
     )

@@ -9,7 +9,6 @@ import Title from "../components/Title";
 import TabBottomMenu from "../components/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
 import Container from "../components/Container";
-import SnackbarMessage from "../components/Snackbar";
 import FABMenu from "../components/FABMenu";
 import Txt from "../components/Txt";
 import { useData } from "../hook/data";
@@ -77,8 +76,6 @@ export default function Home({ route }) {
                 <View style={s.home.title} >
                     <Title title={"Trips"} subtitle={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
-
-                <SnackbarMessage />
 
                 {selectedTabName === "home" ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >

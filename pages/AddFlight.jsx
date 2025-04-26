@@ -99,26 +99,19 @@ export default function AddFlight({ route }) {
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={{ flex: 1 }}>
 
-
                     <TitlePage title={"Add flight"} />
 
-                    <View style={s.form.input_container}>
-                        <RouteInput
-                            iataRef={iataRef}
-                            setRoute={setRoutes}
-                        />
-                    </View>
-
-
-
-                    <KeyboardAwareScrollView
-                        showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="always"
-                    >
-
+                    <View style={{ flex: 1 }}>
                         <View style={s.form.container}>
                             <View style={s.form.input_container}>
                                 <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
+                            </View>
+
+                            <View style={s.form.input_container}>
+                                <RouteInput
+                                    iataRef={iataRef}
+                                    setRoute={setRoutes}
+                                />
                             </View>
 
                             <View style={{ flexDirection: "row", gap: 20 }}>
@@ -134,7 +127,7 @@ export default function AddFlight({ route }) {
                                 <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                             </View>
                         </View>
-                    </KeyboardAwareScrollView>
+                    </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
                         <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
                     </View>

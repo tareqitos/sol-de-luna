@@ -3,29 +3,31 @@ import Txt from "../Txt";
 import { IconButton, useTheme } from "react-native-paper";
 import { showLocation } from "react-native-map-link";
 
-export default function CardAddress({ address }) {
+export default function CardAddress({ item }) {
     const { colors, typography, elevation } = useTheme()
 
     const openMapApp = () => {
         showLocation({
-            latitude: "",
-            longitude: "",
-            title: address,
-            address: address
+            latitude: item.latitude,
+            longitude: item.longitude,
+            title: item.address,
+            address: !item.latitude ? item.address : null
         })
     }
 
     return (
-        <View style={[styles.container, elevation.level1, { backgroundColor: colors.surface }]}>
-            <Txt style={[typography.body, { width: 200 }]}>{address}</Txt>
-            <IconButton
-                icon="map-search-outline"
-                mode="contained"
-                size={18}
-                iconColor={colors.onPrimary}
-                containerColor={colors.primary}
-                onPress={openMapApp}
-            />
+        <View>
+            <View style={[styles.container, elevation.level1, { backgroundColor: colors.surface }]}>
+                <Txt style={[typography.body, { width: 200 }]}>{item.address}</Txt>
+                <IconButton
+                    icon="map-search-outline"
+                    mode="contained"
+                    size={18}
+                    iconColor={colors.onPrimary}
+                    containerColor={colors.primary}
+                    onPress={openMapApp}
+                />
+            </View>
         </View>
     )
 }

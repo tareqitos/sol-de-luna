@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, useTheme } from "react-native-paper";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import { s } from "../styles/styles.style";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { mergeDateAndTime } from "../services/date-service";
+import HotelSearchMap from "../components/HotelSearchMap";
 
 
 export default function AddHotels({ route }) {
@@ -27,6 +28,8 @@ export default function AddHotels({ route }) {
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
 
+    const [query, setQuery] = useState();
+    const [coords, setCoords] = useState(null)
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date());
     const [stars, setStars] = useState(-1);
@@ -35,7 +38,6 @@ export default function AddHotels({ route }) {
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: "",
-            address: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -44,6 +46,10 @@ export default function AddHotels({ route }) {
     const onSubmit = (newData) => {
 
         const newItem = {
+            address: query || null,
+            latitude: coords.latitude || null,
+            longitude: coords.longitude || null,
+
             checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
             checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),
             stars: stars + 1,
@@ -58,6 +64,11 @@ export default function AddHotels({ route }) {
         nav.goBack()
     }
 
+    // Handle keyboard dismissal
+    const handleCloseKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
     const memoizedCheckOut = useMemo(() => {
         setCheckOut(checkIn);
     }, [checkIn]);
@@ -68,16 +79,19 @@ export default function AddHotels({ route }) {
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
+
             <TitlePage title={"Add hotel"} />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <KeyboardAwareScrollView>
+            <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
+
+                <View style={{ flex: 1 }}>
                     <View style={s.form.container}>
                         <TitleInput name="Hotel / stay name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                             <Txt style={{ color: typography.caption.color }}>If hotel, how many stars?</Txt>
                             <StarInput stars={stars} setStars={setStars} />
                         </View>
-                        <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} />
+                        {/* <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} /> */}
+                        <HotelSearchMap query={query} setQuery={setQuery} setCoords={setCoords} />
 
                         <View style={{ gap: 20 }}>
                             <DateTimeInput label="Select check-in time" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
@@ -87,8 +101,8 @@ export default function AddHotels({ route }) {
                             <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
                         </View>
                     </View>
-                </KeyboardAwareScrollView>
-            </ScrollView>
+                </View>
+            </TouchableWithoutFeedback>
             <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
                 <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
             </View>
