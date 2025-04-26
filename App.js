@@ -17,6 +17,8 @@ import AddHotels from './pages/AddHotel';
 import AddTransport from './pages/AddTransport';
 import Settings from './pages/Settings';
 import { StatusBar } from 'expo-status-bar';
+import Destination from './pages/Destination';
+import SnackbarMessage from './components/Snackbar';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,7 +37,8 @@ function AppContent() {
           <DataProvider>
             <SnackbarProvider>
               <DocumentProvider>
-                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
+                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Destination'>
+                  <Stack.Screen name="Destination" component={Destination} />
                   <Stack.Screen name="Home" component={Home} />
                   <Stack.Screen name="AddFlight" component={AddFlight} />
                   <Stack.Screen name="AddHotel" component={AddHotels} />
@@ -43,6 +46,7 @@ function AppContent() {
                   <Stack.Screen name="Settings" component={Settings} />
                 </Stack.Navigator>
               </DocumentProvider>
+              <SnackbarMessage />
             </SnackbarProvider>
           </DataProvider>
         </NavigationContainer>

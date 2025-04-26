@@ -18,8 +18,8 @@ import CardSection from "./Cards/CardSection"
 import { useDocument } from "../hook/document"
 
 
-export default function FlightCard({ item, onPress }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+export default function FlightCard({ item, onPress, destination }) {
+    const [isCollapsed, setIsCollapse] = useState(false) // CHANGE TO TRUE FOR PROD
     const { colors, elevation } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
@@ -58,7 +58,7 @@ export default function FlightCard({ item, onPress }) {
                 <View style={s.card.add_container}>
 
                     <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                     </CardSection>
 
 
@@ -81,7 +81,7 @@ export default function FlightCard({ item, onPress }) {
                             </ScrollView>
                         </CardSection>}
                 </View>
-                <CardAddFiles item={item} />
+                <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
         </View >
     )

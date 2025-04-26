@@ -1,10 +1,11 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Alert, Platform } from "react-native";
 import { useData } from "../hook/data";
+import DialogPopUp from "../components/Dialog";
 
 
 export const DocumentContext = createContext({
@@ -14,7 +15,8 @@ export const DocumentContext = createContext({
 })
 
 export function DocumentProvider({ children }) {
-    const { updateData } = useData()
+    const { updateItem, deleteItem } = useData()
+    const [visible, setVisible] = useState(false)
 
     const pickDocument = async (item) => {
         const result = await DocumentPicker.getDocumentAsync({
@@ -28,7 +30,7 @@ export function DocumentProvider({ children }) {
                 uri: result.assets[0].uri
             }
 
-            return updateItem = { ...item, documents: [...item.documents || [], newFile] };
+            return { ...item, documents: [...item.documents, newFile] };
         } else {
             return console.log('Document picking was cancelled')
         }
@@ -69,6 +71,21 @@ export function DocumentProvider({ children }) {
     }
 
     const deleteDocument = (item, fileName) => {
+
+
+        // <DialogPopUp
+        //     visible={visible}
+        //     onDismiss={() => setVisible(false)}
+        //     title="Delete file"
+        //     content={() => <Txt>Do you want to delete this file?</Txt>}
+        //     cancel={() => setVisible(false)}
+        //     validate={() => {
+        //         const filteredItem = item.documents.filter((file) => file.name !== fileName);
+        //         updateData({ ...item, documents: filteredItem });
+        //     }}
+        //     validateText="Delete"
+
+        // />
         Alert.alert("Delete file", "Do you want to delete this file?", [
             {
                 text: 'Cancel',

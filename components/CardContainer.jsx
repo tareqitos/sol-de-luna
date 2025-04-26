@@ -14,11 +14,12 @@ import HotelCard from "./HotelCard";
 import TransportCard from "./TransportCard";
 
 
-const CardContainer = memo(({ category, style = {} }) => {
+const CardContainer = memo(({ category, destination, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
-    const { flights, hotels, transport, deleteData } = useData()
+    const { flights, hotels, transport, deleteItem } = useData()
     const nav = useNavigation();
     const { colors, typography } = useTheme()
+
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -40,9 +41,9 @@ const CardContainer = memo(({ category, style = {} }) => {
     // Memoize the card content to prevent re-renders
     const categoryContent = useMemo(() => {
         const dataMap = {
-            flights: flights,
-            hotels: hotels,
-            transport: transport,
+            flights: destination.flights,
+            hotels: destination.hotels,
+            transport: destination.transport,
         };
 
         const cardMap = {
@@ -54,24 +55,24 @@ const CardContainer = memo(({ category, style = {} }) => {
         const data = dataMap[category];
         const CardComponent = cardMap[category];
 
-        if (!data || !CardComponent) return null;
+        if (!CardComponent) return null;
 
-        if (data.length === 0) {
+        if (!data || data.length == 0) {
             return <Txt style={typography.body}>No {category} added yet.</Txt>;
         }
 
         return data.map((item) => (
             <TouchableOpacity
-                onLongPress={() => deleteData(item)}
+                onLongPress={() => deleteItem(destination.id, item)}
                 activeOpacity={1}
                 key={item.id || `${category}-${item.from}-${item.to}`}
             >
                 <CardComponent
-                    item={item}
+                    item={item} destination={destination}
                 />
             </TouchableOpacity>
         ));
-    }, [flights, hotels, transport, category, deleteData]);
+    }, [destination, category, deleteItem]);
 
     return (
 

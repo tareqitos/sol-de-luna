@@ -27,12 +27,12 @@ const Settings = () => {
     const { colors } = useTheme()
     const { theme, setTheme } = themeHook();
     const { setMessage, toggleBar } = useSnackbar();
-    const { flights, hotels, transport, importData } = useData()
+    const { importData, destinations } = useData()
     const [dialogVisible, setDialogVisible] = useState(false);
 
     const exportJSON = async () => {
         try {
-            const result = await exportDataToJSON([{ flights, hotels, transport }])
+            const result = await exportDataToJSON([{ destinations }])
             if (result == true) {
                 setMessage("Data successfully exported!")
                 toggleBar();
@@ -49,7 +49,7 @@ const Settings = () => {
             setDialogVisible(false)
             const importedData = await importJSONData();
             const data = importedData[0];
-            importData(data.flights, data.hotels, data.transport)
+            importData(data.destinations)
             setMessage("Data successfully imported!")
             toggleBar();
             nav.goBack()

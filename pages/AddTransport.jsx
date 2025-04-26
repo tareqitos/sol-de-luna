@@ -13,7 +13,6 @@ import Container from "../components/Container";
 import TitlePage from "../components/TitlePage";
 import TransportInput from "../components/Inputs/TransportInput";
 import TransportRouteInput from "../components/Inputs/TransportRouteInput";
-import DateInput from "../components/Inputs/DateInput";
 import InformationInput from "../components/Inputs/InformationInput";
 
 import { s } from "../styles/styles.style";
@@ -21,11 +20,12 @@ import { mergeDateAndTime } from "../services/date-service";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 
 
-export default function AddTransport() {
+export default function AddTransport({ route }) {
     const nav = useNavigation();
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
-    const { transport, setTransport } = useData()
+    const { destination } = route.params;
+    const { addItem } = useData()
 
     const [departDate, setDepartDate] = useState(new Date());
     const [arriveDate, setArriveDate] = useState(new Date());
@@ -41,19 +41,16 @@ export default function AddTransport() {
     })
 
     const onSubmit = (newData) => {
-        console.log(newData)
-        setTransport([
-            ...transport, {
-                "id": uuidv4(),
-                "type": "transport",
-                "transportType": transportType,
-                "departureTime": mergeDateAndTime(departDate, departDate) || null,
-                "arrivalTime": mergeDateAndTime(arriveDate, arriveDate) || null,
-                "documents": [],
-                "completed": false,
-                ...newData
-            }
-        ])
+        const newItem = {
+            transportType: transportType,
+            departureTime: mergeDateAndTime(departDate, departDate) || null,
+            arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
+            ...newData
+        }
+
+        addItem(destination.id, "transport", newItem)
+        console.log("TRANSPORT: ", newItem)
+
 
         setMessage("Transport has successfully been added")
         toggleBar();

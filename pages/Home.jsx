@@ -16,20 +16,34 @@ import { useData } from "../hook/data";
 import OverviewCard from "../components/OverviewCard";
 import Upcoming from "../components/Upcoming";
 
-export default function Home() {
+export default function Home({ route }) {
     const { colors, typography } = useTheme();
-    const { flights, hotels, transport } = useData();
+    const { destinations } = useData()
 
+    const destinationId = route.params.destination.id
+    const [destination, setDestination] = useState(route.params.destination);
+
+    // Update destination when data changes
+    useEffect(() => {
+        const currentDestination = destinations.find(d => d.id === destinationId);
+        if (currentDestination) {
+            setDestination(currentDestination);
+        }
+    }, [destinations, destinationId]);
+
+    if (!destination) return null;
+
+    const types = {
+        flights: destination.flights,
+        hotels: destination.hotels,
+        transport: destination.transport
+    }
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
 
     const updateSelectedTab = useCallback((name) => {
         setSelectedTabName(name);
     }, []);
-
-    const sortedFlights = flights.sort((x, y) => {
-        return new Date(x.departureDate) - new Date(y.departureDate);
-    });
 
     // ANIMATION
     const [animation] = useState(new Animated.Value(0));
@@ -61,7 +75,7 @@ export default function Home() {
 
 
                 <View style={s.home.title} >
-                    <Title title={"Trips"} subtitle={selectedTabName || "Overview"} textColor={colors.onBackground} />
+                    <Title title={"Trips"} subtitle={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
 
                 <SnackbarMessage />
@@ -70,7 +84,7 @@ export default function Home() {
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
                         <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
                         <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
-                            <OverviewCard updateTabName={updateSelectedTab} categories={categories} />
+                            <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
                         </View>
 
                         <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
@@ -79,7 +93,7 @@ export default function Home() {
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1 }}
                         >
-                            <Upcoming updatedTab={updateSelectedTab} categories={categories} />
+                            <Upcoming updatedTab={updateSelectedTab} categories={categories} types={types} />
                         </ScrollView>
 
                     </View>
@@ -87,7 +101,7 @@ export default function Home() {
                     <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
                         {categories.map((category) => (
                             <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
-                                <CardContainer category={category} />
+                                <CardContainer category={category} destination={destination} types={types} />
                             </Animated.View>
                         ))}
                     </ScrollView>
@@ -97,7 +111,7 @@ export default function Home() {
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 
-            <FABMenu tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
+            <FABMenu destination={destination} tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
         </Container>
     )
 }

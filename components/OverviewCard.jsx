@@ -4,27 +4,26 @@ import { View } from "lucide-react-native";
 import { Icon, Surface, useTheme } from "react-native-paper";
 import { useData } from "../hook/data";
 
-export default function OverviewCard({ updateTabName, categories }) {
+export default function OverviewCard({ updateTabName, categories, types }) {
     const { colors, typography } = useTheme();
-    const { flights, hotels, transport } = useData();
 
     const categoryContent = {
         flights: {
             title: "Flights",
             icon: "airplane-takeoff",
-            data: flights
+            data: types.flights
         },
 
         hotels: {
             title: "Hotels",
             icon: "bed",
-            data: hotels
+            data: types.hotels
         },
 
         transport: {
             title: "Transport",
             icon: "car",
-            data: transport
+            data: types.transport
         }
     }
 

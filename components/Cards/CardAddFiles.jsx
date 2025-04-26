@@ -3,15 +3,16 @@ import { useData } from "../../hook/data";
 import { useDocument } from "../../hook/document";
 import { Button, IconButton, useTheme } from "react-native-paper";
 
-export default function CardAddFiles({ item }) {
+export default function CardAddFiles({ item, destinationID }) {
     const { colors } = useTheme()
-    const { updateData } = useData()
+    const { updateItem } = useData()
     const { pickDocument } = useDocument()
 
     const handlePickDocument = async () => {
         const newDocument = await pickDocument(item)
-        console.log(newDocument)
-        updateData(newDocument)
+        // console.log("NEW DOCUMENT: ", newDocument)
+        updateItem(destinationID, newDocument)
+        console.log("UPDATED ITEM: ", item)
     }
 
     return (

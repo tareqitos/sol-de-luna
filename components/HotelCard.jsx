@@ -1,5 +1,4 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
-import Txt from "./Txt"
 
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"
@@ -19,16 +18,14 @@ import { MoveRight } from "lucide-react-native"
 import CardAddress from "./HotelCards/CardAddress"
 import { useDocument } from "../hook/document"
 
-export default function HotelCard({ item, onPress }) {
+export default function HotelCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
-    const { colors, elevation, typography } = useTheme()
+    const { colors, elevation } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
-
-    // console.log("******", item)
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -72,7 +69,7 @@ export default function HotelCard({ item, onPress }) {
 
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
                     </CardSection>
 
                     {item.documents.length > 0 &&
@@ -96,7 +93,7 @@ export default function HotelCard({ item, onPress }) {
                 </View>
 
                 {/* ADD FILE BUTTON */}
-                <CardAddFiles item={item} />
+                <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
         </View >
     )

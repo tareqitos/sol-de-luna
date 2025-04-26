@@ -6,17 +6,17 @@ import { useData } from "../../hook/data";
 import { useTheme } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function CardInformation({ item, placeholder }) {
+export default function CardInformation({ item, placeholder, destinationID }) {
 
     const [height, setHeight] = useState(100); // Default height
     const [infoText, setInfoText] = useState();
     const [prevText, setPrevText] = useState()
-    const { updateData } = useData();
+    const { updateItem, } = useData();
     const { colors, elevation, typography } = useTheme();
 
     const handleTextUpdate = (text) => {
         const updatedItem = { ...item, additionalInformation: text };
-        updateData(updatedItem)
+        updateItem(destinationID, updatedItem)
     }
 
     return (

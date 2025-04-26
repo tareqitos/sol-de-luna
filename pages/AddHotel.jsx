@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Icon, IconButton, useTheme } from "react-native-paper";
-import { v4 as uuidv4 } from 'uuid';
+import { IconButton, useTheme } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
@@ -11,7 +10,6 @@ import Container from "../components/Container";
 import TitlePage from "../components/TitlePage";
 import TitleInput from "../components/Inputs/TitleInput";
 import AddressInput from "../components/Inputs/AddressInput";
-import DateInput from "../components/Inputs/DateInput";
 import InformationInput from "../components/Inputs/InformationInput";
 import StarInput from "../components/Inputs/StarInput";
 import Txt from "../components/Txt";
@@ -22,11 +20,12 @@ import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { mergeDateAndTime } from "../services/date-service";
 
 
-export default function AddHotels() {
+export default function AddHotels({ route }) {
     const nav = useNavigation();
+    const { destination } = route.params;
+    const { addItem } = useData()
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
-    const { hotels, setHotels } = useData()
 
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date());
@@ -43,17 +42,16 @@ export default function AddHotels() {
     })
 
     const onSubmit = (newData) => {
-        setHotels([
-            ...hotels, {
-                "id": uuidv4(),
-                "type": "hotels",
-                "documents": [],
-                "checkIn": mergeDateAndTime(checkIn, checkIn) || new Date(),
-                "checkOut": mergeDateAndTime(checkOut, checkOut) || new Date(),
-                "stars": stars + 1,
-                "completed": false,
-                ...newData,
-            }])
+
+        const newItem = {
+            checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
+            checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),
+            stars: stars + 1,
+            ...newData,
+        }
+
+        addItem(destination.id, "hotels", newItem)
+        console.log("HOTELS: ", newItem)
 
         setMessage("Hotel has successfully been added")
         toggleBar();

@@ -19,14 +19,17 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { mergeDateAndTime } from "../services/date-service";
 
-export default function AddFlight() {
-    const { flights, setFlights } = useData()
+export default function AddFlight({ route }) {
+    const { destination } = route.params;
+    const { addItem } = useData()
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    const [route, setRoute] = useState({
+    const [routes, setRoutes] = useState({
         departureAirport: { city: "", iata: "" },
         arrivalAirport: { city: "", iata: "" }
     });
+
+
 
     const [passengers, setPassengers] = useState([])
 
@@ -45,28 +48,30 @@ export default function AddFlight() {
         mode: "onBlur"
     });
 
+
+
     const onSubmit = (newData) => {
-        console.log(newData)
-        if (!route.departureAirport.city || !route.departureAirport.iata) {
+
+        if (!routes.departureAirport.city || !routes.departureAirport.iata) {
             return console.log("DEPARTURE REQUIRED")
         }
 
-        if (!route.arrivalAirport.city || !route.arrivalAirport.iata) {
+        if (!routes.arrivalAirport.city || !routes.arrivalAirport.iata) {
             return console.log("ARRIVAL REQUIRED")
         }
 
-        setFlights([
-            ...flights, {
-                "id": uuidv4(),
-                "departureDate": mergeDateAndTime(date, time) || new Date(),
-                "type": "flights",
-                "passengers": passengers,
-                "documents": [],
-                "completed": false,
-                "departureAirport": route?.departureAirport || {},
-                "arrivalAirport": route?.arrivalAirport || {},
-                ...newData
-            }])
+        const newItem = {
+            departureDate: mergeDateAndTime(date, time) || new Date(),
+            passengers: passengers,
+            departureAirport: routes?.departureAirport || {},
+            arrivalAirport: routes?.arrivalAirport || {},
+            ...newData
+        }
+
+
+        addItem(destination.id, "flights", newItem)
+        console.log("FLIGHTS: ", newItem)
+
         setMessage("Flight has successfully been added")
         toggleBar();
         nav.goBack()
@@ -79,14 +84,14 @@ export default function AddFlight() {
 
 
     useEffect(() => {
-        if (route?.departureAirport && route?.arrivalAirport) {
+        if (routes?.departureAirport && routes?.arrivalAirport) {
             reset({
                 ...control._defaultValues,
-                departureAirport: route.departureAirport,
-                arrivalAirport: route.arrivalAirport,
+                departureAirport: routes.departureAirport,
+                arrivalAirport: routes.arrivalAirport,
             });
         }
-    }, [route, reset]); // Don't forget to add reset to the dependency array
+    }, [routes, reset]); // Don't forget to add reset to the dependency array
 
     return (
 
@@ -100,7 +105,7 @@ export default function AddFlight() {
                     <View style={s.form.input_container}>
                         <RouteInput
                             iataRef={iataRef}
-                            setRoute={setRoute}
+                            setRoute={setRoutes}
                         />
                     </View>
 

@@ -10,7 +10,7 @@ export default function DialogPopUp({ visible, onDismiss, title, content, cancel
                 <Dialog style={{ backgroundColor: colors.surface }} visible={visible} onDismiss={onDismiss}>
                     <Dialog.Title>{title}</Dialog.Title>
                     <Dialog.Content>
-                        <Txt>{content}</Txt>
+                        {content}
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button onPress={cancel}>Cancel</Button>

@@ -4,22 +4,16 @@ import Txt from "./Txt";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ConvertDateToString } from "../services/date-service";
 
-export default function Upcoming({ updatedTab, categories }) {
-    const { flights, hotels, transport } = useData();
+export default function Upcoming({ updatedTab, categories, types }) {
 
     const { colors, typography } = useTheme();
     const highlight = (index) => index === 0 ? colors.primary : colors.onSurface
-
-    const sortItems = flights.sort((x, y) => {
-        return new Date(x) - new Date(y);
-    });
-
 
     const categoryContent = {
         flights: {
             title: "Flights",
             icon: "airplane-takeoff",
-            data: flights.sort((x, y) => {
+            data: types.flights.sort((x, y) => {
                 return new Date(x.departureDate) - new Date(y.departureDate);
             })
         },
@@ -27,7 +21,7 @@ export default function Upcoming({ updatedTab, categories }) {
         hotels: {
             title: "Hotels",
             icon: "bed",
-            data: hotels.sort((x, y) => {
+            data: types.hotels.sort((x, y) => {
                 return new Date(x.checkIn) - new Date(y.checkIn);
             })
         },
@@ -35,7 +29,7 @@ export default function Upcoming({ updatedTab, categories }) {
         transport: {
             title: "Transport",
             icon: "car",
-            data: transport.sort((x, y) => {
+            data: types.transport.sort((x, y) => {
                 return new Date(x.departureTime) - new Date(y.departureTime);
             })
         }
@@ -70,7 +64,7 @@ export default function Upcoming({ updatedTab, categories }) {
 const styles = StyleSheet.create({
     section: {
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 0,
         borderRadius: 10
     }
 })

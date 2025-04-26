@@ -2,10 +2,16 @@ import { useState } from "react";
 import { FAB, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FABMenu({ tab, style }) {
+export default function FABMenu({ destination, tab, style }) {
     const [open, setOpen] = useState(false);
     const nav = useNavigation()
     const { colors } = useTheme();
+
+    const items = [
+        { type: "flights", icon: "airplane", path: "AddFlight" },
+        { type: "hotels", icon: "home-city", path: "AddHotel" },
+        { type: "transport", icon: "train-car", path: "AddTransport" },
+    ]
 
     const adaptIconTab = () => {
         switch (tab) {
@@ -33,31 +39,18 @@ export default function FABMenu({ tab, style }) {
             fabStyle={{ backgroundColor: colors.primary }}
             backdropColor="none"
             variant="primary"
-            actions={icon == "plus" ? [
-                {
-                    icon: 'airplane',
-                    onPress: () => nav.navigate('AddFlight'),
+            actions={icon == "plus" ?
+                items.map(item => ({
+                    icon: item.icon,
+                    onPress: () => nav.navigate(item.path, { destination }),
                     color: colors.onPrimary,
                     style: { backgroundColor: colors.primary }
-                },
-                {
-                    icon: 'home-city',
-                    onPress: () => nav.navigate('AddHotel'),
-                    color: colors.onPrimary,
-                    style: { backgroundColor: colors.primary }
-                },
-                {
-                    icon: 'train-car',
-                    onPress: () => nav.navigate('AddTransport'),
-                    color: colors.onPrimary,
-                    style: { backgroundColor: colors.primary }
-                }
-            ] : []}
-            onPress={
-                tab == "flights" ? () => nav.navigate('AddFlight') :
-                    tab == "hotels" ? () => nav.navigate('AddHotel') :
-                        tab == "transport" ? () => nav.navigate('AddTransport') :
-                            null
+                })) : []}
+            onPress={() => {
+                items.map(item => (
+                    tab == item.type ? nav.navigate(item.path, { destination }) : null
+                ))
+            }
             }
             onStateChange={({ open }) => setOpen(tab == "home" && open)}
         />

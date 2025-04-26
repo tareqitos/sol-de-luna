@@ -14,7 +14,7 @@ import { getDayDifference } from "../services/date-service";
 import Txt from "./Txt";
 import { useDocument } from "../hook/document";
 
-export default function TransportCard({ item, onPress }) {
+export default function TransportCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
@@ -63,7 +63,7 @@ export default function TransportCard({ item, onPress }) {
 
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
                     </CardSection>
 
                     {item.documents.length > 0 &&
@@ -87,7 +87,7 @@ export default function TransportCard({ item, onPress }) {
                 </View>
 
                 {/* ADD FILE BUTTON */}
-                <CardAddFiles item={item} />
+                <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
 
         </View>
@@ -120,8 +120,6 @@ const styles = StyleSheet.create({
     },
 
     rowCenter: {
-        flexDirection: "",
-        alignItems: "",
-        gap: 5
+        gap: 10
     },
 })
