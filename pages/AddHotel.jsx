@@ -80,7 +80,6 @@ export default function AddHotels({ route }) {
 
             <TitlePage title={"Add hotel"} />
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
-
                 <View style={{ flex: 1 }}>
                     <View style={s.form.container}>
                         <TitleInput name="Hotel / stay name" placeholder="e.g. Hotel Marriot, A night in Paris..." control={control} errors={errors} />
@@ -89,7 +88,7 @@ export default function AddHotels({ route }) {
                             <StarInput stars={stars} setStars={setStars} />
                         </View>
                         {/* <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} /> */}
-                        <HotelSearchMap query={query} setQuery={setQuery} setCoords={setCoords} />
+                        <HotelSearchMap query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} />
 
                         <View style={{ gap: 20 }}>
                             <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />

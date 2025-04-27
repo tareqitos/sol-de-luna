@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { s } from "../../styles/hotel.style";
 import { API } from "../../api/api";
 
-export default function HotelSearchMap({ query, setQuery, setCoords }) {
+export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboard }) {
 
     const [results, setResults] = useState([]);
     const [message, setMessage] = useState(null)
@@ -38,6 +38,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords }) {
             await setQuery(address)
             console.log(address)
         }
+        closeKeyboard();
         setResults([])
     }
 
@@ -77,6 +78,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords }) {
                 keyExtractor={(item) => item.place_id}
                 renderItem={({ item }) => <Item item={item} />}
                 style={styles.container}
+                keyboardShouldPersistTaps="always"
             />
             {query &&
                 <TouchableOpacity onPress={handleManualInput}>
@@ -94,17 +96,24 @@ export default function HotelSearchMap({ query, setQuery, setCoords }) {
                     label="Address..."
                     value={query}
                     onChangeText={setQuery}
-                    mode="flat"
-                    inputMode="search"
+                    mode={Platform.OS === "android" ? "outlined" : "flat"}
                     onSubmitEditing={searchHotel}
                     outlineColor={typography.caption.color}
                     autoCorrect={false}
+                    inputMode="search"
+                    returnKeyType="search"
+                    returnKeyLabel="search"
+
                     style={[
                         styles.input,
                         query?.length > 0 ? typography.body : typography.caption,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    right={<TextInput.Icon icon="close" size={18} onPress={() => setQuery("")} />}
+                    right={<TextInput.Icon icon="close" forceTextInputFocus={false} size={18}
+                        onPress={() => {
+                            setQuery("")
+                            setResults([]);
+                        }} />}
                 />
                 <IconButton
                     icon="magnify"

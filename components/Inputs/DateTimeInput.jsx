@@ -4,7 +4,6 @@ import { Platform, View } from "react-native";
 import { themeHook } from "../../hook/theme";
 import Txt from "../Utils/Txt";
 import { Button, Icon, TextInput, useTheme } from "react-native-paper";
-import { ConvertDateAndTimeToString, mergeDateAndTime } from "../../services/date-service";
 
 export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     const { theme } = themeHook()
