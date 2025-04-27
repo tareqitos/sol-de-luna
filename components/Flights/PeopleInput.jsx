@@ -106,7 +106,6 @@ const s = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        flex: 1,
         paddingHorizontal: 20,
         paddingVertical: 5,
         marginHorizontal: 20,

@@ -23,7 +23,7 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                 mode="flat"
                 focusable
                 value={field.value}
-                onBlur={field.onBlur}
+                // onBlur={field.onBlur}
                 onChangeText={field.onChange}
                 textColor={colors.onBackground}
                 outlineColor={errorBorder}

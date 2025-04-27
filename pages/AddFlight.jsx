@@ -83,13 +83,13 @@ export default function AddFlight({ route }) {
 
     useEffect(() => {
         if (routes?.departureAirport && routes?.arrivalAirport) {
-            reset({
-                ...control._defaultValues,
+            reset((prevState) => ({
+                ...prevState,
                 departureAirport: routes.departureAirport,
                 arrivalAirport: routes.arrivalAirport,
-            });
+            }));
         }
-    }, [routes, reset]); // Don't forget to add reset to the dependency array
+    }, [routes, reset]);
 
     return (
 
