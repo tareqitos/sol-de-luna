@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
-import { s } from "../../styles/hotel.style";
 import { API } from "../../api/api";
 
 export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboard }) {
 
     const [results, setResults] = useState([]);
-    const [message, setMessage] = useState(null)
+    const [message, setMessage] = useState("Or tap here to add manually")
     const { colors, typography } = useTheme();
+
+    const isAddressSelected = useRef(false);
 
     const searchHotel = async () => {
         try {
@@ -19,7 +20,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 setResults(data)
                 console.log(data[0].display_name)
             } else {
-                setMessage("Address not found, tap here to add manually")
+                setMessage("Or tap here to add manually")
                 setResults([])
             }
 
@@ -35,6 +36,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 longitude: lon
             })
 
+            isAddressSelected.current = true;
             await setQuery(address)
             console.log(address)
         }
@@ -49,6 +51,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         }
 
         setCoords({ latitude: null, longitude: null });
+        isAddressSelected.current = true;
         setMessage("Address added!")
         console.log("Manual address accepted:", query);
         setResults([]);
@@ -80,30 +83,51 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 style={styles.container}
                 keyboardShouldPersistTaps="always"
             />
-            {query &&
-                <TouchableOpacity onPress={handleManualInput}>
-                    <Txt style={{ color: colors.primary }}>{message}</Txt>
-                </TouchableOpacity>
-            }
-
+            <TouchableOpacity onPress={handleManualInput} style={{ marginBottom: 20 }}>
+                <Txt style={{ color: colors.primary }}>{message}</Txt>
+            </TouchableOpacity>
         </View>
     )
+
+    const [debounceTimeout, setDebounceTimeout] = useState(null);
+
+
+    const delayAPICall = () => {
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+        }
+
+        const timeout = setTimeout(async () => {
+            await searchHotel();
+        }, 1000);
+
+        setDebounceTimeout(timeout);
+    };
+
+    useEffect(() => {
+        if (query.trim().length > 2 && !isAddressSelected.current) {
+            delayAPICall();
+        } else {
+            setResults([])
+        }
+
+    }, [query])
 
     return (
         <>
             <View style={styles.searchContainer}>
                 <TextInput
-                    label="Address..."
+                    label="Address"
                     value={query}
+                    onChange={() => isAddressSelected.current = false}
                     onChangeText={setQuery}
                     mode={Platform.OS === "android" ? "outlined" : "flat"}
-                    onSubmitEditing={searchHotel}
                     outlineColor={typography.caption.color}
                     autoCorrect={false}
                     inputMode="search"
                     returnKeyType="search"
                     returnKeyLabel="search"
-
+                    placeholder="Search address without typo"
                     style={[
                         styles.input,
                         query?.length > 0 ? typography.body : typography.caption,
@@ -111,18 +135,19 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                     ]}
                     right={<TextInput.Icon icon="close" forceTextInputFocus={false} size={18}
                         onPress={() => {
+                            isAddressSelected.current = false
                             setQuery("")
                             setResults([]);
                         }} />}
                 />
-                <IconButton
+                {/* <IconButton
                     icon="magnify"
                     iconColor={colors.onPrimary}
                     onPress={searchHotel}
                     size={24}
                     mode="contained"
                     style={[s.icon_button, { backgroundColor: colors.primary }]}
-                />
+                /> */}
             </View>
 
             <ResultList />

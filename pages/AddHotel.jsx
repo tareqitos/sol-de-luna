@@ -26,7 +26,7 @@ export default function AddHotels({ route }) {
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
 
-    const [query, setQuery] = useState();
+    const [query, setQuery] = useState("");
     const [coords, setCoords] = useState(null)
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date());
