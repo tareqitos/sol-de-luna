@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
 
     cardSection: {
         marginVertical: 10,
-        paddingHorizontal: 5,
         gap: 10
     }
 })

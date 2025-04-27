@@ -17,7 +17,7 @@ export default function CardAddress({ item }) {
 
     return (
         <View>
-            <View style={[styles.container, elevation.level1, { backgroundColor: colors.surface }]}>
+            <View style={[styles.container, elevation.level0, { backgroundColor: colors.surface }]}>
                 <Txt style={[typography.body, { width: 200 }]}>{item.address}</Txt>
                 <IconButton
                     icon="map-search-outline"

@@ -6,8 +6,9 @@ export default function Txt({ children, style }) {
     const { colors } = useTheme();
     const { height } = useWindowDimensions();
     const fontSize = style?.fontSize || s.text.text.fontSize
+    const adpatedFontsize = fontSize * 0.0011 * height
 
     return (
-        <Text style={[s.text.text, { color: colors.onBackground, fontSize: fontSize * 0.0011 * height }, style]}>{children}</Text>
+        <Text style={[s.text.text, { color: colors.onBackground, fontSize: adpatedFontsize }, style]}>{children}</Text>
     )
 }

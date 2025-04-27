@@ -121,8 +121,7 @@
             "bodyInter": {
                 "fontFamily": "Inter-Regular",
                 "fontSize": 14,
-                "letterSpacing": 0,
-                "color": "#2D2D2D"
+                "letterSpacing": 0
             },
             "caption": {
                 "fontFamily": "Inter-Light",
@@ -261,8 +260,7 @@
             "bodyInter": {
                 "fontFamily": "Inter-Regular",
                 "fontSize": 14,
-                "letterSpacing": 0,
-                "color": "#F2F2F2"
+                "letterSpacing": 0
             },
             "caption": {
                 "fontFamily": "Inter-Light",

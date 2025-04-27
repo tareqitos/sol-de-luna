@@ -9,17 +9,20 @@ export default function CardRoute({ departure, arrival }) {
     return (
         <View>
             <View style={[s.card.destination_container, { borderWidth: 1, borderColor: colors.primary }]}>
-                <Txt style={[s.card.iata, typography.h4]}>{departure.iata}</Txt>
+                <Txt style={[typography.h4]}>{departure.iata}</Txt>
                 <MoveRight
                     color={colors.primary}
                     size={18}
                     style={s.card.arrow} />
-                <Txt style={[s.card.iata, typography.h4]}>{arrival.iata}</Txt>
+                <Txt style={[typography.h4]}>{arrival.iata}</Txt>
             </View>
-            <View style={[styles.row, { marginTop: 5, opacity: .5 }]}>
-                <Txt style={[s.card.iata, typography.body]}>{departure.city}</Txt>
-                <Icon source="arrow-right-thin" size={18} />
-                <Txt style={[s.card.iata, typography.body]}>{arrival.city}</Txt>
+            <View style={[styles.row, { marginTop: 10 }]}>
+                <Txt style={[typography.body, { lineHeight: 15 }]}>{departure.city}</Txt>
+                <MoveRight
+                    color={colors.primary}
+                    size={18}
+                    style={s.card.arrow} />
+                <Txt style={[typography.body, { lineHeight: 15 }]}>{arrival.city}</Txt>
             </View>
         </View>
     )

@@ -17,6 +17,7 @@ import InformationInput from "../components/Inputs/InformationInput";
 import { s } from "../styles/styles.style";
 import { mergeDateAndTime } from "../services/date-service";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
+import TransportNumberInput from "../components/Transport/TransportNumberInput";
 
 
 export default function AddTransport({ route }) {
@@ -26,6 +27,7 @@ export default function AddTransport({ route }) {
     const { destination } = route.params;
     const { addItem } = useData()
 
+    const [line, setLine] = useState(null)
     const [departDate, setDepartDate] = useState(new Date());
     const [arriveDate, setArriveDate] = useState(new Date());
     const [transportType, setTransportType] = useState('train')
@@ -41,6 +43,7 @@ export default function AddTransport({ route }) {
 
     const onSubmit = (newData) => {
         const newItem = {
+            line: line,
             transportType: transportType,
             departureTime: mergeDateAndTime(departDate, departDate) || null,
             arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
@@ -74,6 +77,7 @@ export default function AddTransport({ route }) {
             <TitlePage title={"Add transport"} />
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
+                <TransportNumberInput line={line} setLine={setLine} />
                 <TransportRouteInput control={control} errors={errors} />
                 <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
                     <View style={{ gap: 20 }}>

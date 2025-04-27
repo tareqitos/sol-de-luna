@@ -55,8 +55,6 @@ const s = StyleSheet.create({
 
     text: {
         text: {
-            color: "#1a1a1a",
-            fontFamily: "Raleway-400",
             fontSize: 14
         }
     },
