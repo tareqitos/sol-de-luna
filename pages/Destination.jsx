@@ -1,13 +1,14 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Title from "../components/Utils/Title";
 import { s } from "../styles/styles.style";
-import { IconButton, Surface, TextInput, useTheme } from "react-native-paper";
+import { Button, IconButton, Surface, Text, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
+import { generateDestinationEmoji } from "../services/services";
 
 
 export default function Destination() {
@@ -17,6 +18,7 @@ export default function Destination() {
     const [value, setValue] = useState()
     const [dialogVisible, setDialogVisible] = useState(false)
     const [isDelete, setDelete] = useState(false);
+    const [emoji, setEmoji] = useState(generateDestinationEmoji());
     const nav = useNavigation();
     const [selectedDestinationId, setSelectedDestinationId] = useState();
 
@@ -58,31 +60,62 @@ export default function Destination() {
         setDelete(false)
     }
 
+    const updateEmoji = () => {
+        setEmoji(generateDestinationEmoji())
+    }
+
+    const handleCloseKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
     return (
         <Container>
             <View>
-                <View style={s.home.title} >
+                <View>
                     <Title title={"Destination"} subtitle={""} textColor={colors.onBackground} />
                 </View>
             </View>
 
+            <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
+                <View style={styles.wrapper}>
+                    <View style={styles.container}>
+                        <Txt style={[typography.body, { fontSize: 32 }]}>Hello,</Txt>
+                        <Txt style={[typography.body, { fontSize: 32 }]}>Where are you going?</Txt>
 
-            <ScrollView style={[styles.container, { gap: 10 }]}>
-                {destinations.length > 0 && destinations.map((destination) => (
-                    <TouchableOpacity
-                        key={destination.id}
-                        activeOpacity={1}
-                        onPress={() => nav.navigate('Home', { destination })}
-                        onLongPress={() => handleDeleteDestination(destination.id)}
-                        style={{ flex: 1 }} >
-                        <Surface style={[typography.body, styles.destination, { backgroundColor: colors.surface }]} elevation={1}>
-                            <Txt style={typography.h2}>{destination.name}</Txt>
-                        </Surface>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <TouchableOpacity onPress={updateEmoji} style={{ zIndex: 2 }} hitSlop={{ top: 10, bottom: 10, right: 10 }}>
+                                <Txt style={{ fontSize: 24 }}>
+                                    {emoji}
+                                </Txt>
+                            </TouchableOpacity>
+                            <TextInput
+                                mode="flat"
+                                value={value}
+                                onChangeText={setValue}
+                                placeholder="e.g. Morocco, Japan, Grandma..."
+                                style={{ flex: 1, backgroundColor: colors.background }}
+                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { addDestination(`${emoji} ${value}`) }} />}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.destinations}>
+                        {destinations.length > 0 && destinations.map((destination) => (
+                            <TouchableOpacity
+                                key={destination.id}
+                                activeOpacity={1}
+                                onPress={() => nav.navigate('Home', { destination })}
+                                onLongPress={() => handleDeleteDestination(destination.id)}
+                            >
+                                <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
+                                    <Txt style={typography.h5}>{destination.name}</Txt>
+                                </Surface>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
 
-            {dialogVisible && !isDelete &&
+            {/* {dialogVisible && !isDelete &&
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={() => setDialogVisible(false)}
@@ -92,9 +125,10 @@ export default function Destination() {
                     validate={() => handleAddDestination(value)}
                     validateText="Confirm"
                 />
-            }
+            } */}
 
-            {dialogVisible && isDelete &&
+            {
+                dialogVisible && isDelete &&
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={deleteCancel}
@@ -109,23 +143,34 @@ export default function Destination() {
                 />
             }
 
-            <View style={{ position: "absolute", bottom: 40, right: 40 }}>
+            {/* <View style={{ position: "absolute", bottom: 40, right: 40 }}>
                 <IconButton icon={"plus"} size={25} mode="contained" onPress={() => setDialogVisible(true)} style={{ width: 60, height: 60 }} iconColor={colors.onPrimary} containerColor={colors.primary} />
-            </View>
-        </Container>
+            </View> */}
+        </Container >
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
+        flex: .7,
+        justifyContent: "center",
         paddingHorizontal: 20,
-        flex: 2
     },
 
-    destination: {
+    destinations: {
+        marginVertical: 20,
+        flexDirection: "row",
+        gap: 10,
+        flexWrap: "wrap"
+    },
+
+    item: {
         paddingHorizontal: 20,
-        paddingVertical: 20,
+        paddingVertical: 10,
         borderRadius: 10,
-        marginVertical: 10
+    },
+
+    input: {
+
     }
 })
