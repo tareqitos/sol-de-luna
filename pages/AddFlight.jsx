@@ -112,9 +112,9 @@ export default function AddFlight({ route }) {
                                 />
                             </View>
 
-                            <View style={{ flexDirection: "row", gap: 20 }}>
+                            <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
                                 <View style={[s.form.input_container, { flex: 1 }]}>
-                                    <DateTimeInput label="Select date" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                    <DateTimeInput label="airplane-clock" time={time} setTime={setTime} date={date} setDate={setDate} />
                                 </View>
                             </View>
 

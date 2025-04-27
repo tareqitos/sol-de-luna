@@ -92,8 +92,8 @@ export default function AddHotels({ route }) {
                         <HotelSearchMap query={query} setQuery={setQuery} setCoords={setCoords} />
 
                         <View style={{ gap: 20 }}>
-                            <DateTimeInput label="Select check-in time" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
-                            <DateTimeInput label="Select check-out time" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
+                            <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
+                            <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
                         </View>
                         <View style={[s.form.input_container, s.form.input_addInfos]}>
                             <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />

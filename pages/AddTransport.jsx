@@ -75,10 +75,10 @@ export default function AddTransport({ route }) {
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
                 <TransportRouteInput control={control} errors={errors} />
-                <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginTop: 10 }}>
+                <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
                     <View style={{ gap: 20 }}>
-                        <DateTimeInput label="Select departure time" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
-                        <DateTimeInput label="Select arrival time" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
+                        <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
+                        <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
                     </View>
                 </View>
                 <View style={[s.form.input_container, s.form.input_addInfos]}>

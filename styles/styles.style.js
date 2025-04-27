@@ -82,9 +82,9 @@ const s = StyleSheet.create({
             gap: 5,
         },
 
-        input_addInfos: {
-            marginTop: 20
-        },
+        // input_addInfos: {
+        //     marginTop: 20
+        // },
 
         input: {
             borderRadius: 5,
