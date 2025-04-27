@@ -12,6 +12,7 @@ import Collapsible from "react-native-collapsible";
 import CardSection from "../Cards/CardSection";
 import { getDayDifference } from "../../services/date-service";
 import { useDocument } from "../../hook/document";
+import CardLine from "./CardLine";
 
 export default function TransportCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
@@ -34,22 +35,44 @@ export default function TransportCard({ item, onPress, destination }) {
             {/* TITLE */}
 
             <View style={styles.rowCenter}>
-                <View style={[styles.row]}>
+                {/* <View style={[styles.row]}>
                     <Icon source={item.transportType} size={32} color={colors.primary} />
                     <View>
                         <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
                         <CardTime time={item.departureTime} hasIcon={true} />
                     </View>
-                    {/* {item.departureTime && <CardDate date={item.departureTime} hasIcon={false} />} */}
-                </View>
+                </View> */}
                 {/* <Icon source="arrow-right-thin" size={32} color={colors.primary} /> */}
                 {/* {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
                 {duration && <CardTime time={duration} hasIcon={false} />} */}
+
+                {/* <View>
+                    {item.line && <CardLine line={item.line} />}
+                </View>
 
                 <View style={styles.row}>
                     <Icon source="flag-checkered" size={32} color={colors.primary} />
                     <View>
                         <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
+                        <CardTime time={item.arrivalTime} hasIcon={true} />
+                    </View>
+                </View> */}
+            </View>
+
+            <View >
+                <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 10, paddingHorizontal: 10 }]}>
+                    <Icon source={item.transportType} size={32} color={colors.onPrimary} />
+                    {item.line && <CardLine line={item.line} />}
+                </View>
+                <View style={[{ paddingVertical: 10, paddingHorizontal: 10, bottom: 5, borderWidth: 1, borderColor: colors.primary, borderBottomStartRadius: 5, borderBottomEndRadius: 5 }]}>
+                    <View style={styles.row}>
+                        <CardTitle title={item.departure} style={[typography.h5, { lineHeight: 18 }]} />
+                        <Icon source="arrow-right-thin" size={24} color={colors.primary} />
+                        <CardTitle title={item.arrival} style={[typography.h5, { lineHeight: 18 }]} />
+                    </View>
+                    <View style={styles.row}>
+                        <CardTime time={item.departureTime} hasIcon={true} />
+                        <Icon source="arrow-right-thin" size={24} color={colors.primary} />
                         <CardTime time={item.arrivalTime} hasIcon={true} />
                     </View>
                 </View>
@@ -104,12 +127,7 @@ const styles = StyleSheet.create({
 
     cardSection: {
         marginVertical: 10,
-        paddingHorizontal: 5,
         gap: 10
-    },
-
-    title: {
-        // width: 80
     },
 
     row: {
