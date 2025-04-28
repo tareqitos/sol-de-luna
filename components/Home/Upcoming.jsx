@@ -34,6 +34,7 @@ export default function Upcoming({ categories, types }) {
         }
     }
 
+
     return (
         <View>
             {categories.map((category) => (
@@ -45,7 +46,7 @@ export default function Upcoming({ categories, types }) {
                             <View key={item.id}>
                                 <List.Item
                                     title={item.name || item.arrival}
-                                    left={() => <List.Icon icon={categoryContent[category].icon} color={highlight(index)} />}
+                                    left={() => <List.Icon icon={category === "transport" ? item.transportType : categoryContent[category].icon} color={highlight(index)} />}
                                     description={() => <Txt style={{ color: highlight(index) }}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime)}</Txt>}
                                     contentStyle={{ justifyContent: "center" }}
                                     titleStyle={{ color: highlight(index) }}
