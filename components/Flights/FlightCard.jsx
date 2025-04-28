@@ -16,6 +16,8 @@ import CardAddFiles from "../Cards/CardAddFiles"
 import CardPassengers from "./CardPassengers"
 import CardSection from "../Cards/CardSection"
 import { useDocument } from "../../hook/document"
+import DialogPopUp from "../UI/Dialog"
+import Txt from "../Utils/Txt"
 
 
 export default function FlightCard({ item, onPress, destination }) {
@@ -23,10 +25,28 @@ export default function FlightCard({ item, onPress, destination }) {
     const { colors, elevation } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [fileToDelete, setFileToDelete] = useState(null);
+
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
 
+
+    const handleDeleteFile = (file) => {
+        setFileToDelete(file);
+        setDialogVisible(true);
+    };
+
+    const confirmDelete = () => {
+        deleteDocument(item, fileToDelete);
+        closeDialog();
+    };
+
+    const closeDialog = () => {
+        setDialogVisible(false);
+        setFileToDelete(null);
+    };
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -51,7 +71,7 @@ export default function FlightCard({ item, onPress, destination }) {
                 {item.passengers.length !== 0 &&
                     <View style={s.card.add_container}>
                         <CardSection style={styles.cardSection} text="Passengers">
-                            <CardPassengers item={item} passengers={item.passengers} />
+                            <CardPassengers destination={destination} item={item} passengers={item.passengers} />
                         </CardSection>
                     </View>}
 
@@ -72,7 +92,7 @@ export default function FlightCard({ item, onPress, destination }) {
                                             key={file.uri}
                                             activeOpacity={0.9}
                                             onPress={() => openDocument(file.uri)}
-                                            onLongPress={() => deleteDocument(item, file.name)}
+                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destination.id, item, file.name)}
                                         >
                                             <CardFiles file={file} />
                                         </TouchableOpacity>
@@ -83,6 +103,15 @@ export default function FlightCard({ item, onPress, destination }) {
                 </View>
                 <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
+            <DialogPopUp
+                visible={dialogVisible}
+                onDismiss={closeDialog}
+                title="Delete File"
+                content={<Txt>Are you sure you want to delete this file?</Txt>}
+                cancel={closeDialog}
+                validate={confirmDelete}
+                validateText="Confirm"
+            />
         </View >
     )
 }
@@ -96,7 +125,6 @@ const styles = StyleSheet.create({
 
     cardSection: {
         marginVertical: 10,
-
         gap: 10
     }
 })

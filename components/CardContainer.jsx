@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import Txt from "./Utils/Txt";
 import { s } from "../styles/card.style";
@@ -12,13 +12,17 @@ import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";
 import HotelCard from "./Hotels/HotelCard";
 import TransportCard from "./Transport/TransportCard";
+import DialogPopUp from "./UI/Dialog";
 
 
 const CardContainer = memo(({ category, destination, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
-    const { flights, hotels, transport, deleteItem } = useData()
-    const nav = useNavigation();
+    const { deleteItem } = useData()
     const { colors, typography } = useTheme()
+
+    const [itemToDelete, setItemToDelete] = useState();
+    const [dialogVisible, setDialogVisible] = useState(false)
+    const [isDelete, setDelete] = useState(false);
 
 
     const handleCollapsible = useCallback(() => {
@@ -37,6 +41,22 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
                 return null;
         }
     };
+
+    const handleDeleteItem = (item) => {
+        setItemToDelete(item)
+        setDialogVisible(true)
+    }
+
+    const deleteConfirm = () => {
+        deleteItem(destination.id, itemToDelete)
+        closeDialog()
+    }
+
+    const closeDialog = () => {
+        setDialogVisible(false);
+        setItemToDelete(null);
+    };
+
 
     // Memoize the card content to prevent re-renders
     const categoryContent = useMemo(() => {
@@ -63,7 +83,7 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
 
         return data.map((item) => (
             <TouchableOpacity
-                onLongPress={() => deleteItem(destination.id, item)}
+                onLongPress={() => Platform.OS === "android" ? handleDeleteItem(item) : deleteItem(destination.id, item)}
                 activeOpacity={1}
                 key={item.id || `${category}-${item.from}-${item.to}`}
             >
@@ -89,6 +109,16 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
                 {categoryContent}
             </Collapsible>
+            <DialogPopUp
+                visible={dialogVisible}
+                onDismiss={closeDialog}
+                title="Delete card"
+                content={<Txt>Do you want to delete this card?</Txt>}
+                cancel={closeDialog}
+                validate={deleteConfirm}
+                validateText="Confirm"
+            />
+
         </View >
     )
 });

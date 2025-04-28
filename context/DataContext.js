@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useRef, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext({
@@ -27,8 +27,29 @@ export function DataProvider({ children }) {
     }
 
     const deleteDestination = (destinationId) => {
-        if (destinationId) {
-            setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
+        if (Platform.OS === "android") {
+
+            if (destinationId) {
+                setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
+            }
+        } else {
+            Alert.alert(`Delete destination`, "Are you sure you want to delete this destination and all its data?", [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        setDestinations(prev => prev.map(destination => {
+                            if (destination.id !== destinationId) return destination;
+
+                            setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
+                        }))
+                    }
+                }
+            ])
         }
     }
 
@@ -64,25 +85,37 @@ export function DataProvider({ children }) {
     }
 
     const deleteItem = (destinationId, item) => {
-        Alert.alert(`Delete ${item.name}`, "Do you want to delete this item?", [
-            {
-                text: 'Cancel',
-                style: 'cancel'
-            },
-            {
-                text: 'Delete',
-                onPress: () => {
-                    setDestinations(prev => prev.map(destination => {
-                        if (destination.id !== destinationId) return destination;
+        if (Platform.OS === "android") {
+            setDestinations(prev => prev.map(destination => {
+                if (destination.id !== destinationId) return destination;
 
-                        return {
-                            ...destination,
-                            [item.type]: destination[item.type].filter(existingItem => existingItem.id !== item.id)
-                        }
-                    }))
+                return {
+                    ...destination,
+                    [item.type]: destination[item.type].filter(existingItem => existingItem.id !== item.id)
                 }
-            }
-        ])
+            }))
+        } else {
+            Alert.alert(`Delete ${item.name || item.line}`, "Do you want to delete this item?", [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        setDestinations(prev => prev.map(destination => {
+                            if (destination.id !== destinationId) return destination;
+
+                            return {
+                                ...destination,
+                                [item.type]: destination[item.type].filter(existingItem => existingItem.id !== item.id)
+                            }
+                        }))
+                    }
+                }
+            ])
+        }
     }
 
     const importData = (newDestinations) => {

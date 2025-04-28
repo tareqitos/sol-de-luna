@@ -68,37 +68,29 @@ export function DocumentProvider({ children }) {
         }
     }
 
-    const deleteDocument = (item, fileName) => {
+    const deleteDocument = (destinationID, item, fileName) => {
 
+        if (Platform.OS === "android") {
+            const filteredItem = item.documents.filter((file) => file.name !== fileName);
+            updateItem(destinationID, { ...item, documents: filteredItem });
+        } else {
+            Alert.alert("Delete file", "Do you want to delete this file?", [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
 
-        // <DialogPopUp
-        //     visible={visible}
-        //     onDismiss={() => setVisible(false)}
-        //     title="Delete file"
-        //     content={() => <Txt>Do you want to delete this file?</Txt>}
-        //     cancel={() => setVisible(false)}
-        //     validate={() => {
-        //         const filteredItem = item.documents.filter((file) => file.name !== fileName);
-        //         updateData({ ...item, documents: filteredItem });
-        //     }}
-        //     validateText="Delete"
-
-        // />
-        Alert.alert("Delete file", "Do you want to delete this file?", [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel'
-            },
-
-            {
-                text: 'Delete',
-                onPress: () => {
-                    const filteredItem = item.documents.filter((file) => file.name !== fileName);
-                    updateData({ ...item, documents: filteredItem });
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        const filteredItem = item.documents.filter((file) => file.name !== fileName);
+                        updateItem(destinationID, { ...item, documents: filteredItem });
+                    }
                 }
-            }
-        ])
+            ])
+        }
     }
 
     return (

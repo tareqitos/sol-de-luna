@@ -1,4 +1,4 @@
-import { Keyboard, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Title from "../components/Utils/Title";
 import { s } from "../styles/styles.style";
 import { Button, IconButton, Surface, Text, TextInput, useTheme } from "react-native-paper";
@@ -18,6 +18,7 @@ export default function Destination() {
     const [value, setValue] = useState()
     const [dialogVisible, setDialogVisible] = useState(false)
     const [isDelete, setDelete] = useState(false);
+
     const [emoji, setEmoji] = useState(generateDestinationEmoji());
     const nav = useNavigation();
     const [selectedDestinationId, setSelectedDestinationId] = useState();
@@ -39,7 +40,7 @@ export default function Destination() {
     )
 
     const handleAddDestination = (dest) => {
-        if (value.length > 0) {
+        if (value.length > 0 && emoji) {
             addDestination(dest)
             setDialogVisible(false)
             setValue("")
@@ -94,7 +95,7 @@ export default function Destination() {
                                 onChangeText={setValue}
                                 placeholder="e.g. Morocco, Japan, Grandma..."
                                 style={{ flex: 1, backgroundColor: colors.background }}
-                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { addDestination(`${emoji} ${value}`) }} />}
+                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
                             />
                         </View>
                     </View>
@@ -104,7 +105,7 @@ export default function Destination() {
                                 key={destination.id}
                                 activeOpacity={1}
                                 onPress={() => nav.navigate('Home', { destination })}
-                                onLongPress={() => handleDeleteDestination(destination.id)}
+                                onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
                             >
                                 <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
                                     <Txt style={typography.h5}>{destination.name}</Txt>
@@ -114,18 +115,6 @@ export default function Destination() {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-
-            {/* {dialogVisible && !isDelete &&
-                <DialogPopUp
-                    visible={dialogVisible}
-                    onDismiss={() => setDialogVisible(false)}
-                    title="Where are you going?"
-                    content={dialogContent}
-                    cancel={() => setDialogVisible(false)}
-                    validate={() => handleAddDestination(value)}
-                    validateText="Confirm"
-                />
-            } */}
 
             {
                 dialogVisible && isDelete &&
@@ -142,10 +131,6 @@ export default function Destination() {
                     validateText="Confirm"
                 />
             }
-
-            {/* <View style={{ position: "absolute", bottom: 40, right: 40 }}>
-                <IconButton icon={"plus"} size={25} mode="contained" onPress={() => setDialogVisible(true)} style={{ width: 60, height: 60 }} iconColor={colors.onPrimary} containerColor={colors.primary} />
-            </View> */}
         </Container >
     )
 }

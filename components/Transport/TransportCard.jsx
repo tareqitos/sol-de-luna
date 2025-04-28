@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
 import CollapseButton from "../UI/CollapseButton";
 import CardTitle from "../Cards/CardTitle";
@@ -13,18 +13,40 @@ import CardSection from "../Cards/CardSection";
 import { getDayDifference } from "../../services/date-service";
 import { useDocument } from "../../hook/document";
 import CardLine from "./CardLine";
+import DialogPopUp from "../UI/Dialog";
+import Txt from "../Utils/Txt";
 
 export default function TransportCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation, typography } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [fileToDelete, setFileToDelete] = useState(null);
+
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
 
-    const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
-    const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()
+
+    const handleDeleteFile = (file) => {
+        setFileToDelete(file);
+        setDialogVisible(true);
+    };
+
+    const confirmDelete = () => {
+        deleteDocument(destination.id, item, fileToDelete);
+        closeDialog();
+    };
+
+    const closeDialog = () => {
+        setDialogVisible(false);
+        setFileToDelete(null);
+    };
+
+
+    // const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
+    // const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -34,33 +56,8 @@ export default function TransportCard({ item, onPress, destination }) {
 
             {/* TITLE */}
 
-            <View style={styles.rowCenter}>
-                {/* <View style={[styles.row]}>
-                    <Icon source={item.transportType} size={32} color={colors.primary} />
-                    <View>
-                        <CardTitle title={item.departure} style={[typography.h5, styles.title]} />
-                        <CardTime time={item.departureTime} hasIcon={true} />
-                    </View>
-                </View> */}
-                {/* <Icon source="arrow-right-thin" size={32} color={colors.primary} /> */}
-                {/* {durationDay !== 0 && <Txt style={typography.caption}>{`Duration: ${durationDay}d`}</Txt>}
-                {duration && <CardTime time={duration} hasIcon={false} />} */}
-
-                {/* <View>
-                    {item.line && <CardLine line={item.line} />}
-                </View>
-
-                <View style={styles.row}>
-                    <Icon source="flag-checkered" size={32} color={colors.primary} />
-                    <View>
-                        <CardTitle title={item.arrival} style={[typography.h5, styles.title]} />
-                        <CardTime time={item.arrivalTime} hasIcon={true} />
-                    </View>
-                </View> */}
-            </View>
-
             <View >
-                <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 10, paddingHorizontal: 10 }]}>
+                <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 10, paddingHorizontal: 10, marginTop: 15 }]}>
                     <Icon source={item.transportType} size={32} color={colors.onPrimary} />
                     {item.line && <CardLine line={item.line} />}
                 </View>
@@ -98,7 +95,7 @@ export default function TransportCard({ item, onPress, destination }) {
                                             key={file.uri}
                                             activeOpacity={0.9}
                                             onPress={() => openDocument(file.uri)}
-                                            onLongPress={() => deleteDocument(item, file.name)}
+                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destination.id, item, file.name)}
                                         >
                                             <CardFiles file={file} />
                                         </TouchableOpacity>
@@ -106,6 +103,15 @@ export default function TransportCard({ item, onPress, destination }) {
                                 </View>
                             </ScrollView>
                         </CardSection>}
+                    <DialogPopUp
+                        visible={dialogVisible}
+                        onDismiss={closeDialog}
+                        title="Delete File"
+                        content={<Txt>Are you sure you want to delete this file?</Txt>}
+                        cancel={closeDialog}
+                        validate={confirmDelete}
+                        validateText="Confirm"
+                    />
                 </View>
 
                 {/* ADD FILE BUTTON */}
@@ -120,7 +126,6 @@ export default function TransportCard({ item, onPress, destination }) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        marginTop: 20,
         alignItems: "center",
         gap: 10
     },

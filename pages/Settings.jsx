@@ -7,7 +7,9 @@ import {
     TouchableOpacity,
     ScrollView,
     Switch,
-    useColorScheme
+    useColorScheme,
+    Platform,
+    Alert
 } from 'react-native';
 import TitlePage from '../components/Utils/TitlePage';
 import Container from '../components/Utils/Container';
@@ -59,6 +61,22 @@ const Settings = () => {
             console.log("Error saving JSON", error)
             nav.goBack()
         }
+    }
+
+    const iOSImportJSONData = () => {
+        Alert.alert("Warning", "Importing a local backup will overwrite your current data, continue?", [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            },
+
+            {
+                text: 'Continue',
+                style: "default",
+                onPress: () => setImportedJSONData()
+            }
+        ])
     }
 
     const dialogContent = <Txt>Importing a local backup will overwrite your current data, continue?</Txt>
@@ -137,7 +155,7 @@ const Settings = () => {
                     <SettingsItem
                         icon="download-outline"
                         title="Import a local backup (JSON)"
-                        onPress={() => setDialogVisible(true)}
+                        onPress={() => Platform.OS === "android" ? setDialogVisible(true) : iOSImportJSONData()}
                     />
                     {dialogVisible && (
                         <DialogPopUp
@@ -147,7 +165,7 @@ const Settings = () => {
                             content={dialogContent}
                             cancel={() => setDialogVisible(false)}
                             validate={() => setImportedJSONData()}
-                            validateText="Confirm"
+                            validateText="Continue"
                         />
                     )}
                 </SettingsCard>
