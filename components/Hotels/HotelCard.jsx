@@ -5,7 +5,7 @@ import { useCallback, useState } from "react"
 import CollapseButton from "../UI/CollapseButton"
 import { s } from "../../styles/card.style"
 
-import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
+import { Button, Divider, MD3DarkTheme, useTheme } from "react-native-paper"
 import CardTitle from "../Cards/CardTitle"
 import CardFiles from "../Cards/CardFiles"
 import CardInformation from "../Cards/CardInformation"
@@ -19,6 +19,8 @@ import CardAddress from "./CardAddress"
 import { useDocument } from "../../hook/document"
 import DialogPopUp from "../UI/Dialog"
 import Txt from "../Utils/Txt"
+import { API } from "../../api/api"
+import Temperature from "../Temperature"
 
 export default function HotelCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
@@ -57,12 +59,14 @@ export default function HotelCard({ item, onPress, destination }) {
             {/* TITLE */}
             <View style={s.card.title_container}>
                 <CardTitle title={item.name} />
+                <Temperature coords={{ latitude: item.latitude, longitude: item.longitude }} />
             </View>
 
             {/* STARS */}
             <CardSection style={{ flexDirection: "row" }}>
                 <CardStars stars={item.stars} />
             </CardSection>
+
 
             <Divider theme={MD3DarkTheme} />
 
