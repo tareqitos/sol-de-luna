@@ -21,7 +21,7 @@ import Txt from "../Utils/Txt"
 
 
 export default function FlightCard({ item, onPress, destination }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const [isCollapsed, setIsCollapse] = useState(true)
     const { colors, elevation } = useTheme()
     const { openDocument, deleteDocument } = useDocument();
 
