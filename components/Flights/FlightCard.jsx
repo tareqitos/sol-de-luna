@@ -61,9 +61,7 @@ export default function FlightCard({ item, onPress, destination }) {
                         <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
                     </CardSection>
 
-
                     <CardFilesManager item={item} destinationID={destination.id} />
-
 
                 </View>
                 <CardAddFiles item={item} destinationID={destination.id} />

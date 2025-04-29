@@ -95,7 +95,7 @@ export default function AddHotels({ route }) {
                             <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
                         </View>
                         <View style={[s.form.input_container, s.form.input_addInfos]}>
-                            <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
+                            <InformationInput placeholder="Reservation number, instructions, amenities, etc. (optional)" control={control} />
                         </View>
                     </View>
                 </View>

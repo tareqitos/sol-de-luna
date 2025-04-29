@@ -93,7 +93,7 @@ export default function Destination() {
                                 onChangeText={setValue}
                                 placeholder="e.g. Morocco, Japan, Grandma..."
                                 style={{ flex: 1, backgroundColor: colors.background }}
-                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji}${value}`) }} />}
+                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
                             />
                         </View>
                     </View>
