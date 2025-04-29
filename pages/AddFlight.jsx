@@ -1,32 +1,33 @@
-import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from "react-native";
-import { s } from "../styles/styles.style";
-import { useNavigation } from "@react-navigation/native";
-import Container from "../components/Container";
-
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
-import TitleInput from "../components/Inputs/TitleInput";
-import RouteInput from "../components/Inputs/RouteInput";
-import InformationInput from "../components/Inputs/InformationInput";
 import { useForm } from "react-hook-form";
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
-import { useData } from "../hook/data";
-import { Button, useTheme } from "react-native-paper";
-import TitlePage from "../components/TitlePage";
-import PeopleInput from "../components/Inputs/PeopleInput";
-import { useSnackbar } from "../hook/useSnackbar";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNavigation } from "@react-navigation/native";
+import { IconButton, useTheme } from "react-native-paper";
+
+import Container from "../components/Utils/Container";
+import TitleInput from "../components/Inputs/TitleInput";
+import RouteInput from "../components/Flights/RouteInput";
+import InformationInput from "../components/Inputs/InformationInput";
+import TitlePage from "../components/Utils/TitlePage";
+import PeopleInput from "../components/Flights/PeopleInput";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
+
+import { s } from "../styles/styles.style";
+import { useData } from "../hook/data";
+import { useSnackbar } from "../hook/useSnackbar";
 import { mergeDateAndTime } from "../services/date-service";
 
-export default function AddFlight() {
-    const { flights, setFlights } = useData()
+export default function AddFlight({ route }) {
+    const { destination } = route.params;
+    const { addItem } = useData()
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    const [route, setRoute] = useState({
+    const [routes, setRoutes] = useState({
         departureAirport: { city: "", iata: "" },
         arrivalAirport: { city: "", iata: "" }
     });
+
+
 
     const [passengers, setPassengers] = useState([])
 
@@ -45,28 +46,30 @@ export default function AddFlight() {
         mode: "onBlur"
     });
 
+
+
     const onSubmit = (newData) => {
-        console.log(newData)
-        if (!route.departureAirport.city || !route.departureAirport.iata) {
+
+        if (!routes.departureAirport.city || !routes.departureAirport.iata) {
             return console.log("DEPARTURE REQUIRED")
         }
 
-        if (!route.arrivalAirport.city || !route.arrivalAirport.iata) {
+        if (!routes.arrivalAirport.city || !routes.arrivalAirport.iata) {
             return console.log("ARRIVAL REQUIRED")
         }
 
-        setFlights([
-            ...flights, {
-                "id": uuidv4(),
-                "departureDate": mergeDateAndTime(date, time) || new Date(),
-                "type": "flights",
-                "passengers": passengers,
-                "documents": [],
-                "completed": false,
-                "departureAirport": route?.departureAirport || {},
-                "arrivalAirport": route?.arrivalAirport || {},
-                ...newData
-            }])
+        const newItem = {
+            departureDate: mergeDateAndTime(date, time) || new Date(),
+            passengers: passengers,
+            departureAirport: routes?.departureAirport || {},
+            arrivalAirport: routes?.arrivalAirport || {},
+            ...newData
+        }
+
+
+        addItem(destination.id, "flights", newItem)
+        console.log("FLIGHTS: ", newItem)
+
         setMessage("Flight has successfully been added")
         toggleBar();
         nav.goBack()
@@ -79,14 +82,14 @@ export default function AddFlight() {
 
 
     useEffect(() => {
-        if (route?.departureAirport && route?.arrivalAirport) {
-            reset({
-                ...control._defaultValues,
-                departureAirport: route.departureAirport,
-                arrivalAirport: route.arrivalAirport,
-            });
+        if (routes?.departureAirport && routes?.arrivalAirport) {
+            reset((prevState) => ({
+                ...prevState,
+                departureAirport: routes.departureAirport,
+                arrivalAirport: routes.arrivalAirport,
+            }));
         }
-    }, [route, reset]); // Don't forget to add reset to the dependency array
+    }, [routes, reset]);
 
     return (
 
@@ -94,31 +97,24 @@ export default function AddFlight() {
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={{ flex: 1 }}>
 
-
                     <TitlePage title={"Add flight"} />
 
-                    <View style={s.form.input_container}>
-                        <RouteInput
-                            iataRef={iataRef}
-                            setRoute={setRoute}
-                        />
-                    </View>
-
-
-
-                    <KeyboardAwareScrollView
-                        showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="always"
-                    >
-
+                    <View style={{ flex: 1 }}>
                         <View style={s.form.container}>
                             <View style={s.form.input_container}>
                                 <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
                             </View>
 
-                            <View style={{ flexDirection: "row", gap: 20 }}>
+                            <View style={s.form.input_container}>
+                                <RouteInput
+                                    iataRef={iataRef}
+                                    setRoute={setRoutes}
+                                />
+                            </View>
+
+                            <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
                                 <View style={[s.form.input_container, { flex: 1 }]}>
-                                    <DateTimeInput label="Select date" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                    <DateTimeInput label="airplane-clock" time={time} setTime={setTime} date={date} setDate={setDate} />
                                 </View>
                             </View>
 
@@ -129,11 +125,10 @@ export default function AddFlight() {
                                 <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
                             </View>
                         </View>
-                    </KeyboardAwareScrollView>
-
-                    <Button icon={"airplane-plus"} mode="contained" style={{ marginBottom: 20 }} labelStyle={[typography.h4, { color: colors.onPrimary }]} onPress={handleSubmit(onSubmit)}>
-                        Add
-                    </Button>
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+                        <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         </Container>

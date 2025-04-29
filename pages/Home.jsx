@@ -5,33 +5,46 @@ import { Icon, List, Surface, useTheme } from "react-native-paper";
 import { s } from "../styles/styles.style";
 
 
-import Title from "../components/Title";
-import TabBottomMenu from "../components/TabBottomMenu";
+import Title from "../components/Utils/Title";
+import TabBottomMenu from "../components/UI/TabBottomMenu";
 import CardContainer from "../components/CardContainer";
-import Container from "../components/Container";
-import SnackbarMessage from "../components/Snackbar";
-import FABMenu from "../components/FABMenu";
-import Txt from "../components/Txt";
+import Container from "../components/Utils/Container";
+import FABMenu from "../components/UI/FABMenu";
+import Txt from "../components/Utils/Txt";
 import { useData } from "../hook/data";
+import OverviewCard from "../components/Home/OverviewCard";
+import Upcoming from "../components/Home/Upcoming";
 import { useNavigation } from "@react-navigation/native";
-import OverviewCard from "../components/OverviewCard";
-import Upcoming from "../components/Upcoming";
-import IataInput from "../components/Inputs/IataInput";
 
-export default function Home() {
+export default function Home({ route }) {
     const { colors, typography } = useTheme();
-    const { flights, hotels, transport } = useData();
+    const { destinations } = useData()
 
+    const nav = useNavigation()
+    const destinationId = route.params.destination.id
+    const [destination, setDestination] = useState(route.params.destination);
+
+    // Update destination when data changes
+    useEffect(() => {
+        const currentDestination = destinations.find(d => d.id === destinationId);
+        if (currentDestination) {
+            setDestination(currentDestination);
+        }
+    }, [destinations, destinationId]);
+
+    if (!destination) return null;
+
+    const types = {
+        flights: destination.flights,
+        hotels: destination.hotels,
+        transport: destination.transport
+    }
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
 
     const updateSelectedTab = useCallback((name) => {
         setSelectedTabName(name);
     }, []);
-
-    const sortedFlights = flights.sort((x, y) => {
-        return new Date(x.departureDate) - new Date(y.departureDate);
-    });
 
     // ANIMATION
     const [animation] = useState(new Animated.Value(0));
@@ -57,31 +70,47 @@ export default function Home() {
         ],
     };
 
+    useEffect(() => {
+        if (Platform.OS === "android") {
+            const beforeRemoveHandler = (e) => {
+                if (selectedTabName !== "home") {
+                    e.preventDefault();
+                    updateSelectedTab("home");
+                }
+            };
+
+            const unsubscribe = nav.addListener('beforeRemove', beforeRemoveHandler);
+
+            return () => {
+                unsubscribe();
+            };
+        }
+    }, [selectedTabName, nav]);
+
     return (
         <Container >
             <View style={{ flex: 1, paddingHorizontal: 10, overflow: "visible" }}>
 
 
                 <View style={s.home.title} >
-                    <Title title={"Trips"} subtitle={selectedTabName || "Overview"} textColor={colors.onBackground} />
+                    <Title title={"Trips"} subtitle={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
-
-                <SnackbarMessage />
 
                 {selectedTabName === "home" ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
-                        <Txt style={[typography.h2, { marginBottom: 10 }]}>Overview</Txt>
-                        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
-                            <OverviewCard updateTabName={updateSelectedTab} categories={categories} />
-                        </View>
 
-                        <Txt style={[typography.h2]}>Upcoming trips</Txt>
                         <ScrollView
-                            contentContainerStyle={{ paddingHorizontal: 10 }}
+                            contentContainerStyle={{ paddingHorizontal: 5 }}
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1 }}
                         >
-                            <Upcoming updatedTab={updateSelectedTab} categories={categories} />
+                            <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
+                            <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
+                                <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
+                            </View>
+
+                            <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
+                            <Upcoming updatedTab={updateSelectedTab} categories={categories} types={types} />
                         </ScrollView>
 
                     </View>
@@ -89,7 +118,7 @@ export default function Home() {
                     <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
                         {categories.map((category) => (
                             <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
-                                <CardContainer category={category} />
+                                <CardContainer category={category} destination={destination} types={types} />
                             </Animated.View>
                         ))}
                     </ScrollView>
@@ -99,7 +128,7 @@ export default function Home() {
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 
-            <FABMenu tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
+            <FABMenu destination={destination} tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />
         </Container>
     )
 }

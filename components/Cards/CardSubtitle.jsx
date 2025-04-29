@@ -1,5 +1,5 @@
 import { useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 
 export default function CardSubtitle({ text, style }) {
     const { colors, typography } = useTheme()

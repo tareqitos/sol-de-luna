@@ -1,30 +1,27 @@
 import { TouchableOpacity } from "react-native";
-import Txt from "./Txt";
-import { View } from "lucide-react-native";
+import Txt from "../Utils/Txt";
 import { Icon, Surface, useTheme } from "react-native-paper";
-import { useData } from "../hook/data";
 
-export default function OverviewCard({ updateTabName, categories }) {
+export default function OverviewCard({ updateTabName, categories, types }) {
     const { colors, typography } = useTheme();
-    const { flights, hotels, transport } = useData();
 
     const categoryContent = {
         flights: {
             title: "Flights",
             icon: "airplane-takeoff",
-            data: flights
+            data: types.flights
         },
 
         hotels: {
             title: "Hotels",
             icon: "bed",
-            data: hotels
+            data: types.hotels
         },
 
         transport: {
             title: "Transport",
             icon: "car",
-            data: transport
+            data: types.transport
         }
     }
 
@@ -33,9 +30,9 @@ export default function OverviewCard({ updateTabName, categories }) {
             {categories.map((category) => (
                 <TouchableOpacity key={category} onPress={() => updateTabName(category)} activeOpacity={1} style={{ flex: 1 }} >
                     <Surface style={[typography.body, { padding: 10, borderRadius: 10, backgroundColor: colors.surface }]} elevation={1}>
-                        <Icon source={categoryContent[category].icon} size={18} />
-                        <Txt>{categoryContent[category].title}</Txt>
-                        <Txt style={typography.h1}>{categoryContent[category].data.length}</Txt>
+                        <Icon source={categoryContent[category].icon} color={colors.primary} size={18} />
+                        <Txt style={{ color: colors.primary }}>{categoryContent[category].title}</Txt>
+                        <Txt style={[typography.h1, { color: colors.primary }]}>{categoryContent[category].data.length}</Txt>
                     </Surface>
                 </TouchableOpacity>
             ))}

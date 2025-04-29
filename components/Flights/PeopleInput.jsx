@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Avatar, Button, Card, Icon, IconButton, Surface, TextInput, useTheme } from "react-native-paper";
 import { v4 as uuidv4 } from 'uuid';
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { generateRandomEmoji } from "../../services/services";
 
 export default function PeopleInput({ passengers, setPassengers }) {
@@ -20,7 +20,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
     }
 
     const addPassenger = () => {
-        if (name.length === 0 && seat.length === 0) return console.log("No name or seat provided")
+        if (name.length === 0) return console.log("No name provided")
         setEmoji(generateRandomEmoji())
         setPassengers([...passengers, { id: uuidv4().split("-")[0], name, seat, emoji }]);
         setName("");
@@ -45,7 +45,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
                         </TouchableOpacity>
                         {passenger.name && <Txt style={[typography.h5, { flex: 1 }]}>{passenger.name}</Txt>}
                         {passenger.seat && <Txt style={[typography.caption, { flex: 1 }]}>{passenger.seat}</Txt>}
-                        <IconButton icon="minus-box" mode="contained" size={20} onPress={() => removePassenger(passenger.id)} />
+                        <IconButton icon="minus-box" mode="contained" containerColor="none" size={20} onPress={() => removePassenger(passenger.id)} />
                     </Surface>
                 ))}
             </View>
@@ -57,29 +57,30 @@ export default function PeopleInput({ passengers, setPassengers }) {
         <>
             <View style={[s.inputContainer]}>
                 <View style={[s.itemContainer, { flex: 1 }]}>
-                    <Icon source="account" color={colors.primary} size={20} />
                     <TextInput
                         label="Person name"
                         mode
                         value={name}
                         onChangeText={setName}
-                        style={[typography.body, { flex: 1, backgroundColor: colors.background }]}
+                        style={[typography.body, { flex: 1, paddingHorizontal: 0, backgroundColor: colors.background }]}
                         autoCorrect={false}
+                        right={<TextInput.Icon icon="account" style={{ alignSelf: "baseline" }} size={18} />}
+
                     />
                 </View>
 
                 <View style={[s.itemContainer, { width: 80 }]}>
-                    <Icon source="car-seat" color={colors.primary} size={20} />
                     <TextInput
                         label="Seat"
                         value={seat}
                         onChangeText={setSeat}
-                        style={[typography.body, { backgroundColor: colors.background }]}
+                        style={[typography.body, { paddingHorizontal: 0, backgroundColor: colors.background }]}
                         maxLength={4}
                         autoCorrect={false}
+                        right={<TextInput.Icon icon="car-seat" style={{ alignSelf: "baseline" }} size={18} />}
                     />
                 </View>
-                <IconButton icon="plus" mode="flat" iconColor={colors.primary} size={30} onPress={addPassenger} style={{ backgroundColor: colors.background }} />
+                <IconButton icon="plus-circle" mode="contained" iconColor={colors.primary} size={30} onPress={addPassenger} style={{ backgroundColor: colors.background }} />
             </View>
             <ShowPassengers />
         </>
@@ -105,7 +106,6 @@ const s = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        flex: 1,
         paddingHorizontal: 20,
         paddingVertical: 5,
         marginHorizontal: 20,

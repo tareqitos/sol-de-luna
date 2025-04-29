@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FlatList, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { Divider, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
-import { s } from "../../styles/styles.style";
 
 export default function RouteInput({ iataRef, setRoute }) {
     const { colors, typography } = useTheme();
@@ -119,12 +118,6 @@ export default function RouteInput({ iataRef, setRoute }) {
         </View>
     );
 
-    // Handle keyboard dismissal
-    const handleCloseKeyboard = () => {
-        Keyboard.dismiss();
-        setIsVisible(false);
-    };
-
     return (
         <View>
             <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
@@ -139,11 +132,13 @@ export default function RouteInput({ iataRef, setRoute }) {
                         departureAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="e.g BRU"
+                    placeholder="e.g Brussels"
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
                     outlineColor={errors.departureAirport ? colors.error : colors.outline}
+                    right={<TextInput.Icon icon="airplane-takeoff" style={{ alignSelf: "baseline" }} size={18} />}
+
                 />
 
 
@@ -160,11 +155,13 @@ export default function RouteInput({ iataRef, setRoute }) {
                         arrivalAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="e.g NRT"
+                    placeholder="e.g Tokyo"
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
                     outlineColor={errors.arrivalAirport ? colors.error : colors.outline}
+                    right={<TextInput.Icon icon="airplane-landing" style={{ alignSelf: "baseline" }} size={18} />}
+
                 />
 
             </View>
@@ -186,7 +183,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "100%",
         zIndex: 10,
-        maxHeight: 300,
+        maxHeight: 500,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
     },

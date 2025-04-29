@@ -1,5 +1,5 @@
 import { MoveRight } from "lucide-react-native";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
@@ -48,6 +48,8 @@ export default function TransportRouteInput({ control, errors }) {
                     inputMode="text"
                     autoCorrect={false}
                     outlineColor={departureErrorColor}
+                    right={<TextInput.Icon icon="source-commit-start" style={{ alignSelf: "baseline" }} size={18} />}
+
                 />
 
                 <TextInput
@@ -66,6 +68,8 @@ export default function TransportRouteInput({ control, errors }) {
                     inputMode="text"
                     autoCorrect={false}
                     outlineColor={arrivalErrorColor}
+                    right={<TextInput.Icon icon="source-commit-end" style={{ alignSelf: "baseline" }} size={18} />}
+
                 />
 
             </View>

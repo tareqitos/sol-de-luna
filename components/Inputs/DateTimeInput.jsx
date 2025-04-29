@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button, Platform, View } from "react-native";
+import { Platform, View } from "react-native";
 import { themeHook } from "../../hook/theme";
-import Txt from "../Txt";
-import { TextInput, useTheme } from "react-native-paper";
-import { ConvertDateAndTimeToString, mergeDateAndTime } from "../../services/date-service";
+import Txt from "../Utils/Txt";
+import { Button, Icon, TextInput, useTheme } from "react-native-paper";
 
 export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     const { theme } = themeHook()
@@ -53,19 +52,21 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     // console.log(mergeDateAndTime(date, time))
 
     return (
-        <View>
-            <Txt style={[typography.caption, { marginBottom: 10 }]}>{label}</Txt>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Icon source={label} size={18} color={typography.caption.color} />
             {Platform.OS === "android" ? (
                 <>
                     <View style={{ flexDirection: "row", gap: 10 }}>
-                        <Button
-                            onPress={showDatePicker}
-                            title={date ? date.toLocaleDateString() : "Select date"}
-                        />
-                        <Button
-                            onPress={showTimePicker}
-                            title={time ? time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Select time"}
-                        />
+                        <Button mode="outlined" onPress={showDatePicker}>
+                            {date ? date.toLocaleDateString() : "Select date"}
+                        </Button>
+
+
+                        <Button mode="outlined" onPress={showTimePicker}>
+                            {time ? time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Select time"}
+                        </Button>
+
+
                     </View>
                     {showDate && (
                         <DateTimePicker

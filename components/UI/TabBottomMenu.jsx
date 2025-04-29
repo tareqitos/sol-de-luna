@@ -1,8 +1,8 @@
 
 import { TouchableOpacity, View } from "react-native";
-import Txt from "./Txt";
+import Txt from "../Utils/Txt";
 import { CarIcon, HotelIcon, HouseIcon, PlaneIcon } from "lucide-react-native";
-import { s } from "../styles/styles.style";
+import { s } from "../../styles/styles.style";
 import { useTheme } from "react-native-paper";
 const iconSize = 24;
 export default function TabBottomMenu({ selectedTabName, onPress }) {

@@ -1,32 +1,33 @@
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Button, Icon, useTheme } from "react-native-paper";
+import { Button, Icon, IconButton, useTheme } from "react-native-paper";
 
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
 
-import Container from "../components/Container";
-import TitlePage from "../components/TitlePage";
-import TransportInput from "../components/Inputs/TransportInput";
-import TransportRouteInput from "../components/Inputs/TransportRouteInput";
-import DateInput from "../components/Inputs/DateInput";
+import Container from "../components/Utils/Container";
+import TitlePage from "../components/Utils/TitlePage";
+import TransportInput from "../components/Transport/TransportInput";
+import TransportRouteInput from "../components/Transport/TransportRouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
 
 import { s } from "../styles/styles.style";
 import { mergeDateAndTime } from "../services/date-service";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
+import TransportNumberInput from "../components/Transport/TransportNumberInput";
 
 
-export default function AddTransport() {
+export default function AddTransport({ route }) {
     const nav = useNavigation();
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
-    const { transport, setTransport } = useData()
+    const { destination } = route.params;
+    const { addItem } = useData()
 
+    const [line, setLine] = useState(null)
     const [departDate, setDepartDate] = useState(new Date());
     const [arriveDate, setArriveDate] = useState(new Date());
     const [transportType, setTransportType] = useState('train')
@@ -41,19 +42,17 @@ export default function AddTransport() {
     })
 
     const onSubmit = (newData) => {
-        console.log(newData)
-        setTransport([
-            ...transport, {
-                "id": uuidv4(),
-                "type": "transport",
-                "transportType": transportType,
-                "departureTime": mergeDateAndTime(departDate, departDate) || null,
-                "arrivalTime": mergeDateAndTime(arriveDate, arriveDate) || null,
-                "documents": [],
-                "completed": false,
-                ...newData
-            }
-        ])
+        const newItem = {
+            line: line,
+            transportType: transportType,
+            departureTime: mergeDateAndTime(departDate, departDate) || null,
+            arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
+            ...newData
+        }
+
+        addItem(destination.id, "transport", newItem)
+        console.log("TRANSPORT: ", newItem)
+
 
         setMessage("Transport has successfully been added")
         toggleBar();
@@ -78,25 +77,21 @@ export default function AddTransport() {
             <TitlePage title={"Add transport"} />
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
+                <TransportNumberInput line={line} setLine={setLine} />
                 <TransportRouteInput control={control} errors={errors} />
-                <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginTop: 10 }}>
+                <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
                     <View style={{ gap: 20 }}>
-                        <DateTimeInput label="Select departure time" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
-                        <DateTimeInput label="Select arrival time" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
+                        <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
+                        <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
                     </View>
                 </View>
                 <View style={[s.form.input_container, s.form.input_addInfos]}>
                     <InformationInput placeholder="Reservation number, instructions, amenities, etc." control={control} />
                 </View>
             </KeyboardAwareScrollView>
-            <Button
-                icon={"plus-box"}
-                mode="contained"
-                style={{ marginBottom: 20 }}
-                labelStyle={[typography.h4, { color: colors.onPrimary }]}
-                onPress={handleSubmit(onSubmit)}>
-                Add
-            </Button>
+            <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+                <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+            </View>
         </Container>
     )
 }

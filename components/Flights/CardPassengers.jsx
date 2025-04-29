@@ -1,20 +1,20 @@
 
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Avatar, Surface, useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { generateRandomEmoji } from "../../services/services";
 import { useData } from "../../hook/data";
 
-export default function CardPassengers({ item, passengers }) {
+export default function CardPassengers({ destination, item, passengers }) {
 
     const { colors, typography } = useTheme()
-    const { updateData } = useData();
+    const { updateItem } = useData();
 
     const updateEmoji = (id) => {
         const passengerToUpdate = passengers.find((passenger) => passenger.id === id);
         passengerToUpdate.emoji = generateRandomEmoji();
-        const updateItem = { ...item, passengers: [...item.passengers.map(passenger => passenger.id === id ? passengerToUpdate : passenger)] }
-        updateData(updateItem)
+        const updatedItem = { ...item, passengers: [...item.passengers.map(passenger => passenger.id === id ? passengerToUpdate : passenger)] }
+        updateItem(destination.id, updatedItem)
     }
 
     return (

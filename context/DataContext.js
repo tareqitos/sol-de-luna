@@ -1,193 +1,179 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { createContext, useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useEffect, useRef, useState } from "react";
+import { Alert, Platform } from "react-native";
+import { v4 as uuidv4 } from 'uuid';
 
-// Update the createContext to reflect the separate state structure
 export const DataContext = createContext({
-    flights: [],
-    hotels: [],
-    transport: [],
+    destinations: [],
 })
 
 export function DataProvider({ children }) {
-    // Separate states for each category
-    const [flights, setFlights] = useState([])
-    const [hotels, setHotels] = useState([])
-    const [transport, setTransport] = useState([])
 
-    // Define separate storage keys
-    const FLIGHTS_STORAGE_KEY = "@flights_data"
-    const HOTELS_STORAGE_KEY = "@hotels_data"
-    const TRANSPORT_STORAGE_KEY = "@travels_data"
+    const [destinations, setDestinations] = useState([])
+    const DESTINATIONS_STORAGE_KEY = "@destinations_data"
 
-    // Reference for initialization status
-    const isFirstLoad = {
-        flights: useRef(true),
-        hotels: useRef(true),
-        transport: useRef(true)
-    }
+    const isFirstLoad = useRef(true); // Ref for initialization status
 
-    const deleteData = (item) => {
-        Alert.alert(`Delete ${item.name}`, "Do you want to delete this item?", [
-            {
-                text: 'Cancel',
-                onPress: () => console.log(item),
-                style: 'cancel'
-            },
-            {
-                text: 'Delete',
-                onPress: () => {
-                    // Use the appropriate setter based on item type
-                    switch (item.type) {
-                        case 'flights':
-                            setFlights(prev => prev.filter(flight => flight.id !== item.id));
-                            break;
-                        case 'hotels':
-                            setHotels(prev => prev.filter(hotel => hotel.id !== item.id));
-                            break;
-                        case 'transport':
-                            setTransport(prev => prev.filter(transport => transport.id !== item.id));
-                            break;
-                    }
-                },
-            },
+    const addDestination = (name) => {
+        setDestinations(prev => [
+            ...prev, {
+                id: uuidv4(),
+                name,
+                flights: [],
+                hotels: [],
+                transport: []
+            }
         ]);
     }
 
-    const updateData = (item) => {
+    const deleteDestination = (destinationId) => {
+        if (Platform.OS === "android") {
+
+            if (destinationId) {
+                setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
+            }
+        } else {
+            Alert.alert(`Delete destination`, "Are you sure you want to delete this destination and all its data?", [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        setDestinations(prev => prev.map(destination => {
+                            if (destination.id !== destinationId) return destination;
+
+                            setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
+                        }))
+                    }
+                }
+            ])
+        }
+    }
+
+    const addItem = (destinationId, itemType, item) => {
+        setDestinations(prev => prev.map(destination => {
+            if (destination.id !== destinationId) return destination;
+            console.log(item)
+            return {
+                ...destination,
+                [itemType]: [
+                    ...destination[itemType], { ...item, id: uuidv4(), documents: [], completed: false, type: itemType }
+                ]
+            }
+        }))
+    }
+
+    const updateItem = (destinationId, item) => {
         if (!item || !item.id || !item.type) {
             console.log("Invalid item for update:", item);
             return;
         }
 
-        // Use the appropriate setter based on item type
-        switch (item.type) {
-            case 'flights':
-                setFlights(prev => prev.map(flight => flight.id === item.id ? item : flight));
-                break;
-            case 'hotels':
-                setHotels(prev => prev.map(hotel => hotel.id === item.id ? item : hotel));
-                break;
-            case 'transport':
-                setTransport(prev => prev.map(transport => transport.id === item.id ? item : transport));
-                break;
-        }
-    };
+        setDestinations(prev => prev.map(destination => {
+            if (destination.id !== destinationId) return destination;
 
-    // Split the save functions for each data type
-    const saveFlights = async () => {
-        try {
-            await AsyncStorage.setItem(FLIGHTS_STORAGE_KEY, JSON.stringify(flights))
-            console.log("SAVED FLIGHTS: ", flights)
-        } catch (error) {
-            console.log("Unable to save flights to AsyncStorage");
+            return {
+                ...destination,
+                [item.type]: destination[item.type].map(existingItem =>
+                    existingItem.id === item.id ? item : existingItem
+                )
+            };
+        }));
+    }
+
+    const deleteItem = (destinationId, item) => {
+        if (Platform.OS === "android") {
+            setDestinations(prev => prev.map(destination => {
+                if (destination.id !== destinationId) return destination;
+
+                return {
+                    ...destination,
+                    [item.type]: destination[item.type].filter(existingItem => existingItem.id !== item.id)
+                }
+            }))
+        } else {
+            Alert.alert(`Delete ${item.name || item.line}`, "Do you want to delete this item?", [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        setDestinations(prev => prev.map(destination => {
+                            if (destination.id !== destinationId) return destination;
+
+                            return {
+                                ...destination,
+                                [item.type]: destination[item.type].filter(existingItem => existingItem.id !== item.id)
+                            }
+                        }))
+                    }
+                }
+            ])
         }
     }
 
-    const saveHotels = async () => {
-        try {
-            await AsyncStorage.setItem(HOTELS_STORAGE_KEY, JSON.stringify(hotels))
-            console.log("SAVED HOTELS: ", hotels)
-        } catch (error) {
-            console.log("Unable to save hotels to AsyncStorage");
+    const importData = (newDestinations) => {
+        if (Array.isArray(newDestinations)) {
+            setDestinations(newDestinations);
         }
     }
 
-    const saveTransport = async () => {
+    const saveDestinations = async () => {
         try {
-            await AsyncStorage.setItem(TRANSPORT_STORAGE_KEY, JSON.stringify(transport))
-            console.log("SAVED TRANSPORT: ", transport)
+            await AsyncStorage.setItem(DESTINATIONS_STORAGE_KEY, JSON.stringify(destinations))
+            console.log("SAVED DESTINATIONS: ", destinations)
         } catch (error) {
-            console.log("Unable to save transport to AsyncStorage");
+            console.log("Unable to save destinations to AsyncStorage");
         }
     }
 
-    // Split loading functions for each data type
-    const loadFlights = async () => {
+    const loadDestinations = async () => {
         try {
-            const loadedFlights = await AsyncStorage.getItem(FLIGHTS_STORAGE_KEY);
-            if (loadedFlights) {
-                setFlights(JSON.parse(loadedFlights));
+            const storedData = await AsyncStorage.getItem(DESTINATIONS_STORAGE_KEY);
+            if (storedData) {
+                setDestinations(JSON.parse(storedData))
             } else {
-                setFlights([]);
+                setDestinations([]);
             }
         } catch (error) {
-            console.log("Unable to load flights from AsyncStorage");
+            console.log("Unable to load destinations from AsyncStorage");
         }
     }
 
-    const loadHotels = async () => {
-        try {
-            const loadedHotels = await AsyncStorage.getItem(HOTELS_STORAGE_KEY);
-            if (loadedHotels) {
-                setHotels(JSON.parse(loadedHotels));
-            } else {
-                setHotels([]);
-            }
-        } catch (error) {
-            console.log("Unable to load hotels from AsyncStorage");
-        }
-    }
-
-    const loadTransport = async () => {
-        try {
-            const loadedTransport = await AsyncStorage.getItem(TRANSPORT_STORAGE_KEY);
-            if (loadedTransport) {
-                setTransport(JSON.parse(loadedTransport));
-            } else {
-                setTransport([]);
-            }
-        } catch (error) {
-            console.log("Unable to load transport from AsyncStorage");
-        }
-    }
-
-    // Load all data on initial render
+    // Load Data on initial render
     useEffect(() => {
-        const clearAsyncStorage = async () => {
-            AsyncStorage.clear();
-        }
+        // const clearAsyncStorage = async () => {
+        //     AsyncStorage.clear();
+        // }
         // clearAsyncStorage();
-        loadFlights();
-        loadHotels();
-        loadTransport();
-    }, []);
+        loadDestinations();
+    }, [])
 
-    // Separate effects to save each data type independently
+    // Save data when changes happen
     useEffect(() => {
-        if (isFirstLoad.flights.current) {
-            isFirstLoad.flights.current = false;
+        if (isFirstLoad.current) {
+            isFirstLoad.current = false;
         } else {
-            saveFlights();
+            saveDestinations();
         }
-    }, [flights]);
+    }, [destinations])
 
-    useEffect(() => {
-        if (isFirstLoad.hotels.current) {
-            isFirstLoad.hotels.current = false;
-        } else {
-            saveHotels();
-        }
-    }, [hotels]);
-
-    useEffect(() => {
-        if (isFirstLoad.transport.current) {
-            isFirstLoad.transport.current = false;
-        } else {
-            saveTransport();
-        }
-    }, [transport]);
 
     return (
         <DataContext.Provider value={{
-            flights,
-            hotels,
-            transport,
-            setFlights,
-            setHotels,
-            setTransport,
-            deleteData,
-            updateData
+            destinations,
+            addDestination,
+            deleteDestination,
+            addItem,
+            updateItem,
+            deleteItem,
+            importData
         }}>
             {children}
         </DataContext.Provider>

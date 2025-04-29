@@ -1,11 +1,10 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Alert, Platform } from "react-native";
 import { useData } from "../hook/data";
-
 
 export const DocumentContext = createContext({
     pickDocument: async () => { },
@@ -14,7 +13,8 @@ export const DocumentContext = createContext({
 })
 
 export function DocumentProvider({ children }) {
-    const { updateData } = useData()
+    const { updateItem, deleteItem } = useData()
+    const [visible, setVisible] = useState(false)
 
     const pickDocument = async (item) => {
         const result = await DocumentPicker.getDocumentAsync({
@@ -28,7 +28,7 @@ export function DocumentProvider({ children }) {
                 uri: result.assets[0].uri
             }
 
-            return updateItem = { ...item, documents: [...item.documents || [], newFile] };
+            return { ...item, documents: [...item.documents, newFile] };
         } else {
             return console.log('Document picking was cancelled')
         }
@@ -68,22 +68,29 @@ export function DocumentProvider({ children }) {
         }
     }
 
-    const deleteDocument = (item, fileName) => {
-        Alert.alert("Delete file", "Do you want to delete this file?", [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel'
-            },
+    const deleteDocument = (destinationID, item, fileName) => {
 
-            {
-                text: 'Delete',
-                onPress: () => {
-                    const filteredItem = item.documents.filter((file) => file.name !== fileName);
-                    updateData({ ...item, documents: filteredItem });
+        if (Platform.OS === "android") {
+            const filteredItem = item.documents.filter((file) => file.name !== fileName);
+            updateItem(destinationID, { ...item, documents: filteredItem });
+        } else {
+            Alert.alert("Delete file", "Do you want to delete this file?", [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
+
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        const filteredItem = item.documents.filter((file) => file.name !== fileName);
+                        updateItem(destinationID, { ...item, documents: filteredItem });
+                    }
                 }
-            }
-        ])
+            ])
+        }
     }
 
     return (

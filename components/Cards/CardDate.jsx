@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { s } from "../../styles/card.style";
 import { useTheme } from "react-native-paper";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { Calendar } from "lucide-react-native";
 import { ConvertDateToString } from "../../services/date-service";
 

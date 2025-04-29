@@ -1,6 +1,6 @@
 import { TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
-import Txt from "../Txt";
+import Txt from "../Utils/Txt";
 import { useController } from "react-hook-form";
 import { useTheme } from "react-native-paper";
 
@@ -23,7 +23,7 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                 mode="flat"
                 focusable
                 value={field.value}
-                onBlur={field.onBlur}
+                // onBlur={field.onBlur}
                 onChangeText={field.onChange}
                 textColor={colors.onBackground}
                 outlineColor={errorBorder}
