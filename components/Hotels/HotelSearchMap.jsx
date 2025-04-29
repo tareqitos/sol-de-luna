@@ -76,6 +76,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
 
     const ResultList = () => (
         <View>
+            <IconButton onPress={() => setResults([])} icon="close" size={18} iconColor={colors.onSurface} style={{ display: results.length > 0 ? "flex " : "none", position: "absolute", zIndex: 20, right: 0 }} />
             <FlatList
                 data={results}
                 keyExtractor={(item) => item.place_id}

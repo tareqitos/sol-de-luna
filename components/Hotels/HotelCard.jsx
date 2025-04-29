@@ -26,9 +26,6 @@ export default function HotelCard({ item, onPress, destination }) {
         setIsCollapse(prev => !prev);
     }, []);
 
-    console.log(calculateDayBetweenTwoDates(item.checkIn, item.checkOut))
-
-
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
             <View style={s.card.icons_container}>
