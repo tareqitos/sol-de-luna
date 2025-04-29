@@ -1,54 +1,33 @@
-import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
+import { StyleSheet, View } from "react-native";
+import Collapsible from "react-native-collapsible";
+import { useCallback, useState } from "react";
+import { Divider, MD3DarkTheme, useTheme } from "react-native-paper";
+import { MoveRight } from "lucide-react-native";
 
-import Collapsible from "react-native-collapsible"
-import { useCallback, useState } from "react"
-import CollapseButton from "../UI/CollapseButton"
-import { s } from "../../styles/card.style"
-
-import { Button, Divider, MD3DarkTheme, useTheme } from "react-native-paper"
-import CardTitle from "../Cards/CardTitle"
-import CardFiles from "../Cards/CardFiles"
-import CardInformation from "../Cards/CardInformation"
-import CardAddFiles from "../Cards/CardAddFiles"
-import CardSection from "../Cards/CardSection"
-import CardStars from "./CardStars"
-import CardTime from "../Cards/CardTime"
-import CardDate from "../Cards/CardDate"
-import { MoveRight } from "lucide-react-native"
-import CardAddress from "./CardAddress"
-import { useDocument } from "../../hook/document"
-import DialogPopUp from "../UI/Dialog"
-import Txt from "../Utils/Txt"
-import { API } from "../../api/api"
-import Temperature from "../Temperature"
+import { s } from "../../styles/card.style";
+import CollapseButton from "../UI/CollapseButton";
+import CardTitle from "../Cards/CardTitle";
+import CardInformation from "../Cards/CardInformation";
+import CardAddFiles from "../Cards/CardAddFiles";
+import CardSection from "../Cards/CardSection";
+import CardTime from "../Cards/CardTime";
+import CardDate from "../Cards/CardDate";
+import CardAddress from "./CardAddress";
+import Temperature from "../Temperature";
+import CardFilesManager from "../Cards/CardFilesManager";
+import CardStars from "./CardStars";
+import { calculateDayBetweenTwoDates } from "../../services/date-service";
 
 export default function HotelCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
     const { colors, elevation } = useTheme()
-    const { openDocument, deleteDocument } = useDocument();
-
-    const [dialogVisible, setDialogVisible] = useState(false);
-    const [fileToDelete, setFileToDelete] = useState(null);
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
 
+    console.log(calculateDayBetweenTwoDates(item.checkIn, item.checkOut))
 
-    const handleDeleteFile = (file) => {
-        setFileToDelete(file);
-        setDialogVisible(true);
-    };
-
-    const confirmDelete = () => {
-        deleteDocument(destination.id, item, fileToDelete);
-        closeDialog();
-    };
-
-    const closeDialog = () => {
-        setDialogVisible(false);
-        setFileToDelete(null);
-    };
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -97,38 +76,12 @@ export default function HotelCard({ item, onPress, destination }) {
                         <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
                     </CardSection>
 
-                    {item.documents.length > 0 &&
-                        <CardSection style={styles.cardSection} >
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                {/* ADDED FILES */}
-                                <View style={styles.container}>
-                                    {item.documents.map((file) => (
-                                        <TouchableOpacity
-                                            key={file.uri}
-                                            activeOpacity={0.9}
-                                            onPress={() => openDocument(file.uri)}
-                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destination.id, item, file.name)}
-                                        >
-                                            <CardFiles file={file} />
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            </ScrollView>
-                        </CardSection>}
+                    <CardFilesManager item={item} destinationID={destination.id} />
                 </View>
 
                 {/* ADD FILE BUTTON */}
                 <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
-            <DialogPopUp
-                visible={dialogVisible}
-                onDismiss={closeDialog}
-                title="Delete File"
-                content={<Txt>Are you sure you want to delete this file?</Txt>}
-                cancel={closeDialog}
-                validate={confirmDelete}
-                validateText="Confirm"
-            />
         </View >
     )
 }

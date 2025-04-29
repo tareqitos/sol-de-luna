@@ -18,35 +18,19 @@ import CardSection from "../Cards/CardSection"
 import { useDocument } from "../../hook/document"
 import DialogPopUp from "../UI/Dialog"
 import Txt from "../Utils/Txt"
+import CardFilesManager from "../Cards/CardFilesManager"
 
 
 export default function FlightCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true)
     const { colors, elevation } = useTheme()
-    const { openDocument, deleteDocument } = useDocument();
 
-    const [dialogVisible, setDialogVisible] = useState(false);
-    const [fileToDelete, setFileToDelete] = useState(null);
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
 
 
-    const handleDeleteFile = (file) => {
-        setFileToDelete(file);
-        setDialogVisible(true);
-    };
-
-    const confirmDelete = () => {
-        deleteDocument(item, fileToDelete);
-        closeDialog();
-    };
-
-    const closeDialog = () => {
-        setDialogVisible(false);
-        setFileToDelete(null);
-    };
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
@@ -82,36 +66,12 @@ export default function FlightCard({ item, onPress, destination }) {
                     </CardSection>
 
 
-                    {item.documents.length > 0 &&
-                        <CardSection style={styles.cardSection}>
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                <View style={styles.container}>
+                    <CardFilesManager item={item} destinationID={destination.id} />
 
-                                    {item.documents.map((file) => (
-                                        <TouchableOpacity
-                                            key={file.uri}
-                                            activeOpacity={0.9}
-                                            onPress={() => openDocument(file.uri)}
-                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destination.id, item, file.name)}
-                                        >
-                                            <CardFiles file={file} />
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            </ScrollView>
-                        </CardSection>}
+
                 </View>
                 <CardAddFiles item={item} destinationID={destination.id} />
             </Collapsible >
-            <DialogPopUp
-                visible={dialogVisible}
-                onDismiss={closeDialog}
-                title="Delete File"
-                content={<Txt>Are you sure you want to delete this file?</Txt>}
-                cancel={closeDialog}
-                validate={confirmDelete}
-                validateText="Confirm"
-            />
         </View >
     )
 }
