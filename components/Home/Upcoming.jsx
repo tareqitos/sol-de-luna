@@ -1,7 +1,7 @@
 import { Chip, Divider, IconButton, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { ConvertDateToString } from "../../services/date-service";
+import { calculateDayBetweenTwoDates, ConvertDateToString } from "../../services/date-service";
 import { showLocation } from "react-native-map-link";
 import Temperature from "../Temperature";
 import { useNavigation } from "@react-navigation/native";
@@ -59,7 +59,7 @@ export default function Upcoming({ updatedTab, categories, types }) {
                     </>
                     : category === "hotels" ?
                         <>
-                            <Temperature coords={{ latitude: item.latitude, longitude: item.longitude }} />
+                            <Chip icon="weather-night" mode="outlined">{calculateDayBetweenTwoDates(item.checkIn, item.checkOut)}</Chip>
                             <IconButton icon="map-search-outline" iconColor={colors.primary} size={18} mode="outlined" style={{ borderColor: colors.primary }} onPress={() => openMapApp(item)} />
                         </>
                         : category === "transport" ?
