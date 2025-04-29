@@ -8,9 +8,9 @@ export default function Title({ title, subtitle }) {
     const nav = useNavigation()
     const { colors, typography } = useTheme();
     return (
-        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-            <View style={s.header.container}>
-                {title && <Txt style={[s.header.title, typography.h0]}>{title}</Txt>}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={[s.header.container, { flexDirection: "row", alignItems: "baseline" }]}>
+                {title && <Txt style={[s.header.title, typography.h0, { lineHeight: 45 }]}>{title}</Txt>}
                 {subtitle && <Txt style={[s.header.subtitle, typography.h2, { fontFamily: "Raleway-Light" }]}>{subtitle}</Txt>}
             </View>
             <IconButton iconColor={colors.primary} icon="cog" size={24} onPress={() => nav.navigate('Settings')} />
