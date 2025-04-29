@@ -70,13 +70,8 @@ const s = StyleSheet.create({
 
         title_container: {
             flexDirection: "row",
-            alignItems: "baseline",
             flexWrap: "wrap",
             gap: 5
-        },
-
-        title: {
-
         },
 
         time_container: {

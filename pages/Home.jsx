@@ -14,11 +14,13 @@ import Txt from "../components/Utils/Txt";
 import { useData } from "../hook/data";
 import OverviewCard from "../components/Home/OverviewCard";
 import Upcoming from "../components/Home/Upcoming";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Home({ route }) {
     const { colors, typography } = useTheme();
     const { destinations } = useData()
 
+    const nav = useNavigation()
     const destinationId = route.params.destination.id
     const [destination, setDestination] = useState(route.params.destination);
 
@@ -68,6 +70,23 @@ export default function Home({ route }) {
         ],
     };
 
+    useEffect(() => {
+        if (Platform.OS === "android") {
+            const beforeRemoveHandler = (e) => {
+                if (selectedTabName !== "home") {
+                    e.preventDefault();
+                    updateSelectedTab("home");
+                }
+            };
+
+            const unsubscribe = nav.addListener('beforeRemove', beforeRemoveHandler);
+
+            return () => {
+                unsubscribe();
+            };
+        }
+    }, [selectedTabName, nav]);
+
     return (
         <Container >
             <View style={{ flex: 1, paddingHorizontal: 10, overflow: "visible" }}>
@@ -79,17 +98,18 @@ export default function Home({ route }) {
 
                 {selectedTabName === "home" ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
-                        <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
-                        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
-                            <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
-                        </View>
 
-                        <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
                         <ScrollView
                             contentContainerStyle={{ paddingHorizontal: 5 }}
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1 }}
                         >
+                            <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
+                            <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
+                                <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
+                            </View>
+
+                            <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
                             <Upcoming updatedTab={updateSelectedTab} categories={categories} types={types} />
                         </ScrollView>
 

@@ -1,11 +1,15 @@
-import { Divider, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "react-native-paper";
+import { Chip, Divider, IconButton, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ConvertDateToString } from "../../services/date-service";
+import { showLocation } from "react-native-map-link";
+import Temperature from "../Temperature";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Upcoming({ categories, types }) {
+export default function Upcoming({ updatedTab, categories, types }) {
 
     const { colors, typography } = useTheme();
+    const nav = useNavigation()
     const highlight = (index) => index === 0 ? colors.primary : colors.onSurface
 
     const categoryContent = {
@@ -34,6 +38,40 @@ export default function Upcoming({ categories, types }) {
         }
     }
 
+    const openMapApp = (item) => {
+        showLocation({
+            latitude: item.latitude,
+            longitude: item.longitude,
+            title: item.address,
+            address: !item.latitude ? item.address : null
+        })
+    }
+
+
+    const Infos = (category, item) => {
+        return (
+
+            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+                {category === "flights" ?
+                    <>
+                        <Chip icon="account-outline" mode="outlined">{item.passengers.length}</Chip>
+                        <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>
+                    </>
+                    : category === "hotels" ?
+                        <>
+                            <Temperature coords={{ latitude: item.latitude, longitude: item.longitude }} />
+                            <IconButton icon="map-search-outline" iconColor={colors.primary} size={18} mode="outlined" style={{ borderColor: colors.primary }} onPress={() => openMapApp(item)} />
+                        </>
+                        : category === "transport" ?
+                            <>
+                                <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>
+                            </>
+                            : null
+                }
+            </View>
+
+        )
+    }
 
     return (
         <View>
@@ -43,16 +81,21 @@ export default function Upcoming({ categories, types }) {
                     <List.Subheader>{categoryContent[category].title}</List.Subheader>
                     <Surface style={[styles.section, { backgroundColor: colors.surface }]} elevation={1}>
                         {categoryContent[category].data.slice(0, 3).map((item, index, array) => (
-                            <View key={item.id}>
-                                <List.Item
-                                    title={item.name || item.arrival}
-                                    left={() => <List.Icon icon={category === "transport" ? item.transportType : categoryContent[category].icon} color={highlight(index)} />}
-                                    description={() => <Txt style={{ color: highlight(index) }}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime)}</Txt>}
-                                    contentStyle={{ justifyContent: "center" }}
-                                    titleStyle={{ color: highlight(index) }}
-                                />
+                            <TouchableOpacity activeOpacity={1} onPress={() => updatedTab(category)} key={item.id}>
+                                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                                    <List.Item
+                                        title={item.name || item.arrival}
+                                        left={() => <List.Icon icon={category === "transport" ? item.transportType : categoryContent[category].icon} />}
+                                        description={() => <Txt style={[typography.bodyInter, { opacity: .5 }]}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime)}</Txt>}
+                                        contentStyle={{ justifyContent: "center" }}
+                                        titleStyle={typography.body}
+                                        style={{ flex: 1 }}
+
+                                    />
+                                    {Infos(category, item)}
+                                </View>
                                 {index < array.length - 1 && <Divider />}
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </Surface>
                 </List.Section>
@@ -63,7 +106,7 @@ export default function Upcoming({ categories, types }) {
 
 const styles = StyleSheet.create({
     section: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         paddingVertical: 0,
         borderRadius: 10
     }

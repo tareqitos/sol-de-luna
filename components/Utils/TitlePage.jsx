@@ -11,7 +11,7 @@ export default function TitlePage({ title }) {
     const { colors, typography } = useTheme();
     return (
         <View style={s.header.title_container}>
-            <IconButton icon="arrow-left" iconColor={colors.onBackground} size={20} onPress={() => nav.goBack()} />
+            <IconButton icon="arrow-left" iconColor={colors.onBackground} size={20} hitSlop={{ right: 100 }} onPress={() => nav.goBack()} />
 
             <Txt style={[typography.h2, { fontFamily: "Raleway-Light" }]}>{title}</Txt>
         </View>
