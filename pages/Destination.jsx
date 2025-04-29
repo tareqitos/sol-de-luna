@@ -4,14 +4,18 @@ import { s } from "../styles/styles.style";
 import { Button, IconButton, Surface, Text, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
 import { generateDestinationEmoji } from "../services/services";
 
+const greetings = ["Hello", "Hi", "Hey", "Greetings", "Howdy"];
+const travelQuestions = ["Where are you going?", "What's your destination?", "Where to?", "Heading somewhere?", "Planning a trip?"];
 
 export default function Destination() {
+    const nav = useNavigation();
+
     const { colors, typography } = useTheme();
     const { destinations, addDestination, deleteDestination } = useData();
 
@@ -20,20 +24,10 @@ export default function Destination() {
     const [isDelete, setDelete] = useState(false);
 
     const [emoji, setEmoji] = useState(generateDestinationEmoji());
-    const nav = useNavigation();
     const [selectedDestinationId, setSelectedDestinationId] = useState();
 
-    const dialogContent = (
-        <TextInput
-            label=""
-            mode="flat"
-            focusable
-            maxLength={20}
-            style={{ backgroundColor: "none" }}
-            value={value}
-            onChangeText={setValue}
-        />
-    )
+    const randomGreeting = useMemo(() => greetings[Math.floor(Math.random() * greetings.length)], []);
+    const randomQuestion = useMemo(() => travelQuestions[Math.floor(Math.random() * travelQuestions.length)], []);
 
     const deleteDialogContent = (
         <Txt>Are you sure you want to delete this destination and all its data?</Txt>
@@ -80,8 +74,12 @@ export default function Destination() {
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={styles.wrapper}>
                     <View style={styles.container}>
-                        <Txt style={[typography.body, { fontSize: 32 }]}>Hello,</Txt>
-                        <Txt style={[typography.body, { fontSize: 32 }]}>Where are you going?</Txt>
+                        <Txt style={[typography.body, styles.greetings]}>
+                            {randomGreeting},
+                        </Txt>
+                        <Txt style={[typography.body, styles.greetings]}>
+                            {randomQuestion}
+                        </Txt>
 
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity onPress={updateEmoji} style={{ zIndex: 2 }} hitSlop={{ top: 10, bottom: 10, right: 10 }}>
@@ -95,7 +93,7 @@ export default function Destination() {
                                 onChangeText={setValue}
                                 placeholder="e.g. Morocco, Japan, Grandma..."
                                 style={{ flex: 1, backgroundColor: colors.background }}
-                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
+                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji}${value}`) }} />}
                             />
                         </View>
                     </View>
@@ -108,7 +106,7 @@ export default function Destination() {
                                 onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
                             >
                                 <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
-                                    <Txt style={typography.h5}>{destination.name}</Txt>
+                                    <Txt style={typography.h5}>{destination && destination.name}</Txt>
                                 </Surface>
                             </TouchableOpacity>
                         ))}
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-    input: {
-
+    greetings: {
+        fontSize: 32
     }
 })
