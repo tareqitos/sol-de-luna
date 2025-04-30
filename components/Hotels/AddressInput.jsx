@@ -1,4 +1,4 @@
-import { PaperProvider, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
 import Txt from "../Utils/Txt";
 import { useController } from "react-hook-form";

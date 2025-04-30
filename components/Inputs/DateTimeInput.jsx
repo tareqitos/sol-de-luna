@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform, View } from "react-native";
 import { themeHook } from "../../hook/theme";
-import Txt from "../Utils/Txt";
-import { Button, Icon, TextInput, useTheme } from "react-native-paper";
+import { Button, Icon, useTheme } from "react-native-paper";
 
 export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     const { theme } = themeHook()

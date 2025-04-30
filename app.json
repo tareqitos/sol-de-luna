@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "sol-de-luna",
+    "name": "Sol de Luna",
     "slug": "sol-de-luna",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "usesIcloudStorage": true
+      "usesIcloudStorage": true,
+      "bundleIdentifier": "com.tareqitos.soldeluna"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
@@ -23,23 +24,13 @@
         "backgroundColor": "#ffffff"
       },
       "userInterfaceStyle": "automatic",
-      "theme": {
-        "name": "MaterialYou"
-      },
       "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.INTERNET",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET"
       ],
-      "compileSdkVersion": 33,
-      "targetSdkVersion": 33,
       "package": "com.tareqitos.soldeluna"
     },
     "web": {
@@ -53,6 +44,16 @@
         "expo-document-picker",
         {
           "iCloudContainerEnvironment": "Production"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "enableProguardInReleaseBuilds": true
+          }
         }
       ]
     ],

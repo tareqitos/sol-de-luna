@@ -33,7 +33,7 @@ export default function AddFlight({ route }) {
 
     const { setMessage, toggleBar } = useSnackbar();
 
-    const { colors, typography } = useTheme();
+    const { colors } = useTheme();
     const nav = useNavigation();
     const iataRef = useRef();
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -46,17 +46,7 @@ export default function AddFlight({ route }) {
         mode: "onBlur"
     });
 
-
-
     const onSubmit = (newData) => {
-
-        if (!routes.departureAirport.city || !routes.departureAirport.iata) {
-            return console.log("DEPARTURE REQUIRED")
-        }
-
-        if (!routes.arrivalAirport.city || !routes.arrivalAirport.iata) {
-            return console.log("ARRIVAL REQUIRED")
-        }
 
         const newItem = {
             departureDate: mergeDateAndTime(date, time) || new Date(),
@@ -122,7 +112,7 @@ export default function AddFlight({ route }) {
                             <PeopleInput passengers={passengers} setPassengers={setPassengers} />
 
                             <View style={[s.form.input_container, s.form.input_addInfos]}>
-                                <InformationInput placeholder="Airline, flight number, departure time, etc." control={control} />
+                                <InformationInput placeholder="Airline, flight number, departure time, etc. (optional)" control={control} />
                             </View>
                         </View>
                     </View>

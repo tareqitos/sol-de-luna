@@ -11,7 +11,7 @@ export default function TimeInput({ time, setTime }) {
         setShow(true);
     };
 
-    const handleChange = (event, selectedTime) => {
+    const handleChange = (selectedTime) => {
         setShow(Platform.OS === 'ios'); // Keep open on iOS, close on Android
         if (selectedTime) {
             setTime(selectedTime);

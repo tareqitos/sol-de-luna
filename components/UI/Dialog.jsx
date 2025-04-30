@@ -1,5 +1,4 @@
 import { Button, Dialog, Portal, useTheme } from "react-native-paper";
-import Txt from "../Utils/Txt";
 import { View } from "react-native";
 
 export default function DialogPopUp({ visible, onDismiss, title, content, cancel, validate, validateText }) {

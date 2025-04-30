@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "../Txt";
 import { API } from "../../api/api";
 
 export default function IataInput({ label, city, setCity }) {
@@ -57,7 +56,6 @@ export default function IataInput({ label, city, setCity }) {
     const Item = ({ city, iata }) => (
         <View>
             <TouchableOpacity onPress={() => saveSelectedCity(city, iata)} activeOpacity={.5} style={[{ backgroundColor: colors.surface }]}>
-                {/* <Txt style={[styles.item, typography.body]}>{city} - {iata}</Txt> */}
                 <List.Item
                     title={`${city} - ${iata}`}
                     style={[styles.item, typography.body]}

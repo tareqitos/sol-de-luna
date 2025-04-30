@@ -45,3 +45,11 @@ export const getDayDifference = (day2, day1) => {
     return new Date(day2).toLocaleDateString('en-US', { day: "numeric" }) - new Date(day1).toLocaleDateString('en-US', { day: "numeric" })
 }
 
+export const calculateDayBetweenTwoDates = (day1, day2) => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const firstDate = new Date(day1);
+    const secondDate = new Date(day2);
+
+    return Math.round(Math.abs((firstDate - secondDate) / oneDay));
+}
+

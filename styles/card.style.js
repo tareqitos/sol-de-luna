@@ -71,7 +71,8 @@ const s = StyleSheet.create({
         title_container: {
             flexDirection: "row",
             flexWrap: "wrap",
-            gap: 5
+            alignItems: "center",
+            gap: 10
         },
 
         time_container: {

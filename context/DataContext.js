@@ -42,11 +42,9 @@ export function DataProvider({ children }) {
                     text: 'Delete',
                     style: 'destructive',
                     onPress: () => {
-                        setDestinations(prev => prev.map(destination => {
-                            if (destination.id !== destinationId) return destination;
-
+                        if (destinationId) {
                             setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
-                        }))
+                        }
                     }
                 }
             ])

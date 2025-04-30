@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FlatList, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { Divider, List, TextInput, useTheme } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
 
@@ -108,6 +108,8 @@ export default function RouteInput({ iataRef, setRoute }) {
     // Render filtered airport list
     const ResultList = () => (
         <View>
+            <IconButton onPress={() => setFilteredAirports([])} icon="close" size={18} iconColor={colors.onSurface} style={{ display: filteredAirports.length > 0 ? "flex " : "none", position: "absolute", zIndex: 20, right: 0 }} />
+
             <FlatList
                 data={filteredAirports}
                 renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
@@ -125,7 +127,7 @@ export default function RouteInput({ iataRef, setRoute }) {
                 <TextInput
                     label={"Departure"}
                     mode="flat"
-                    value={departureAirport.city && departureAirport.iata ? `${departureAirport.city} (${departureAirport.iata})` : null}
+                    value={departureAirport.city && departureAirport.iata ? `${departureAirport.city} (${departureAirport.iata})` : departureAirport.city}
                     onChangeText={(text) => showList(text, "departureAirport")}
                     style={[
                         styles.input,
@@ -147,9 +149,9 @@ export default function RouteInput({ iataRef, setRoute }) {
                     ref={iataRef}
                     label={"Arrival"}
                     mode="flat"
-                    value={arrivalAirport.city && arrivalAirport.iata ? `${arrivalAirport.city} (${arrivalAirport.iata})` : null}
+                    value={arrivalAirport.city && arrivalAirport.iata ? `${arrivalAirport.city} (${arrivalAirport.iata})` : arrivalAirport.city}
                     onChangeText={(text) => showList(text, "arrivalAirport")}
-                    onBlur={validate}
+
                     style={[
                         styles.input,
                         arrivalAirport.city.length == 0 ? typography.caption : typography.body,
@@ -161,7 +163,6 @@ export default function RouteInput({ iataRef, setRoute }) {
                     autoCorrect={false}
                     outlineColor={errors.arrivalAirport ? colors.error : colors.outline}
                     right={<TextInput.Icon icon="airplane-landing" style={{ alignSelf: "baseline" }} size={18} />}
-
                 />
 
             </View>

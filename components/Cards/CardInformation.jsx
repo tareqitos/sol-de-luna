@@ -1,4 +1,4 @@
-import { Keyboard, Pressable, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import { s } from "../../styles/card.style";
 import { useState } from "react";
 import { useData } from "../../hook/data";

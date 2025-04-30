@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { s } from "../../styles/styles.style";

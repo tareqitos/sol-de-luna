@@ -1,4 +1,4 @@
-import { MD3Colors, MD3LightTheme, Searchbar, useTheme } from "react-native-paper";
+import { Searchbar, useTheme } from "react-native-paper";
 
 export default function SearchCard({ search }) {
 

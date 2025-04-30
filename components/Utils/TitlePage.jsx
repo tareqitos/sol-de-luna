@@ -1,7 +1,5 @@
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { s } from "../../styles/styles.style";
-import { ArrowLeft } from "lucide-react-native";
-import Title from "./Title";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, useTheme } from "react-native-paper";
 import Txt from "./Txt";

@@ -1,6 +1,6 @@
-import { Animated, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, ScrollView, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
-import { Icon, List, Surface, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 import { s } from "../styles/styles.style";
 
@@ -91,7 +91,6 @@ export default function Home({ route }) {
         <Container >
             <View style={{ flex: 1, paddingHorizontal: 10, overflow: "visible" }}>
 
-
                 <View style={s.home.title} >
                     <Title title={"Trips"} subtitle={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
@@ -105,7 +104,7 @@ export default function Home({ route }) {
                             style={{ flex: 1 }}
                         >
                             <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
-                            <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, paddingHorizontal: 5 }}>
+                            <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
                                 <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
                             </View>
 

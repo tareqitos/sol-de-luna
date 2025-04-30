@@ -1,4 +1,3 @@
-import { MoveRight } from "lucide-react-native";
 import Txt from "../Utils/Txt";
 import { View } from "react-native";
 import { s } from "../../styles/styles.style";

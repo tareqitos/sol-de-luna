@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import CardSubtitle from './CardSubtitle';
 
 export default function CardSection({ text, children, style }) {
