@@ -1,6 +1,5 @@
-import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Icon, useTheme } from "react-native-paper";
 
 
 export default function CollapseButton({ onPress, isCollapsed }) {
@@ -8,8 +7,8 @@ export default function CollapseButton({ onPress, isCollapsed }) {
 
     function ChevronButtonIcon() {
         return isCollapsed ?
-            <ChevronDown color={colors.primary} size={18} /> :
-            <ChevronUp color={colors.primary} size={18} />
+            <Icon source="chevron-down" color={colors.primary} size={18} /> :
+            <Icon source="chevron-up" color={colors.primary} size={18} />
     }
 
     return (

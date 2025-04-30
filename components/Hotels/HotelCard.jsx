@@ -1,9 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import { useCallback, useState } from "react";
-import { Divider, MD3DarkTheme, useTheme } from "react-native-paper";
-import { MoveRight } from "lucide-react-native";
-
+import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
 import { s } from "../../styles/card.style";
 import CollapseButton from "../UI/CollapseButton";
 import CardTitle from "../Cards/CardTitle";
@@ -48,14 +46,14 @@ export default function HotelCard({ item, onPress, destination }) {
             {/* CHECK DATE */}
             <CardSection style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                 <CardDate date={item.checkIn} />
-                <MoveRight color={colors.primary} size={18} />
+                <Icon source="arrow-right-thin" color={colors.primary} size={18} />
                 <CardDate date={item.checkOut} hasIcon={false} />
             </CardSection>
 
             {/* CHECK TIME */}
             <CardSection style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                 <CardTime time={item.checkIn} />
-                <MoveRight color={colors.primary} size={18} />
+                <Icon source="arrow-right-thin" color={colors.primary} size={18} />
                 <CardTime time={item.checkOut} hasIcon={false} />
             </CardSection>
 

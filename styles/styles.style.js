@@ -41,15 +41,15 @@ const s = StyleSheet.create({
             paddingTop: 20,
             paddingBottom: 40,
 
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: -5,
-            },
-            shadowOpacity: 0.1,
-            shadowRadius: 4.65,
+            // shadowColor: "#000",
+            // shadowOffset: {
+            //     width: 0,
+            //     height: 2,
+            // },
+            // shadowOpacity: 0.1,
+            // shadowRadius: 4.65,
 
-            elevation: 6,
+            // elevation: 50,
         }
     },
 
@@ -62,7 +62,7 @@ const s = StyleSheet.create({
     footer: {
         container: {
             flexDirection: "row",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
         },
 
         tab: {

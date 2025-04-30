@@ -1,4 +1,3 @@
-import { View } from "lucide-react-native";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import CardFiles from "./CardFiles";
 

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { s } from "../../styles/styles.style";
 import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
-import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
-import { Button, Modal, Portal, TextInput, useTheme } from "react-native-paper";
+import { Button, Icon, Modal, Portal, TextInput, useTheme } from "react-native-paper";
 
 export default function DateInput({ label, newDate, setNewDate }) {
     const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -18,8 +17,8 @@ export default function DateInput({ label, newDate, setNewDate }) {
     };
 
     const icons = {
-        IconPrev: (<ChevronLeft color={colors.primary} size={18} />),
-        IconNext: (<ChevronRight color={colors.primary} size={18} />),
+        IconPrev: (<Icon source="chevron-left" color={colors.primary} size={18} />),
+        IconNext: (<Icon source="chevron-right" color={colors.primary} size={18} />),
     }
 
     useEffect(() => {
@@ -90,7 +89,7 @@ export default function DateInput({ label, newDate, setNewDate }) {
                     />
                     {isPickerOpen &&
                         <Button mode="contained" onPress={toggleDatePicker}>
-                            <CircleCheck color={colors.onPrimary} size={20} />
+                            <Icon source="check-circle-outline" color={colors.onPrimary} size={20} />
                         </Button>
                     }
                 </Modal>

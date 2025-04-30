@@ -1,7 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
 import Txt from "../Utils/Txt";
-import { FileText } from "lucide-react-native";
-import { useTheme } from "react-native-paper";
+import { Icon, useTheme } from "react-native-paper";
 
 export default function CardFiles({ file }) {
     const { colors } = useTheme()
@@ -20,7 +19,7 @@ export default function CardFiles({ file }) {
                         </View> :
 
                         <View style={[styles.document, { backgroundColor: colors.secondary }]}>
-                            <FileText color={colors.onSecondary} size={48} />
+                            <Icon source="file-document-outline" color={colors.onSecondary} size={48} />
                             <Txt style={{ fontSize: 12, color: colors.onSecondary }}>{`${file.name.substr(0, 5)}...${extension}`}</Txt>
                         </View>
                 }

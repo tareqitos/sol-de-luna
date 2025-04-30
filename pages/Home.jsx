@@ -123,7 +123,7 @@ export default function Home({ route }) {
                     </ScrollView>
                 }
             </View>
-            <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, paddingBottom: Platform.OS === "ios" ? 10 : 40 }]}>
+            <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, borderColor: colors.primary, borderTopWidth: 1, paddingBottom: Platform.OS === "ios" ? 10 : 20 }]}>
                 <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
             </View>
 

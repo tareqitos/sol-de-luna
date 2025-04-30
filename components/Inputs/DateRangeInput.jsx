@@ -3,8 +3,7 @@ import { s } from "../../styles/styles.style";
 import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
 import Collapsible from "react-native-collapsible";
-import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
-import { Button, TextInput, useTheme } from "react-native-paper";
+import { Button, Icon, TextInput, useTheme } from "react-native-paper";
 
 export default function DateRangeInput({ label, checkIn, setCheckIn, checkOut, setCheckOut }) {
     const [isPickerOpen, setIsPickerOpen] = useState();
@@ -19,8 +18,8 @@ export default function DateRangeInput({ label, checkIn, setCheckIn, checkOut, s
     };
 
     const icons = {
-        IconPrev: (<ChevronLeft color={colors.primary} size={18} />),
-        IconNext: (<ChevronRight color={colors.primary} size={18} />),
+        IconPrev: (<Icon source="chevron-left" color={colors.primary} size={18} />),
+        IconNext: (<Icon source="chevron-right" color={colors.primary} size={18} />),
     }
 
     return (
@@ -88,7 +87,7 @@ export default function DateRangeInput({ label, checkIn, setCheckIn, checkOut, s
                 />
                 {isPickerOpen &&
                     <Button style={{ position: "absolute", right: 0, bottom: 20 }} onPress={showDatePicker}>
-                        <CircleCheck color={colors.primary} size={24} />
+                        <Icon source="check-circle-outline" color={colors.onPrimary} size={20} />
                     </Button>
                 }
 

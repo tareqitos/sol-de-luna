@@ -3,12 +3,11 @@ import Collapsible from "react-native-collapsible";
 import Txt from "./Utils/Txt";
 import { s } from "../styles/card.style";
 import CollapseButton from "./UI/CollapseButton";
-import { Car, Hotel, Plane } from "lucide-react-native";
 import { memo, useCallback, useMemo, useState } from "react";
 import FlightCard from "./Flights/FlightCard";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
-import { useTheme } from "react-native-paper";
+import { Icon, useTheme } from "react-native-paper";
 import HotelCard from "./Hotels/HotelCard";
 import TransportCard from "./Transport/TransportCard";
 import DialogPopUp from "./UI/Dialog";
@@ -21,8 +20,6 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
 
     const [itemToDelete, setItemToDelete] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
-    const [isDelete, setDelete] = useState(false);
-
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -30,12 +27,12 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
 
     const categoryIcon = () => {
         switch (category) {
-            case "hotels":
-                return <Hotel color={colors.primary} size={24} />;
             case "flights":
-                return <Plane color={colors.primary} size={24} />;
+                return <Icon source="airplane" color={colors.primary} size={24} />;
+            case "hotels":
+                return <Icon source="home-city" color={colors.primary} size={24} />;
             case "transport":
-                return <Car color={colors.primary} size={24} />;
+                return <Icon source="car" color={colors.primary} size={24} />;
             default:
                 return null;
         }
