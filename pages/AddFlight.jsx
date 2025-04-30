@@ -46,8 +46,6 @@ export default function AddFlight({ route }) {
         mode: "onBlur"
     });
 
-
-
     const onSubmit = (newData) => {
 
         const newItem = {

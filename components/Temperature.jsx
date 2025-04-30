@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { API } from "../api/api";
 import { useEffect, useState } from "react";
-import { Chip, Icon, Switch, useTheme } from "react-native-paper";
+import { Chip, useTheme } from "react-native-paper";
 import { useSettings } from "../hook/settings";
 import { convertCelciusToFahrenheit, convertFahrenheitToCelcius, getWeatherInterpretation } from "../services/weather-service";
 import Txt from "./Utils/Txt";

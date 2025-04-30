@@ -141,14 +141,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                             setResults([]);
                         }} />}
                 />
-                {/* <IconButton
-                    icon="magnify"
-                    iconColor={colors.onPrimary}
-                    onPress={searchHotel}
-                    size={24}
-                    mode="contained"
-                    style={[s.icon_button, { backgroundColor: colors.primary }]}
-                /> */}
             </View>
 
             <ResultList />

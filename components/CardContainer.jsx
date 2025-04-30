@@ -6,7 +6,6 @@ import CollapseButton from "./UI/CollapseButton";
 import { Car, Hotel, Plane } from "lucide-react-native";
 import { memo, useCallback, useMemo, useState } from "react";
 import FlightCard from "./Flights/FlightCard";
-import { useNavigation } from "@react-navigation/native";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
 import { useTheme } from "react-native-paper";

@@ -3,9 +3,9 @@ import { s } from "../../styles/styles.style";
 import { ConvertDateAndTimeToString } from "../../services/date-service";
 import DateTimePicker from "react-native-ui-datepicker";
 import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react-native";
-import { Button, Icon, IconButton, Modal, Portal, TextInput, useTheme } from "react-native-paper";
+import { Button, Modal, Portal, TextInput, useTheme } from "react-native-paper";
 
-export default function DateInput({ label, newDate, setNewDate, style }) {
+export default function DateInput({ label, newDate, setNewDate }) {
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(true)
 

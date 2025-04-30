@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Txt from "./Txt";
 import { s } from "../../styles/styles.style";
 import { IconButton, useTheme } from "react-native-paper";

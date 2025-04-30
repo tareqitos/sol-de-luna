@@ -1,4 +1,4 @@
-import { TouchableOpacity, Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import Txt from "../Utils/Txt";
 import { FileText } from "lucide-react-native";
 import { useTheme } from "react-native-paper";

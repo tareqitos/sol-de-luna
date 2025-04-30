@@ -1,6 +1,6 @@
-import { Animated, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, ScrollView, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
-import { Icon, List, Surface, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 import { s } from "../styles/styles.style";
 

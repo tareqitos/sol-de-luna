@@ -1,16 +1,12 @@
-import { Chip, Divider, IconButton, List, MD3DarkTheme, PaperProvider, Surface, useTheme } from "react-native-paper";
+import { Chip, Divider, IconButton, List, Surface, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { calculateDayBetweenTwoDates, ConvertDateToString } from "../../services/date-service";
 import { showLocation } from "react-native-map-link";
-import Temperature from "../Temperature";
-import { useNavigation } from "@react-navigation/native";
 
 export default function Upcoming({ updatedTab, categories, types }) {
 
     const { colors, typography } = useTheme();
-    const nav = useNavigation()
-    const highlight = (index) => index === 0 ? colors.primary : colors.onSurface
 
     const categoryContent = {
         flights: {
@@ -55,16 +51,18 @@ export default function Upcoming({ updatedTab, categories, types }) {
                 {category === "flights" ?
                     <>
                         <Chip icon="account-outline" mode="outlined">{item.passengers.length}</Chip>
-                        <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>
+                        {item.documents.length > 0 && <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>}
                     </>
                     : category === "hotels" ?
                         <>
                             <Chip icon="weather-night" mode="outlined">{calculateDayBetweenTwoDates(item.checkIn, item.checkOut)}</Chip>
+                            {item.documents.length > 0 && <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>}
+
                             <IconButton icon="map-search-outline" iconColor={colors.primary} size={18} mode="outlined" style={{ borderColor: colors.primary }} onPress={() => openMapApp(item)} />
                         </>
                         : category === "transport" ?
                             <>
-                                <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>
+                                {item.documents.length > 0 && <Chip icon="file-outline" mode="outlined">{item.documents.length}</Chip>}
                             </>
                             : null
                 }

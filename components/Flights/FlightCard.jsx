@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 
 import Collapsible from "react-native-collapsible"
 import { useCallback, useState } from "react"

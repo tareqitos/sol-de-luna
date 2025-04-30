@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Avatar, Button, Card, Icon, IconButton, Surface, TextInput, useTheme } from "react-native-paper";
+import { Avatar, IconButton, Surface, TextInput, useTheme } from "react-native-paper";
 import { v4 as uuidv4 } from 'uuid';
 import Txt from "../Utils/Txt";
 import { generateRandomEmoji } from "../../services/services";

@@ -1,17 +1,20 @@
-import { Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Title from "../components/Utils/Title";
-import { s } from "../styles/styles.style";
-import { Button, IconButton, Surface, Text, TextInput, useTheme } from "react-native-paper";
+import { Surface, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
 import { generateDestinationEmoji } from "../services/services";
+// import { scheduleDepartureReminder } from "../services/notifications-service";
 
 const greetings = ["Hello", "Hi", "Hey", "Greetings", "Howdy"];
 const travelQuestions = ["Where are you going?", "What's your destination?", "Where to?", "Heading somewhere?", "Planning a trip?"];
+
+// import { initializeNotifications } from "../services/notifications-service";
+// initializeNotifications();
 
 export default function Destination() {
     const nav = useNavigation();
@@ -28,6 +31,7 @@ export default function Destination() {
 
     const randomGreeting = useMemo(() => greetings[Math.floor(Math.random() * greetings.length)], []);
     const randomQuestion = useMemo(() => travelQuestions[Math.floor(Math.random() * travelQuestions.length)], []);
+
 
     const deleteDialogContent = (
         <Txt>Are you sure you want to delete this destination and all its data?</Txt>
@@ -62,6 +66,9 @@ export default function Destination() {
     const handleCloseKeyboard = () => {
         Keyboard.dismiss();
     };
+    // const triggerNotification = () => {
+    //     scheduleDepartureReminder(5);
+    // }
 
     return (
         <Container>
@@ -73,6 +80,8 @@ export default function Destination() {
 
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={styles.wrapper}>
+
+
                     <View style={styles.container}>
                         <Txt style={[typography.body, styles.greetings]}>
                             {randomGreeting},

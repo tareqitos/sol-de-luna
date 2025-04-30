@@ -1,4 +1,4 @@
-import { useColorScheme, View } from 'react-native';
+import { View } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useFonts as useRaleway, Raleway_300Light, Raleway_400Regular, Raleway_600SemiBold } from '@expo-google-fonts/raleway';
 import { Inter_300Light, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
@@ -21,13 +21,10 @@ import Destination from './pages/Destination';
 import SnackbarMessage from './components/UI/Snackbar';
 import { SettingsProvider } from './context/SettingsContext';
 
-
 const Stack = createNativeStackNavigator();
 
 function AppContent() {
-  const { theme, setTheme, toggleTheme } = themeHook();
-  const { colors } = useTheme();
-  const deviceTheme = useColorScheme()
+  const { theme } = themeHook();
   let paperTheme = theme === 'dark' ? darkTheme : lightTheme;
 
   return (

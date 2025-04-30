@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Button, Icon, IconButton, useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 
 import { useSnackbar } from "../hook/useSnackbar";
 import { useData } from "../hook/data";
@@ -75,7 +74,7 @@ export default function AddTransport({ route }) {
     return (
         <Container style={{ paddingHorizontal: 20 }}>
             <TitlePage title={"Add transport"} />
-            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
                 <TransportNumberInput line={line} setLine={setLine} />
                 <TransportRouteInput control={control} errors={errors} />
@@ -88,7 +87,7 @@ export default function AddTransport({ route }) {
                 <View style={[s.form.input_container, s.form.input_addInfos]}>
                     <InformationInput placeholder="Reservation number, instructions, amenities, etc. (optional)" control={control} />
                 </View>
-            </KeyboardAwareScrollView>
+            </ScrollView>
             <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
                 <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
             </View>

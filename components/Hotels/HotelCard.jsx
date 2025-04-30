@@ -16,7 +16,6 @@ import CardAddress from "./CardAddress";
 import Temperature from "../Temperature";
 import CardFilesManager from "../Cards/CardFilesManager";
 import CardStars from "./CardStars";
-import { calculateDayBetweenTwoDates } from "../../services/date-service";
 
 export default function HotelCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
