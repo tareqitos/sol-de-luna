@@ -78,6 +78,34 @@ export const SettingsTemperature = () => {
     )
 }
 
+export const SettingsToggleCardCollapse = () => {
+    const { cardsOpen, toggleCardsOpen } = useSettings();
+
+    const [switchOn, setSwitchOn] = useState(false)
+    const onToggleSwitch = () => {
+        setSwitchOn(!switchOn)
+        toggleCardsOpen()
+    }
+
+    useEffect(() => {
+        if (cardsOpen) {
+            setSwitchOn(true);
+        }
+    }, [])
+
+    return (
+        <>
+            <SettingsItem
+                icon="unfold-more-horizontal"
+                title="Keep all cards open"
+                value={switchOn}
+                onValueChange={onToggleSwitch}
+                type="switch"
+            />
+        </>
+    )
+}
+
 // APPEARANCE
 export const SettingsTheme = () => {
     const { theme, setTheme } = themeHook();

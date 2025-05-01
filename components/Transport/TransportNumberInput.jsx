@@ -8,11 +8,11 @@ export default function TransportNumberInput({ line, setLine }) {
     return (
         <View>
             <TextInput
-                label="Line"
+                label="Line / Name"
                 mode="flat"
                 value={line}
                 onChangeText={setLine}
-                placeholder="e.g. 42, 2B..."
+                placeholder="e.g. 42, 2B... (optional)"
                 placeholderTextColor={typography.caption.color}
                 style={[
                     s.form.input,

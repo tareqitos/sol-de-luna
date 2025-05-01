@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
 import CollapseButton from "../UI/CollapseButton";
@@ -11,14 +11,20 @@ import Collapsible from "react-native-collapsible";
 import CardSection from "../Cards/CardSection";
 import CardLine from "./CardLine";
 import CardFilesManager from "../Cards/CardFilesManager";
+import { useSettings } from "../../hook/settings";
 
 export default function TransportCard({ item, onPress, destination }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const { cardsOpen } = useSettings()
+    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation, typography } = useTheme()
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
+
+    useEffect(() => {
+        setIsCollapse(cardsOpen)
+    }, [cardsOpen])
 
     // const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
     // const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()

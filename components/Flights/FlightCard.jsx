@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native"
 
 import Collapsible from "react-native-collapsible"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import CollapseButton from "../UI/CollapseButton"
 import { s } from "../../styles/card.style"
 
@@ -15,10 +15,12 @@ import CardAddFiles from "../Cards/CardAddFiles"
 import CardPassengers from "./CardPassengers"
 import CardSection from "../Cards/CardSection"
 import CardFilesManager from "../Cards/CardFilesManager"
+import { useSettings } from "../../hook/settings"
 
 
 export default function FlightCard({ item, onPress, destination }) {
-    const [isCollapsed, setIsCollapse] = useState(true)
+    const { cardsOpen } = useSettings()
+    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation } = useTheme()
 
 
@@ -26,7 +28,9 @@ export default function FlightCard({ item, onPress, destination }) {
         setIsCollapse(prev => !prev);
     }, []);
 
-
+    useEffect(() => {
+        setIsCollapse(cardsOpen)
+    }, [cardsOpen])
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>

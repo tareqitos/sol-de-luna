@@ -4,7 +4,7 @@ import TitlePage from '../components/Utils/TitlePage';
 import Container from '../components/Utils/Container';
 import { useTheme } from 'react-native-paper';
 
-import { SettingsAbout, SettingsExportData, SettingsImportData, SettingsTemperature, SettingsTheme } from '../components/Settings/SettingsComponents';
+import { SettingsAbout, SettingsExportData, SettingsImportData, SettingsTemperature, SettingsTheme, SettingsToggleCardCollapse } from '../components/Settings/SettingsComponents';
 
 
 const Settings = () => {
@@ -25,6 +25,7 @@ const Settings = () => {
 
                 <SettingsCard title="App">
                     <SettingsTemperature />
+                    <SettingsToggleCardCollapse />
                 </SettingsCard>
 
                 <SettingsCard title="Appearance">

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Collapsible from "react-native-collapsible";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
 import { s } from "../../styles/card.style";
 import CollapseButton from "../UI/CollapseButton";
@@ -14,14 +14,20 @@ import CardAddress from "./CardAddress";
 import Temperature from "../Temperature";
 import CardFilesManager from "../Cards/CardFilesManager";
 import CardStars from "./CardStars";
+import { useSettings } from "../../hook/settings";
 
 export default function HotelCard({ item, onPress, destination }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const { cardsOpen } = useSettings()
+    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation } = useTheme()
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
+
+    useEffect(() => {
+        setIsCollapse(cardsOpen)
+    }, [cardsOpen])
 
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
