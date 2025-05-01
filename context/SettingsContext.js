@@ -35,6 +35,7 @@ export function SettingsProvider({ children }) {
             } else {
                 setCardsOpen(true);
             }
+            console.log("Cards preference loaded: ", cardsOpen)
         } catch (error) {
             console.log("Failed to load cards preference: ", error)
         }

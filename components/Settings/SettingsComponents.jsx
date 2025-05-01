@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {
-    View, Text, StyleSheet, TouchableOpacity, Switch, Platform, Alert, useColorScheme
+    View, Text, StyleSheet, TouchableOpacity, Switch, Platform, Alert, useColorScheme,
+    Linking
 } from 'react-native';
-import { RadioButton, useTheme } from 'react-native-paper';
+import { Icon, RadioButton, useTheme } from 'react-native-paper';
 import Txt from '../Utils/Txt';
 import { exportDataToJSON, importJSONData } from '../../services/import-export-service';
 
@@ -96,9 +97,9 @@ export const SettingsToggleCardCollapse = () => {
     return (
         <>
             <SettingsItem
-                icon="unfold-more-horizontal"
+                icon="chevron-expand-outline"
                 title="Keep all cards open"
-                value={switchOn}
+                value={!switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
             />
@@ -238,8 +239,17 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
 // ABOUT
 
 export const SettingsAbout = () => {
+
+    const URL = 'https://github.com/tareqitos/sol-de-luna'
+
     return (
         <>
+            {/* <SettingsItem
+                icon="logo-github"
+                title="Source code"
+                onPress={() => { Linking.openURL(URL).catch(err => console.error("Cannot open link", err)) }}
+                rightText="Github"
+            /> */}
             <SettingsItem
                 icon="information-circle-outline"
                 title="App Info"
