@@ -11,12 +11,15 @@ import { Icon, useTheme } from "react-native-paper";
 import HotelCard from "./Hotels/HotelCard";
 import TransportCard from "./Transport/TransportCard";
 import DialogPopUp from "./UI/Dialog";
+import { useTranslation } from "react-i18next";
+import { MESSAGES } from "../locales/languagesConst";
 
 
-const CardContainer = memo(({ category, destination, style = {} }) => {
+const CardContainer = memo(({ category, destination, t_categories, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
     const { deleteItem } = useData()
     const { colors, typography } = useTheme()
+    const { t } = useTranslation();
 
     const [itemToDelete, setItemToDelete] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
@@ -24,6 +27,12 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, [])
+
+    const t_category = {
+        flights: t_categories[0],
+        hotels: t_categories[1],
+        transport: t_categories[2]
+    }
 
     const categoryIcon = () => {
         switch (category) {
@@ -74,7 +83,7 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
         if (!CardComponent) return null;
 
         if (!data || data.length == 0) {
-            return <Txt style={typography.body}>No {category} added yet.</Txt>;
+            return <Txt style={typography.body}>{t(MESSAGES.EMPTY_CATEGORY_MESSAGE) + t_category[category].toLowerCase() + '.'}</Txt>;
         }
 
         return data.map((item) => (
@@ -98,7 +107,7 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
+                    <Txt style={[typography.h3, { color: colors.primary }]}>{t_category[category]}</Txt>
                 </View>
                 <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
             </View>

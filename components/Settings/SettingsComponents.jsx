@@ -15,9 +15,12 @@ import { useData } from '../../hook/data';
 import { themeHook } from '../../hook/theme';
 import { useSettings } from '../../hook/settings';
 import { useLocalization } from '../../hook/localization';
+import { useTranslation } from 'react-i18next';
+import { SETTINGS } from '../../locales/languagesConst';
 
 const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightText, style }) => {
     const { colors } = useTheme();
+    const { t } = useTranslation();
     return (
         <TouchableOpacity
             style={[styles.settingsItem, style]}
@@ -26,7 +29,7 @@ const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightT
         >
             <View style={styles.settingsItemLeft}>
                 <Ionicons name={icon} size={22} color={colors.onSurface} style={styles.settingsItemIcon} />
-                <Text style={[styles.settingsItemTitle, { color: colors.onSurface }]}>{title}</Text>
+                <Text style={[styles.settingsItemTitle, { color: colors.onSurface }]}>{t(title)}</Text>
             </View>
             {type === 'switch' ? (
                 <Switch
@@ -71,7 +74,7 @@ export const SettingsTemperature = () => {
         <>
             <SettingsItem
                 icon="thermometer-outline"
-                title="Use Fahrenheit / °F"
+                title={SETTINGS.USE_FAHRENHEIT}
                 value={switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
@@ -100,7 +103,7 @@ export const SettingsToggleCardCollapse = () => {
         <>
             <SettingsItem
                 icon="chevron-expand-outline"
-                title="Keep all cards open"
+                title={SETTINGS.KEEP_CARDS_OPEN}
                 value={!switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
@@ -117,9 +120,9 @@ export const SettingsTheme = () => {
 
     // Theme options
     const themeOptions = [
-        { id: 'light', label: 'Light', icon: 'sunny-outline' },
-        { id: 'dark', label: 'Dark', icon: 'moon-outline' },
-        { id: 'system', label: 'System', icon: 'phone-portrait-outline' }
+        { id: 'light', label: SETTINGS.LIGHT, icon: 'sunny-outline' },
+        { id: 'dark', label: SETTINGS.DARK, icon: 'moon-outline' },
+        { id: 'system', label: SETTINGS.SYSTEM, icon: 'phone-portrait-outline' }
     ];
 
 
@@ -171,7 +174,7 @@ export const SettingsLanguages = () => {
         <>
             <SettingsItem
                 icon="language-outline"
-                title="Languages"
+                title={SETTINGS.LANGUAGES}
                 onPress={() => showModal()}
                 rightText={selected.name}
             />
@@ -184,20 +187,20 @@ export const SettingsLanguages = () => {
 // DATA 
 
 export const SettingsExportData = () => {
-    const nav = useNavigation();
     const { setMessage, toggleBar } = useSnackbar();
     const { destinations } = useData()
     const { colors } = useTheme()
+    const { t } = useTranslation();
 
     const exportJSON = async () => {
         try {
             const result = await exportDataToJSON([{ destinations }])
             if (result == true) {
-                setMessage("Data successfully exported!")
+                setMessage(t(SETTINGS.CREATE_BACKUP_MESSAGE))
                 toggleBar();
             }
         } catch (error) {
-            setMessage("Error exporting data")
+            setMessage(t(SETTINGS.CREATE_BACKUP_ERROR))
             toggleBar();
             console.log("Error saving JSON", error)
         }
@@ -207,7 +210,7 @@ export const SettingsExportData = () => {
         <>
             <SettingsItem
                 icon="save-outline"
-                title="Create a local backup (JSON)"
+                title={SETTINGS.CREATE_BACKUP}
                 onPress={() => exportJSON()}
                 colors={colors}
             />
@@ -220,6 +223,7 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
     const { setMessage, toggleBar } = useSnackbar();
     const { importData } = useData()
     const { colors } = useTheme()
+    const { t } = useTranslation();
 
     const setImportedJSONData = async () => {
         try {
@@ -227,11 +231,11 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
             const importedData = await importJSONData();
             const data = importedData[0];
             importData(data.destinations)
-            setMessage("Data successfully imported!")
+            setMessage(t(SETTINGS.IMPORT_BACKUP_MESSAGE))
             toggleBar();
             nav.goBack()
         } catch (error) {
-            setMessage("Error during import")
+            setMessage(t(SETTINGS.IMPORT_BACKUP_ERROR))
             toggleBar();
             console.log("Error saving JSON", error)
             nav.goBack()
@@ -239,7 +243,7 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
     }
 
     const iOSImportJSONData = () => {
-        Alert.alert("Warning", "Importing a local backup will overwrite your current data, continue?", [
+        Alert.alert(t(SETTINGS.IMPORT_BACKUP_ALERT_TITLE), t(SETTINGS.IMPORT_BACKUP_ALERT_CONTENT), [
             {
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
@@ -254,13 +258,13 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
         ])
     }
 
-    const dialogContent = <Txt>Importing a local backup will overwrite your current data, continue?</Txt>
+    const dialogContent = <Txt>{t(SETTINGS.IMPORT_BACKUP_ALERT_CONTENT)}</Txt>
 
     return (
         <>
             <SettingsItem
                 icon="download-outline"
-                title="Import a local backup (JSON)"
+                title={SETTINGS.IMPORT_BACKUP}
                 onPress={() => Platform.OS === "android" ? setDialogVisible(true) : iOSImportJSONData()}
                 colors={colors}
             />
@@ -268,11 +272,10 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={() => setDialogVisible(false)}
-                    title="Warning"
+                    title={t(SETTINGS.IMPORT_BACKUP_ALERT_TITLE)}
                     content={dialogContent}
                     cancel={() => setDialogVisible(false)}
                     validate={() => setImportedJSONData()}
-                    validateText="Continue"
                 />
             )}
         </>

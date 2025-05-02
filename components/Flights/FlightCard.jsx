@@ -23,7 +23,6 @@ export default function FlightCard({ item, onPress, destination }) {
     const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation } = useTheme()
 
-
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);

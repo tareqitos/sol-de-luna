@@ -9,7 +9,7 @@ import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
 import { generateDestinationEmoji } from "../services/services";
 import { useTranslation } from "react-i18next";
-import I from "../locales/languagesConst";
+import { DESTINATION, DIALOGS } from "../locales/languagesConst";
 
 export default function Destination() {
     const nav = useNavigation();
@@ -34,7 +34,7 @@ export default function Destination() {
 
 
     const deleteDialogContent = (
-        <Txt>Are you sure you want to delete this destination and all its data?</Txt>
+        <Txt>{t(DESTINATION.DIALOG_CONTENT)}</Txt>
     )
 
     const handleAddDestination = (dest) => {
@@ -74,7 +74,7 @@ export default function Destination() {
         <Container>
             <View>
                 <View>
-                    <Title title={"Destination"} subtitle={""} textColor={colors.onBackground} />
+                    <Title title={t(DESTINATION.TITLE)} subtitle={""} textColor={colors.onBackground} />
                 </View>
             </View>
 
@@ -101,7 +101,7 @@ export default function Destination() {
                                 mode="flat"
                                 value={value}
                                 onChangeText={setValue}
-                                placeholder={t(I.PLACEHOLDER)}
+                                placeholder={t(DESTINATION.PLACEHOLDER)}
                                 style={{ flex: 1, backgroundColor: colors.background }}
                                 right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
                             />
@@ -129,14 +129,13 @@ export default function Destination() {
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={deleteCancel}
-                    title="Delete Destination"
+                    title={t(DESTINATION.DIALOG_TITLE)}
                     content={deleteDialogContent}
                     cancel={deleteCancel}
                     validate={() => {
                         deleteDestination(selectedDestinationId)
                         deleteCancel()
                     }}
-                    validateText="Confirm"
                 />
             }
         </Container >

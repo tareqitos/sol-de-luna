@@ -15,14 +15,21 @@ import { useData } from "../hook/data";
 import OverviewCard from "../components/Home/OverviewCard";
 import Upcoming from "../components/Home/Upcoming";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { CATEGORIES, HOME } from "../locales/languagesConst";
 
 export default function Home({ route }) {
     const { colors, typography } = useTheme();
     const { destinations } = useData()
+    const { t } = useTranslation();
 
     const nav = useNavigation()
     const destinationId = route.params.destination.id
     const [destination, setDestination] = useState(route.params.destination);
+
+    const overviewText = t(HOME.OVERVIEW);
+    const upcomingText = t(HOME.UPCOMING);
+    const t_categories = [t(CATEGORIES.FLIGHTS), t(CATEGORIES.HOTELS), t(CATEGORIES.TRANSPORT), t(CATEGORIES.HOME)]
 
     // Update destination when data changes
     useEffect(() => {
@@ -92,7 +99,7 @@ export default function Home({ route }) {
             <View style={{ flex: 1, paddingHorizontal: 10, overflow: "visible" }}>
 
                 <View style={s.home.title} >
-                    <Title title={"Trips"} subtitle={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
+                    <Title title={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
 
                 {selectedTabName === "home" ?
@@ -103,13 +110,17 @@ export default function Home({ route }) {
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1 }}
                         >
-                            <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>Overview</Txt>
+                            <Txt style={[typography.h2, { marginBottom: 10, paddingHorizontal: 5 }]}>
+                                {overviewText}
+                            </Txt>
                             <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
-                                <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} />
+                                <OverviewCard updateTabName={updateSelectedTab} categories={categories} types={types} t_categories={t_categories} />
                             </View>
 
-                            <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>Upcoming trips</Txt>
-                            <Upcoming updatedTab={updateSelectedTab} categories={categories} types={types} />
+                            <Txt style={[typography.h2, { paddingHorizontal: 5 }]}>
+                                {upcomingText}
+                            </Txt>
+                            <Upcoming updatedTab={updateSelectedTab} categories={categories} types={types} t_categories={t_categories} />
                         </ScrollView>
 
                     </View>
@@ -117,14 +128,14 @@ export default function Home({ route }) {
                     <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
                         {categories.map((category) => (
                             <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
-                                <CardContainer category={category} destination={destination} types={types} />
+                                <CardContainer category={category} destination={destination} types={types} t_categories={t_categories} />
                             </Animated.View>
                         ))}
                     </ScrollView>
                 }
             </View>
             <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, borderColor: colors.primary, borderTopWidth: 1, paddingBottom: Platform.OS === "ios" ? 10 : 20 }]}>
-                <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} />
+                <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} t_categories={t_categories} />
             </View>
 
             <FABMenu destination={destination} tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />

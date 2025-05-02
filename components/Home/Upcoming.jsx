@@ -4,13 +4,13 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { calculateDayBetweenTwoDates, ConvertDateToString } from "../../services/date-service";
 import { showLocation } from "react-native-map-link";
 
-export default function Upcoming({ updatedTab, categories, types }) {
+export default function Upcoming({ updatedTab, categories, types, t_categories }) {
 
     const { colors, typography } = useTheme();
 
     const categoryContent = {
         flights: {
-            title: "Flights",
+            title: t_categories[0],
             icon: "airplane-takeoff",
             data: types.flights.sort((x, y) => {
                 return new Date(x.departureDate) - new Date(y.departureDate);
@@ -18,7 +18,7 @@ export default function Upcoming({ updatedTab, categories, types }) {
         },
 
         hotels: {
-            title: "Hotels",
+            title: t_categories[1],
             icon: "bed",
             data: types.hotels.sort((x, y) => {
                 return new Date(x.checkIn) - new Date(y.checkIn);
@@ -26,7 +26,7 @@ export default function Upcoming({ updatedTab, categories, types }) {
         },
 
         transport: {
-            title: "Transport",
+            title: t_categories[2],
             icon: "car",
             data: types.transport.sort((x, y) => {
                 return new Date(x.departureTime) - new Date(y.departureTime);
