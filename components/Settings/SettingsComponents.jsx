@@ -4,7 +4,7 @@ import {
     View, Text, StyleSheet, TouchableOpacity, Switch, Platform, Alert, useColorScheme,
     Linking
 } from 'react-native';
-import { Icon, RadioButton, useTheme } from 'react-native-paper';
+import { Button, Icon, Modal, Portal, RadioButton, useTheme } from 'react-native-paper';
 import Txt from '../Utils/Txt';
 import { exportDataToJSON, importJSONData } from '../../services/import-export-service';
 
@@ -14,12 +14,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useData } from '../../hook/data';
 import { themeHook } from '../../hook/theme';
 import { useSettings } from '../../hook/settings';
+import { useLocalization } from '../../hook/localization';
 
-const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightText }) => {
+const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightText, style }) => {
     const { colors } = useTheme();
     return (
         <TouchableOpacity
-            style={styles.settingsItem}
+            style={[styles.settingsItem, style]}
             onPress={onPress}
             disabled={type === 'switch'}
         >
@@ -74,6 +75,7 @@ export const SettingsTemperature = () => {
                 value={switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
+                style={styles.settingsItemNoPadding}
             />
         </>
     )
@@ -102,6 +104,7 @@ export const SettingsToggleCardCollapse = () => {
                 value={!switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
+                style={styles.settingsItemNoPadding}
             />
         </>
     )
@@ -137,6 +140,46 @@ export const SettingsTheme = () => {
         </>
     )
 }
+
+export const SettingsLanguages = () => {
+    const { colors } = useTheme()
+    const { languages, selected, setLanguage } = useLocalization();
+    const [visible, setVisible] = useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    const handleSelectLanguage = (lang) => {
+        setLanguage(lang);
+        hideModal();
+    }
+
+    const containerStyle = { backgroundColor: colors.surface, borderRadius: 10, paddingVertical: 20 };
+
+    const modal = (
+        <Portal>
+            <Modal visible={visible} onDismiss={hideModal} style={styles.langugageModal} contentContainerStyle={containerStyle}>
+                {languages.map(language => (
+                    <Button key={language.tag} onPress={() => handleSelectLanguage(language.tag)} style={styles.languageSelection}>{language.name}</Button>
+                ))}
+
+            </Modal>
+        </Portal>
+    )
+
+    return (
+        <>
+            <SettingsItem
+                icon="language-outline"
+                title="Languages"
+                onPress={() => showModal()}
+                rightText={selected.name}
+            />
+            {visible && modal}
+        </>
+    )
+}
+
 
 // DATA 
 
@@ -295,6 +338,10 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
 
+    settingsItemNoPadding: {
+        paddingVertical: 0,
+    },
+
     settingsItemLeft: {
         flex: 1,
         flexDirection: 'row',
@@ -310,5 +357,14 @@ const styles = StyleSheet.create({
         width: 20,
         borderRadius: 10,
         borderWidth: 2,
-    }
+    },
+
+    langugageModal: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    languageSelection: {
+        marginHorizontal: 50,
+    },
 });
