@@ -1,15 +1,16 @@
-import { Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Animated, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import Title from "../components/Utils/Title";
 import { Button, Surface, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
 import { generateDestinationEmoji } from "../services/services";
 import { useTranslation } from "react-i18next";
 import { DESTINATION, DIALOGS } from "../locales/languagesConst";
+import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
 
 export default function Destination() {
     const nav = useNavigation();
@@ -49,6 +50,7 @@ export default function Destination() {
     }
 
     const handleDeleteDestination = (destID) => {
+        Vibration.vibrate(20)
         setSelectedDestinationId(destID)
         setDelete(true)
         setDialogVisible(true)
@@ -78,8 +80,6 @@ export default function Destination() {
                 </View>
             </View>
 
-
-
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={styles.wrapper}>
 
@@ -108,18 +108,30 @@ export default function Destination() {
                         </View>
                     </View>
                     <View style={styles.destinations}>
-                        {destinations.length > 0 && destinations.map((destination) => (
-                            <TouchableOpacity
-                                key={destination.id}
-                                activeOpacity={1}
-                                onPress={() => nav.navigate('Home', { destination })}
-                                onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
-                            >
-                                <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
-                                    <Txt style={typography.h5}>{destination && destination.name}</Txt>
-                                </Surface>
-                            </TouchableOpacity>
-                        ))}
+                        {destinations.length > 0 && destinations.map((destination) => {
+                            const scaleValue = getScaleValue(destination.id);
+
+                            return (
+                                <Animated.View
+                                    key={destination.id}
+                                    style={{ transform: [{ scale: scaleValue }] }} // Apply scale transformation
+                                >
+                                    <TouchableOpacity
+                                        key={destination.id}
+                                        activeOpacity={1}
+                                        onPressIn={() => handlePressIn(1.1, destination.id)}
+                                        onPressOut={() => handlePressOut(destination.id)}
+                                        onPress={() => nav.navigate('Home', { destination })}
+                                        onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
+                                    >
+
+                                        <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
+                                            <Txt style={typography.h5}>{destination && destination.name}</Txt>
+                                        </Surface>
+                                    </TouchableOpacity>
+                                </Animated.View>
+                            )
+                        })}
                     </View>
                 </View>
             </TouchableWithoutFeedback>

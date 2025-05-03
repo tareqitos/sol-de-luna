@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Vibration } from "react-native";
 import { useData } from "../hook/data";
 import { useTranslation } from "react-i18next";
 import { DIALOGS, MESSAGES } from "../locales/languagesConst";
@@ -76,6 +76,7 @@ export function DocumentProvider({ children }) {
             const filteredItem = item.documents.filter((file) => file.name !== fileName);
             updateItem(destinationID, { ...item, documents: filteredItem });
         } else {
+            Vibration.vibrate(20)
             Alert.alert(t(MESSAGES.DELETE_FILE_TITLE), t(MESSAGES.DELETE_FILE_CONTENT), [
                 {
                     text: t(DIALOGS.CANCEL),

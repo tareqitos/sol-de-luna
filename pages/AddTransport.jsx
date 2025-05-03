@@ -45,7 +45,7 @@ export default function AddTransport({ route }) {
 
     const onSubmit = (newData) => {
         const newItem = {
-            line: line,
+            name: line,
             transportType: transportType,
             departureTime: mergeDateAndTime(departDate, departDate) || null,
             arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,

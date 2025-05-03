@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState, useTransition } from "react"
 import CollapseButton from "../UI/CollapseButton"
 import { s } from "../../styles/card.style"
 
-import { Divider, MD3DarkTheme, useTheme } from "react-native-paper"
+import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper"
 import CardTitle from "../Cards/CardTitle"
 import CardDate from "../Cards/CardDate"
 import CardTime from "../Cards/CardTime"

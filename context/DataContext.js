@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useRef, useState } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Vibration } from "react-native";
 import { v4 as uuidv4 } from 'uuid';
 import { DESTINATION, DIALOGS, MESSAGES } from "../locales/languagesConst";
 import { useTranslation } from "react-i18next";
@@ -36,6 +36,7 @@ export function DataProvider({ children }) {
                 setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
             }
         } else {
+            Vibration.vibrate(20)
             Alert.alert(t(DESTINATION.DIALOG_TITLE), t(DESTINATION.DIALOG_CONTENT), [
                 {
                     text: t(DIALOGS.CANCEL),
@@ -96,6 +97,7 @@ export function DataProvider({ children }) {
                 }
             }))
         } else {
+            Vibration.vibrate(20)
             Alert.alert(t(MESSAGES.DELETE_CARD_TITLE), t(MESSAGES.DELETE_CARD_CONTENT), [
                 {
                     text: t(DIALOGS.CANCEL),

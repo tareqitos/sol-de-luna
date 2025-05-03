@@ -43,7 +43,7 @@ export default function TransportCard({ item, onPress, destination }) {
             <View >
                 <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 5, paddingHorizontal: 10, marginTop: 15 }]}>
                     <Icon source={item.transportType} size={28} color={colors.onPrimary} />
-                    {item.line && <CardLine line={item.line} />}
+                    {item.name && <CardLine line={item.name} />}
                 </View>
                 <View style={[{ paddingVertical: 10, paddingHorizontal: 10, bottom: 5, borderWidth: 1, borderColor: colors.primary, borderBottomStartRadius: 5, borderBottomEndRadius: 5 }]}>
                     <View style={styles.row}>
