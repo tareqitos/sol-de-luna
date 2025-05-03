@@ -4,14 +4,14 @@ import Txt from "../Utils/Txt";
 import { s } from "../../styles/styles.style";
 import { Icon, useTheme } from "react-native-paper";
 const iconSize = 24;
-export default function TabBottomMenu({ selectedTabName, onPress }) {
+export default function TabBottomMenu({ selectedTabName, onPress, t_categories }) {
     const { colors, typography } = useTheme();
 
     const tabs = [
-        { name: "home", label: "Home", icon: "home" },
-        { name: "flights", label: "Flights", icon: "airplane" },
-        { name: "hotels", label: "Hotels", icon: "home-city" },
-        { name: "transport", label: "Transport", icon: "car" },
+        { name: "home", label: t_categories[3], icon: "home" },
+        { name: "flights", label: t_categories[0], icon: "airplane" },
+        { name: "hotels", label: t_categories[1], icon: "home-city" },
+        { name: "transport", label: t_categories[2], icon: "car" },
     ];
 
     function getTextStyle(tabName) {

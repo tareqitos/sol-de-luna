@@ -2,17 +2,17 @@ import { View } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { s } from "../../styles/styles.style";
 
-export default function TransportNumberInput({ line, setLine }) {
+export default function TransportNumberInput({ label, placeholder, line, setLine }) {
     const { colors, typography } = useTheme();
 
     return (
         <View>
             <TextInput
-                label="Line"
+                label={label}
                 mode="flat"
                 value={line}
                 onChangeText={setLine}
-                placeholder="e.g. 42, 2B..."
+                placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
                 style={[
                     s.form.input,

@@ -16,24 +16,24 @@ import { s } from "../styles/styles.style";
 import { useData } from "../hook/data";
 import { useSnackbar } from "../hook/useSnackbar";
 import { mergeDateAndTime } from "../services/date-service";
+import { useTranslation } from "react-i18next";
+import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
     const { addItem } = useData()
+    const { setMessage, toggleBar } = useSnackbar();
+    const { colors } = useTheme();
+    const { t } = useTranslation();
+
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
+    const [passengers, setPassengers] = useState([])
     const [routes, setRoutes] = useState({
         departureAirport: { city: "", iata: "" },
         arrivalAirport: { city: "", iata: "" }
     });
 
-
-
-    const [passengers, setPassengers] = useState([])
-
-    const { setMessage, toggleBar } = useSnackbar();
-
-    const { colors } = useTheme();
     const nav = useNavigation();
     const iataRef = useRef();
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -60,7 +60,7 @@ export default function AddFlight({ route }) {
         addItem(destination.id, "flights", newItem)
         console.log("FLIGHTS: ", newItem)
 
-        setMessage("Flight has successfully been added")
+        setMessage(t(MESSAGES.FLIGHT_ADDED_MESSAGE))
         toggleBar();
         nav.goBack()
     }
@@ -87,18 +87,19 @@ export default function AddFlight({ route }) {
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={{ flex: 1 }}>
 
-                    <TitlePage title={"Add flight"} />
+                    <TitlePage title={t(PAGE_TITLES.FLIGHT_TITLE)} />
 
                     <View style={{ flex: 1 }}>
                         <View style={s.form.container}>
                             <View style={s.form.input_container}>
-                                <TitleInput name="Flight Name" placeholder="e.g Conference in Tokyo" maxLength={50} control={control} errors={errors} />
+                                <TitleInput name={t(FORM.FLIGHT_NAME)} placeholder={t(FORM.FLIGHT_NAME_PLACEHOLDER)} maxLength={50} control={control} errors={errors} />
                             </View>
 
                             <View style={s.form.input_container}>
                                 <RouteInput
                                     iataRef={iataRef}
                                     setRoute={setRoutes}
+                                    t={t}
                                 />
                             </View>
 
@@ -109,10 +110,10 @@ export default function AddFlight({ route }) {
                             </View>
 
 
-                            <PeopleInput passengers={passengers} setPassengers={setPassengers} />
+                            <PeopleInput passengerLabel={t(FORM.FLIGHT_PASSENGER)} seatLabel={t(FORM.FLIGHT_SEAT)} passengers={passengers} setPassengers={setPassengers} />
 
                             <View style={[s.form.input_container, s.form.input_addInfos]}>
-                                <InformationInput placeholder="Airline, flight number, departure time, etc. (optional)" control={control} />
+                                <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                             </View>
                         </View>
                     </View>

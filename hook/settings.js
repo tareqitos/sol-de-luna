@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SettingsContext } from "../context/SettingsContext";
 
 export function useSettings() {
-    const { unit, toggleUnit } = useContext(SettingsContext)
+    const { unit, toggleUnit, cardsOpen, toggleCardsOpen } = useContext(SettingsContext)
 
-    return { unit, toggleUnit }
+    return { unit, toggleUnit, cardsOpen, toggleCardsOpen }
 }

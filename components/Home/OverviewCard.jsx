@@ -1,25 +1,27 @@
 import { TouchableOpacity } from "react-native";
 import Txt from "../Utils/Txt";
 import { Icon, Surface, useTheme } from "react-native-paper";
+import { useTranslation } from "react-i18next";
+import { CATEGORIES } from "../../locales/languagesConst";
 
-export default function OverviewCard({ updateTabName, categories, types }) {
+export default function OverviewCard({ updateTabName, categories, types, t_categories }) {
     const { colors, typography } = useTheme();
 
     const categoryContent = {
         flights: {
-            title: "Flights",
+            title: t_categories[0],
             icon: "airplane-takeoff",
             data: types.flights
         },
 
         hotels: {
-            title: "Hotels",
+            title: t_categories[1],
             icon: "bed",
             data: types.hotels
         },
 
         transport: {
-            title: "Transport",
+            title: t_categories[2],
             icon: "car",
             data: types.transport
         }

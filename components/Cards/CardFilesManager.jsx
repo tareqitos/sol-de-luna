@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useDocument } from "../../hook/document";
-import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import CardSection from "./CardSection";
 import CardFiles from "./CardFiles";
 import DialogPopUp from "../UI/Dialog";
 import Txt from "../Utils/Txt";
+import { MESSAGES } from "../../locales/languagesConst";
+import { useTranslation } from "react-i18next";
+import { getScaleValue, handlePressIn, handlePressOut } from "../../services/animation-service";
 
 export default function CardFilesManager({ item, destinationID }) {
 
+    const { t } = useTranslation();
     const { openDocument, deleteDocument } = useDocument();
     const [dialogVisible, setDialogVisible] = useState(false);
     const [fileToDelete, setFileToDelete] = useState(null);
@@ -34,16 +38,25 @@ export default function CardFilesManager({ item, destinationID }) {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <View style={styles.container}>
 
-                            {item.documents.map((file) => (
-                                <TouchableOpacity
-                                    key={file.uri}
-                                    activeOpacity={0.9}
-                                    onPress={() => openDocument(file.uri)}
-                                    onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destinationID, item, file.name)}
-                                >
-                                    <CardFiles file={file} />
-                                </TouchableOpacity>
-                            ))}
+                            {item.documents.map((file) => {
+                                const scaleValue = getScaleValue(file.uri)
+                                return (
+                                    <Animated.View
+                                        key={file.uri}
+                                        style={{ transform: [{ scale: scaleValue }], overflow: "visible" }}
+                                    >
+                                        <TouchableOpacity
+                                            activeOpacity={0.9}
+                                            onPressIn={() => handlePressIn(0.9, file.uri)}
+                                            onPressOut={() => handlePressOut(file.uri)}
+                                            onPress={() => openDocument(file.uri)}
+                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destinationID, item, file.name)}
+                                        >
+                                            <CardFiles file={file} />
+                                        </TouchableOpacity>
+                                    </Animated.View>
+                                )
+                            })}
                         </View>
                     </ScrollView>
                 </CardSection>
@@ -52,11 +65,10 @@ export default function CardFilesManager({ item, destinationID }) {
             <DialogPopUp
                 visible={dialogVisible}
                 onDismiss={closeDialog}
-                title="Delete File"
-                content={<Txt>Are you sure you want to delete this file?</Txt>}
+                title={t(MESSAGES.DELETE_FILE_TITLE)}
+                content={<Txt>{t(MESSAGES.DELETE_FILE_CONTENT)}</Txt>}
                 cancel={closeDialog}
                 validate={confirmDelete}
-                validateText="Confirm"
             />
         </>
     )

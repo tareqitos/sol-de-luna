@@ -1,7 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useRef, useState } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Vibration } from "react-native";
 import { v4 as uuidv4 } from 'uuid';
+import { DESTINATION, DIALOGS, MESSAGES } from "../locales/languagesConst";
+import { useTranslation } from "react-i18next";
 
 export const DataContext = createContext({
     destinations: [],
@@ -10,6 +12,7 @@ export const DataContext = createContext({
 export function DataProvider({ children }) {
 
     const [destinations, setDestinations] = useState([])
+    const { t } = useTranslation()
     const DESTINATIONS_STORAGE_KEY = "@destinations_data"
 
     const isFirstLoad = useRef(true); // Ref for initialization status
@@ -33,13 +36,14 @@ export function DataProvider({ children }) {
                 setDestinations(prev => prev.filter(dest => dest.id !== destinationId));
             }
         } else {
-            Alert.alert(`Delete destination`, "Are you sure you want to delete this destination and all its data?", [
+            Vibration.vibrate(20)
+            Alert.alert(t(DESTINATION.DIALOG_TITLE), t(DESTINATION.DIALOG_CONTENT), [
                 {
-                    text: 'Cancel',
+                    text: t(DIALOGS.CANCEL),
                     style: 'cancel'
                 },
                 {
-                    text: 'Delete',
+                    text: t(DIALOGS.CONFIRM),
                     style: 'destructive',
                     onPress: () => {
                         if (destinationId) {
@@ -93,13 +97,14 @@ export function DataProvider({ children }) {
                 }
             }))
         } else {
-            Alert.alert(`Delete ${item.name || item.line}`, "Do you want to delete this item?", [
+            Vibration.vibrate(20)
+            Alert.alert(t(MESSAGES.DELETE_CARD_TITLE), t(MESSAGES.DELETE_CARD_CONTENT), [
                 {
-                    text: 'Cancel',
+                    text: t(DIALOGS.CANCEL),
                     style: 'cancel'
                 },
                 {
-                    text: 'Delete',
+                    text: t(DIALOGS.CONFIRM),
                     style: 'destructive',
                     onPress: () => {
                         setDestinations(prev => prev.map(destination => {
@@ -135,14 +140,20 @@ export function DataProvider({ children }) {
         try {
             const storedData = await AsyncStorage.getItem(DESTINATIONS_STORAGE_KEY);
             if (storedData) {
-                setDestinations(JSON.parse(storedData))
+                const parsedData = JSON.parse(storedData);
+                if (Array.isArray(parsedData)) {
+                    setDestinations(parsedData);
+                } else {
+                    console.log("Invalid data format: Expected an array.");
+                    setDestinations([]);
+                }
             } else {
                 setDestinations([]);
             }
         } catch (error) {
             console.log("Unable to load destinations from AsyncStorage");
         }
-    }
+    };
 
     // Load Data on initial render
     useEffect(() => {

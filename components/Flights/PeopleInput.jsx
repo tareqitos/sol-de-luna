@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Txt from "../Utils/Txt";
 import { generateRandomEmoji } from "../../services/services";
 
-export default function PeopleInput({ passengers, setPassengers }) {
+export default function PeopleInput({ passengerLabel, seatLabel, passengers, setPassengers }) {
 
     const [emoji, setEmoji] = useState("")
     const [name, setName] = useState("")
@@ -58,7 +58,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
             <View style={[s.inputContainer]}>
                 <View style={[s.itemContainer, { flex: 1 }]}>
                     <TextInput
-                        label="Person name"
+                        label={passengerLabel}
                         mode
                         value={name}
                         onChangeText={setName}
@@ -71,7 +71,7 @@ export default function PeopleInput({ passengers, setPassengers }) {
 
                 <View style={[s.itemContainer, { width: 80 }]}>
                     <TextInput
-                        label="Seat"
+                        label={seatLabel}
                         value={seat}
                         onChangeText={setSeat}
                         style={[typography.body, { paddingHorizontal: 0, backgroundColor: colors.background }]}

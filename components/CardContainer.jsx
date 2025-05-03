@@ -1,4 +1,4 @@
-import { Platform, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, TouchableOpacity, Vibration, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import Txt from "./Utils/Txt";
 import { s } from "../styles/card.style";
@@ -11,19 +11,32 @@ import { Icon, useTheme } from "react-native-paper";
 import HotelCard from "./Hotels/HotelCard";
 import TransportCard from "./Transport/TransportCard";
 import DialogPopUp from "./UI/Dialog";
+import { useTranslation } from "react-i18next";
+import { MESSAGES } from "../locales/languagesConst";
+import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
+import FilterCards from "./Utils/FilterCards";
+import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc } from "../services/sort-service";
 
 
-const CardContainer = memo(({ category, destination, style = {} }) => {
+const CardContainer = memo(({ category, destination, t_categories, style = {} }) => {
     const [isCollapsed, setIsCollapse] = useState(false)
     const { deleteItem } = useData()
     const { colors, typography } = useTheme()
+    const { t } = useTranslation();
 
     const [itemToDelete, setItemToDelete] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
+    const [data, setData] = useState([])
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, [])
+
+    const t_category = {
+        flights: t_categories[0],
+        hotels: t_categories[1],
+        transport: t_categories[2]
+    }
 
     const categoryIcon = () => {
         switch (category) {
@@ -38,7 +51,10 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
         }
     };
 
+    // DELETE ITEM FUNCTIONS
+
     const handleDeleteItem = (item) => {
+        Vibration.vibrate(20)
         setItemToDelete(item)
         setDialogVisible(true)
     }
@@ -52,6 +68,30 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
         setDialogVisible(false);
         setItemToDelete(null);
     };
+
+    // FILTER DATA FUNCTIONS
+    const [dateAsc, setDateAsc] = useState(true)
+    const [nameAsc, setNameAsc] = useState(false)
+
+    const handleFilterByDate = () => {
+        if (dateAsc) {
+            setData(filteredDataByDateDesc(data))
+            setDateAsc(false)
+        } else {
+            setData(filteredDataByDateAsc(data))
+            setDateAsc(true)
+        }
+    }
+
+    const handleFilterByName = () => {
+        if (!nameAsc) {
+            setData(filteredDataByNameAsc(data))
+            setNameAsc(true)
+        } else {
+            setData(filteredDataByNameDesc(data))
+            setNameAsc(false)
+        }
+    }
 
 
     // Memoize the card content to prevent re-renders
@@ -68,27 +108,39 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
             transport: TransportCard,
         };
 
-        const data = dataMap[category];
+        setData(dataMap[category]);
+
         const CardComponent = cardMap[category];
+
 
         if (!CardComponent) return null;
 
         if (!data || data.length == 0) {
-            return <Txt style={typography.body}>No {category} added yet.</Txt>;
+            return <Txt style={typography.body}>{t(MESSAGES.EMPTY_CATEGORY_MESSAGE) + t_category[category].toLowerCase() + '.'}</Txt>;
         }
 
-        return data.map((item) => (
-            <TouchableOpacity
-                onLongPress={() => Platform.OS === "android" ? handleDeleteItem(item) : deleteItem(destination.id, item)}
-                activeOpacity={1}
-                key={item.id || `${category}-${item.from}-${item.to}`}
-            >
-                <CardComponent
-                    item={item} destination={destination}
-                />
-            </TouchableOpacity>
-        ));
-    }, [destination, category, deleteItem]);
+        return data && data.map((item) => {
+            const scaleValue = getScaleValue(item.id);
+
+            return (
+                <Animated.View
+                    key={item.id}
+                    style={{ transform: [{ scale: scaleValue }] }} // Apply scale transformation
+                >
+                    <TouchableOpacity
+                        onPressIn={() => handlePressIn(1.05, item.id)}
+                        onPressOut={() => handlePressOut(item.id)}
+                        onLongPress={() => Platform.OS === "android" ? handleDeleteItem(item) : deleteItem(destination.id, item)}
+                        activeOpacity={1}
+                    >
+                        <CardComponent
+                            item={item} destination={destination}
+                        />
+                    </TouchableOpacity>
+                </Animated.View>
+            )
+        });
+    }, [destination, category, deleteItem, data, dateAsc, nameAsc]);
 
     return (
 
@@ -98,9 +150,12 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
                     <View style={s.card.icon_container}>
                         {categoryIcon()}
                     </View>
-                    <Txt style={[typography.h3, { color: colors.primary }]}>{category}</Txt>
+                    <Txt style={[typography.h3, { color: colors.primary, lineHeight: 22 }]}>{t_category[category]}</Txt>
                 </View>
-                <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                    <FilterCards dateAsc={dateAsc} nameAsc={nameAsc} filterByName={handleFilterByName} filterByDate={handleFilterByDate} />
+                    <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
+                </View>
             </View>
             <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
                 {categoryContent}
@@ -108,11 +163,10 @@ const CardContainer = memo(({ category, destination, style = {} }) => {
             <DialogPopUp
                 visible={dialogVisible}
                 onDismiss={closeDialog}
-                title="Delete card"
-                content={<Txt>Do you want to delete this card?</Txt>}
+                title={t(MESSAGES.DELETE_CARD_TITLE)}
+                content={<Txt>{t(MESSAGES.DELETE_CARD_CONTENT)}</Txt>}
                 cancel={closeDialog}
                 validate={deleteConfirm}
-                validateText="Confirm"
             />
 
         </View >

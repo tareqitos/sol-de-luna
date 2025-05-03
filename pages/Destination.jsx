@@ -1,20 +1,16 @@
-import { Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Animated, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import Title from "../components/Utils/Title";
-import { Surface, TextInput, useTheme } from "react-native-paper";
+import { Button, Surface, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
 import { generateDestinationEmoji } from "../services/services";
-// import { scheduleDepartureReminder } from "../services/notifications-service";
-
-const greetings = ["Hello", "Hi", "Hey", "Greetings", "Howdy"];
-const travelQuestions = ["Where are you going?", "What's your destination?", "Where to?", "Heading somewhere?", "Planning a trip?"];
-
-// import { initializeNotifications } from "../services/notifications-service";
-// initializeNotifications();
+import { useTranslation } from "react-i18next";
+import { DESTINATION, DIALOGS } from "../locales/languagesConst";
+import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
 
 export default function Destination() {
     const nav = useNavigation();
@@ -29,12 +25,17 @@ export default function Destination() {
     const [emoji, setEmoji] = useState(generateDestinationEmoji());
     const [selectedDestinationId, setSelectedDestinationId] = useState();
 
-    const randomGreeting = useMemo(() => greetings[Math.floor(Math.random() * greetings.length)], []);
-    const randomQuestion = useMemo(() => travelQuestions[Math.floor(Math.random() * travelQuestions.length)], []);
+    const { t } = useTranslation();
+
+    const greetingsArr = t("greetings", { returnObjects: true });
+    const questionsArr = t("travelQuestions", { returnObjects: true });
+
+    const randomGreeting = useMemo(() => greetingsArr[Math.floor(Math.random() * greetingsArr.length)], [t]);
+    const randomQuestion = useMemo(() => questionsArr[Math.floor(Math.random() * questionsArr.length)], [t]);
 
 
     const deleteDialogContent = (
-        <Txt>Are you sure you want to delete this destination and all its data?</Txt>
+        <Txt>{t(DESTINATION.DIALOG_CONTENT)}</Txt>
     )
 
     const handleAddDestination = (dest) => {
@@ -49,6 +50,7 @@ export default function Destination() {
     }
 
     const handleDeleteDestination = (destID) => {
+        Vibration.vibrate(20)
         setSelectedDestinationId(destID)
         setDelete(true)
         setDialogVisible(true)
@@ -74,17 +76,16 @@ export default function Destination() {
         <Container>
             <View>
                 <View>
-                    <Title title={"Destination"} subtitle={""} textColor={colors.onBackground} />
+                    <Title title={t(DESTINATION.TITLE)} subtitle={""} textColor={colors.onBackground} />
                 </View>
             </View>
 
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={styles.wrapper}>
 
-
                     <View style={styles.container}>
                         <Txt style={[typography.body, styles.greetings]}>
-                            {randomGreeting},
+                            {t(randomGreeting)},
                         </Txt>
                         <Txt style={[typography.body, styles.greetings]}>
                             {randomQuestion}
@@ -100,25 +101,37 @@ export default function Destination() {
                                 mode="flat"
                                 value={value}
                                 onChangeText={setValue}
-                                placeholder="e.g. Morocco, Japan, Grandma..."
+                                placeholder={t(DESTINATION.PLACEHOLDER)}
                                 style={{ flex: 1, backgroundColor: colors.background }}
                                 right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
                             />
                         </View>
                     </View>
                     <View style={styles.destinations}>
-                        {destinations.length > 0 && destinations.map((destination) => (
-                            <TouchableOpacity
-                                key={destination.id}
-                                activeOpacity={1}
-                                onPress={() => nav.navigate('Home', { destination })}
-                                onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
-                            >
-                                <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
-                                    <Txt style={typography.h5}>{destination && destination.name}</Txt>
-                                </Surface>
-                            </TouchableOpacity>
-                        ))}
+                        {destinations.length > 0 && destinations.map((destination) => {
+                            const scaleValue = getScaleValue(destination.id);
+
+                            return (
+                                <Animated.View
+                                    key={destination.id}
+                                    style={{ transform: [{ scale: scaleValue }] }} // Apply scale transformation
+                                >
+                                    <TouchableOpacity
+                                        key={destination.id}
+                                        activeOpacity={1}
+                                        onPressIn={() => handlePressIn(1.1, destination.id)}
+                                        onPressOut={() => handlePressOut(destination.id)}
+                                        onPress={() => nav.navigate('Home', { destination })}
+                                        onLongPress={() => Platform.OS === "android" ? handleDeleteDestination(destination.id) : deleteDestination(destination.id)}
+                                    >
+
+                                        <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
+                                            <Txt style={typography.h5}>{destination && destination.name}</Txt>
+                                        </Surface>
+                                    </TouchableOpacity>
+                                </Animated.View>
+                            )
+                        })}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -128,14 +141,13 @@ export default function Destination() {
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={deleteCancel}
-                    title="Delete Destination"
+                    title={t(DESTINATION.DIALOG_TITLE)}
                     content={deleteDialogContent}
                     cancel={deleteCancel}
                     validate={() => {
                         deleteDestination(selectedDestinationId)
                         deleteCancel()
                     }}
-                    validateText="Confirm"
                 />
             }
         </Container >

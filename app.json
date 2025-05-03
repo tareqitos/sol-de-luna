@@ -39,6 +39,7 @@
     "plugins": [
       "expo-font",
       "expo-file-system",
+      "expo-localization",
       "react-native-map-link",
       [
         "expo-document-picker",
@@ -55,7 +56,20 @@
             "enableProguardInReleaseBuilds": true
           }
         }
-      ]
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FDFDFD",
+          "image": "./assets/splash-icon.png",
+          "dark": {
+            "image": "./assets/splash-icon.png",
+            "backgroundColor": "#121212"
+          },
+          "imageWidth": 200
+        }
+      ],
+      "expo-localization"
     ],
     "extra": {
       "eas": {

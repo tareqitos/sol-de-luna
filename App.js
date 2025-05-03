@@ -20,6 +20,7 @@ import { StatusBar } from 'expo-status-bar';
 import Destination from './pages/Destination';
 import SnackbarMessage from './components/UI/Snackbar';
 import { SettingsProvider } from './context/SettingsContext';
+import { LocalizationProvider } from './context/LocalizationContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,26 +31,29 @@ function AppContent() {
   return (
     <View style={[{ flex: 1 }, { backgroundColor: theme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
-        <NavigationContainer>
-          <SettingsProvider>
-            <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
-            <DataProvider>
-              <SnackbarProvider>
-                <DocumentProvider>
-                  <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Destination'>
-                    <Stack.Screen name="Destination" component={Destination} />
-                    <Stack.Screen name="Home" component={Home} />
-                    <Stack.Screen name="AddFlight" component={AddFlight} />
-                    <Stack.Screen name="AddHotel" component={AddHotels} />
-                    <Stack.Screen name="AddTransport" component={AddTransport} />
-                    <Stack.Screen name="Settings" component={Settings} />
-                  </Stack.Navigator>
-                </DocumentProvider>
-                <SnackbarMessage />
-              </SnackbarProvider>
-            </DataProvider>
-          </SettingsProvider>
-        </NavigationContainer>
+        <LocalizationProvider>
+
+          <NavigationContainer>
+            <SettingsProvider>
+              <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+              <DataProvider>
+                <SnackbarProvider>
+                  <DocumentProvider>
+                    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Destination'>
+                      <Stack.Screen name="Destination" component={Destination} />
+                      <Stack.Screen name="Home" component={Home} />
+                      <Stack.Screen name="AddFlight" component={AddFlight} />
+                      <Stack.Screen name="AddHotel" component={AddHotels} />
+                      <Stack.Screen name="AddTransport" component={AddTransport} />
+                      <Stack.Screen name="Settings" component={Settings} />
+                    </Stack.Navigator>
+                  </DocumentProvider>
+                  <SnackbarMessage />
+                </SnackbarProvider>
+              </DataProvider>
+            </SettingsProvider>
+          </NavigationContainer>
+        </LocalizationProvider>
       </PaperProvider>
     </View>
   );

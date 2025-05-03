@@ -3,12 +3,43 @@ import { createContext, useEffect, useState } from "react";
 
 export const SettingsContext = createContext({
     unit: "C",
+    cardsOpen: true
 });
 
 export function SettingsProvider({ children }) {
     const [unit, setUnit] = useState("C");
+    const [cardsOpen, setCardsOpen] = useState(true)
 
-    const THEME_STORAGE_KEY = 'app_temp_unit';
+    const UNIT_STORAGE_KEY = 'app_temp_unit';
+    const CARDS_STORAGE_KEY = 'app_cards_open';
+
+    const toggleCardsOpen = () => {
+        setCardsOpen(prev => prev === true ? false : true)
+    }
+
+    const saveCardsOptionToAsync = async () => {
+        try {
+            await AsyncStorage.setItem(CARDS_STORAGE_KEY, JSON.stringify(cardsOpen) || "true")
+            console.log("Cards preferences saved: ", cardsOpen);
+        } catch (error) {
+            console.log("Failed to save cards preferences: ", error)
+        }
+    }
+
+    const loadCardsOption = async () => {
+        try {
+            const savedCardOption = await AsyncStorage.getItem(CARDS_STORAGE_KEY);
+            if (savedCardOption) {
+                const parsedOption = JSON.parse(savedCardOption)
+                setCardsOpen(parsedOption);
+            } else {
+                setCardsOpen(true);
+            }
+            console.log("Cards preference loaded: ", cardsOpen)
+        } catch (error) {
+            console.log("Failed to load cards preference: ", error)
+        }
+    }
 
 
     const toggleUnit = () => {
@@ -17,7 +48,7 @@ export function SettingsProvider({ children }) {
 
     const saveTempUnit = async () => {
         try {
-            await AsyncStorage.setItem(THEME_STORAGE_KEY, unit || null)
+            await AsyncStorage.setItem(UNIT_STORAGE_KEY, unit || null)
             console.log("Temp unit saved: ", unit)
         } catch (error) {
             console.log("Failed to save temp unit: ", error)
@@ -26,11 +57,11 @@ export function SettingsProvider({ children }) {
 
     const loadTempUnit = async () => {
         try {
-            const savedUnit = await AsyncStorage.getItem(THEME_STORAGE_KEY)
+            const savedUnit = await AsyncStorage.getItem(UNIT_STORAGE_KEY)
             if (savedUnit) {
                 setUnit(savedUnit)
             } else {
-                setUnit("")
+                setUnit("C")
             }
             console.log("Temp unit loaded: ", unit)
         } catch (error) {
@@ -40,14 +71,19 @@ export function SettingsProvider({ children }) {
 
     useEffect(() => {
         loadTempUnit()
+        loadCardsOption()
     }, [])
 
     useEffect(() => {
         saveTempUnit()
     }, [unit])
 
+    useEffect(() => {
+        saveCardsOptionToAsync()
+    }, [cardsOpen])
+
     return (
-        <SettingsContext.Provider value={{ unit, toggleUnit }}>
+        <SettingsContext.Provider value={{ unit, toggleUnit, cardsOpen, toggleCardsOpen }}>
             {children}
         </SettingsContext.Provider>
     );

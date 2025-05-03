@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
 import CollapseButton from "../UI/CollapseButton";
@@ -11,14 +11,23 @@ import Collapsible from "react-native-collapsible";
 import CardSection from "../Cards/CardSection";
 import CardLine from "./CardLine";
 import CardFilesManager from "../Cards/CardFilesManager";
+import { useSettings } from "../../hook/settings";
+import { useTranslation } from "react-i18next";
+import { CARDS, FORM } from "../../locales/languagesConst";
 
 export default function TransportCard({ item, onPress, destination }) {
-    const [isCollapsed, setIsCollapse] = useState(true) // CHANGE TO TRUE FOR PROD
+    const { cardsOpen } = useSettings()
+    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation, typography } = useTheme()
+    const { t } = useTranslation()
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
     }, []);
+
+    useEffect(() => {
+        setIsCollapse(cardsOpen)
+    }, [cardsOpen])
 
     // const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
     // const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()
@@ -34,7 +43,7 @@ export default function TransportCard({ item, onPress, destination }) {
             <View >
                 <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 5, paddingHorizontal: 10, marginTop: 15 }]}>
                     <Icon source={item.transportType} size={28} color={colors.onPrimary} />
-                    {item.line && <CardLine line={item.line} />}
+                    {item.name && <CardLine line={item.name} />}
                 </View>
                 <View style={[{ paddingVertical: 10, paddingHorizontal: 10, bottom: 5, borderWidth: 1, borderColor: colors.primary, borderBottomStartRadius: 5, borderBottomEndRadius: 5 }]}>
                     <View style={styles.row}>
@@ -56,8 +65,8 @@ export default function TransportCard({ item, onPress, destination }) {
                 <View style={s.card.add_container}>
 
                     {/* ADDITIONAL INFORMATION */}
-                    <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                    <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} />
                     </CardSection>
 
                     <CardFilesManager item={item} destinationID={destination.id} />

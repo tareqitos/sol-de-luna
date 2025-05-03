@@ -3,11 +3,12 @@ import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-na
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
+import { FORM } from "../../locales/languagesConst";
 
-export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboard }) {
+export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboard, t }) {
 
     const [results, setResults] = useState([]);
-    const [message, setMessage] = useState("Or tap here to add manually")
+    const [message, setMessage] = useState(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
     const { colors, typography } = useTheme();
 
     const isAddressSelected = useRef(false);
@@ -20,7 +21,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 setResults(data)
                 console.log(data[0].display_name)
             } else {
-                setMessage("Or tap here to add manually")
+                setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
                 setResults([])
             }
 
@@ -52,7 +53,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
 
         setCoords({ latitude: null, longitude: null });
         isAddressSelected.current = true;
-        setMessage("Address added!")
+        setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY_ACCEPTED))
         console.log("Manual address accepted:", query);
         setResults([]);
     };
@@ -118,7 +119,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         <>
             <View style={styles.searchContainer}>
                 <TextInput
-                    label="Address"
+                    label={t(FORM.HOTEL_ADDRESS)}
                     value={query}
                     onChange={() => isAddressSelected.current = false}
                     onChangeText={setQuery}
@@ -128,7 +129,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                     inputMode="search"
                     returnKeyType="search"
                     returnKeyLabel="search"
-                    placeholder="Search address without typo"
+                    placeholder={t(FORM.HOTEL_ADDRESS_PLACEHOLDER)}
                     style={[
                         styles.input,
                         query?.length > 0 ? typography.body : typography.caption,
