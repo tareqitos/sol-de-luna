@@ -50,22 +50,31 @@ export default function Home({ route }) {
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
 
+    console.log(selectedTabName)
+    const isHomeTab = selectedTabName === "home";
     const updateSelectedTab = useCallback((name) => {
-        setLoading(true);
-        setSelectedTabName(name);
-        setTimeout(() => setLoading(false), 10);
+        const isChangingFromHome = selectedTabName === "home" && name !== "home";
 
-    }, []);
+        if (isChangingFromHome) {
+            setLoading(true);
+        }
+
+        setSelectedTabName(name);
+
+        if (isChangingFromHome) {
+            setTimeout(() => setLoading(false), 500);
+        }
+    }, [selectedTabName]);
 
     // ANIMATION
     const [animation] = useState(new Animated.Value(0));
     useEffect(() => {
         // Reset animation when tab changes
-        animation.setValue(0);
+        animation.setValue(1);
         // Start animation
         Animated.timing(animation, {
             toValue: 1,
-            duration: 100,
+            duration: 300,
             useNativeDriver: true,
         }).start();
     }, [selectedTabName]);
@@ -106,7 +115,7 @@ export default function Home({ route }) {
                     <Title title={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
 
-                {selectedTabName === "home" && !loading ?
+                {selectedTabName === "home" ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
 
                         <ScrollView
@@ -128,7 +137,9 @@ export default function Home({ route }) {
                         </ScrollView>
 
                     </View>
-                    : !loading ?
+                    : loading && !isHomeTab ?
+                        <ActivityIndicator style={{ flex: 1 }} size={60} animating={true} color={colors.primary} />
+                        :
                         <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
                             {categories.map((category) => (
                                 <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
@@ -136,12 +147,16 @@ export default function Home({ route }) {
                                 </Animated.View>
                             ))}
                         </ScrollView>
-                        :
-                        <ActivityIndicator style={{ flex: 1 }} size={60} animating={true} color={colors.primary} />
                 }
             </View>
             <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, borderColor: colors.primary, borderTopWidth: 1, paddingBottom: Platform.OS === "ios" ? 10 : 20 }]}>
-                <TabBottomMenu selectedTabName={selectedTabName} onPress={updateSelectedTab} t_categories={t_categories} />
+                <TabBottomMenu selectedTabName={selectedTabName} onPress={(name) => {
+                    if (selectedTabName === "home" && name !== "home") {
+                        setLoading(true);
+                        setTimeout(() => setLoading(false), 500);
+                    }
+                    updateSelectedTab(name);
+                }} t_categories={t_categories} />
             </View>
 
             <FABMenu destination={destination} tab={selectedTabName} style={{ position: "absolute", bottom: "10%" }} />

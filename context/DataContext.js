@@ -140,14 +140,20 @@ export function DataProvider({ children }) {
         try {
             const storedData = await AsyncStorage.getItem(DESTINATIONS_STORAGE_KEY);
             if (storedData) {
-                setDestinations(JSON.parse(storedData))
+                const parsedData = JSON.parse(storedData);
+                if (Array.isArray(parsedData)) {
+                    setDestinations(parsedData);
+                } else {
+                    console.log("Invalid data format: Expected an array.");
+                    setDestinations([]);
+                }
             } else {
                 setDestinations([]);
             }
         } catch (error) {
             console.log("Unable to load destinations from AsyncStorage");
         }
-    }
+    };
 
     // Load Data on initial render
     useEffect(() => {

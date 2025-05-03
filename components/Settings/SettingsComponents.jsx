@@ -194,7 +194,7 @@ export const SettingsExportData = () => {
 
     const exportJSON = async () => {
         try {
-            const result = await exportDataToJSON([{ destinations }])
+            const result = await exportDataToJSON(destinations)
             if (result == true) {
                 setMessage(t(SETTINGS.CREATE_BACKUP_MESSAGE))
                 toggleBar();
@@ -229,8 +229,9 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
         try {
             setDialogVisible(false)
             const importedData = await importJSONData();
-            const data = importedData[0];
-            importData(data.destinations)
+            const data = importedData;
+            // console.log("DATA: ", data)
+            importData(data)
             setMessage(t(SETTINGS.IMPORT_BACKUP_MESSAGE))
             toggleBar();
             nav.goBack()

@@ -10,8 +10,11 @@ export default function SnackbarMessage() {
             <Snackbar
                 visible={visible}
                 onDismiss={dismissBar}
-                duration={5000}
+                duration={3000}
                 action={{
+
+                    icon: "thumb-up",
+                    onPress: () => { dismissBar },
                     textColor: colors.accent // Change the color of the action label here
                 }}
                 elevation={2}
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        alignItems: "center", height: 60, bottom: 50,
+        alignItems: "center", height: 60, bottom: 100,
         borderRadius: 10,
         borderWidth: 1
     },
