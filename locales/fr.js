@@ -15,11 +15,71 @@ export default {
     // CATEGORIES
     flights: "Vols",
     hotels: "Hôtels",
-    transport: "Transport",
+    transport: "Transports",
     home: "Accueil",
 
-    // EMPTY CATEGORY MESSAGE
+    // PAGES TITLES
+    destinationTitle: "Destination",
+    flightTitle: "Ajouter un vol",
+    hotelTitle: "Ajouter un hôtel",
+    transportTitle: "Ajouter un transport",
+    settingsTitle: "Paramètres",
+
+    // FORM
+    flightName: "Nom du vol",
+    flightNamePlaceholder: "ex: Vol pour le Japon",
+    flightDepartureCity: "Départ",
+    flightDepartureCityPlaceholder: "ex: Bruxelles",
+    flightArrivalCity: "Arrivée",
+    flightArrivalCityPlaceholder: "ex: Tokyo",
+    flightPassenger: "Nom du passager",
+    flightSeat: "Siège",
+
+    hotelName: "Nom de l'hôtel / Séjour",
+    hotelNamePlaceholder: "ex: Hôtel à Tokyo",
+    hotelStars: "Étoiles",
+    hotelAddress: "Adresse",
+    hotelAddressPlaceholder: "Rechercher une adresse",
+    hotelAddAddressManually: "Ou appuyez ici pour ajouter l'adresse manuellement",
+    hotelAddAddressManuallyAccepted: "Adresse ajoutée!",
+    hotelAdditionnalInfoPlaceholder: "ex: Numéro de chambre, code d'accès, etc.",
+
+    transportName: "Ligne / Nom",
+    transportNamePlaceholder: "e.g. 56, Tram 92, RER A, ...",
+    transportTypeTrain: "Train",
+    transportTypeBus: "Bus",
+    transportTypeCar: "Voiture",
+    transportDepartureCity: "De",
+    transportDepartureCityPlaceholder: "Entrez le lieu de départ",
+    transportArrivalCity: "À",
+    transportArrivalCityPlaceholder: "Entrez le lieu d'arrivée",
+    transportAdditionnalInfoPlaceholder: "ex: Numéro de train, porte d'embarquement, etc.",
+
+    additionnalInfo: "Informations supplémentaires",
+    additionnalInfoPlaceholder: "ex: Numéro de vol, porte d'embarquement, etc.",
+
+
+    // CARDS
+
+    flightCardPassenger: "Passagers",
+    hotelCardAddress: "Adresse",
+    cardAdditionalInfo: "Informations supplémentaires",
+
+    // MESSAGE
     emptyCategoryMessage: "C'est vide ici, ajoutez vos prochains ",
+    flightAddedMessage: "Le vol a été ajouté avec succès",
+    hotelAddedMessage: "L'hôtel a été ajouté avec succès",
+    transportAddedMessage: "Le transport a été ajouté avec succès",
+
+    deleteCardTitle: "Supprimer la carte",
+    deleteCardContent: "Êtes-vous sûr de vouloir supprimer cette carte?",
+    deleteCardSuccess: "Carte supprimée avec succès",
+
+    deleteFileTitle: "Supprimer le fichier",
+    deleteFileContent: "Êtes-vous sûr de vouloir supprimer ce fichier?",
+    deleteFileSuccess: "Fichier supprimé avec succès",
+
+    requiredMessage: "Requis",
 
     // DIALOG CANCEL && CONFIRM
     cancel: "Annuler",
@@ -34,7 +94,7 @@ export default {
     light: "Clair",
     dark: "Sombre",
     system: "Système",
-    languages: "Langues",
+    languages: "Langue",
     //SAVE AND BACKUP
     saveAndBackup: "Sauvegarder et sauvegarder",
     createBackup: "Créer une sauvegarde locale (JSON)",

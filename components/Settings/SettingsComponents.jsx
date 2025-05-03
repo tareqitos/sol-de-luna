@@ -78,7 +78,7 @@ export const SettingsTemperature = () => {
                 value={switchOn}
                 onValueChange={onToggleSwitch}
                 type="switch"
-                style={styles.settingsItemNoPadding}
+                style={Platform.OS === 'android' && styles.settingsItemNoPadding}
             />
         </>
     )

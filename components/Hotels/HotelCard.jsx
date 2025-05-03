@@ -15,11 +15,14 @@ import Temperature from "../Temperature";
 import CardFilesManager from "../Cards/CardFilesManager";
 import CardStars from "./CardStars";
 import { useSettings } from "../../hook/settings";
+import { useTranslation } from "react-i18next";
+import { CARDS, FORM } from "../../locales/languagesConst";
 
 export default function HotelCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
     const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation } = useTheme()
+    const { t } = useTranslation();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -67,13 +70,13 @@ export default function HotelCard({ item, onPress, destination }) {
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
                     {/* ADDRESS */}
-                    <CardSection style={styles.cardSection} text="Address">
+                    <CardSection style={styles.cardSection} text={t(CARDS.HOTEL_CARD_ADDRESS)}>
                         <CardAddress item={item} />
                     </CardSection>
 
                     {/* ADDITIONAL INFORMATION */}
-                    <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Reservation number, instructions, amenities, etc." />
+                    <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} />
                     </CardSection>
 
                     <CardFilesManager item={item} destinationID={destination.id} />

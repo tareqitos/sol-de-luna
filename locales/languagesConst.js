@@ -1,3 +1,52 @@
+const PAGE_TITLES = {
+    DESTINATION_TITLE: 'destinationTitle',
+    FLIGHT_TITLE: 'flightTitle',
+    HOTEL_TITLE: 'hotelTitle',
+    TRANSPORT_TITLE: 'transportTitle',
+    SETTINGS_TITLE: 'settingsTitle'
+}
+
+const FORM = {
+    FLIGHT_NAME: 'flightName',
+    FLIGHT_NAME_PLACEHOLDER: 'flightNamePlaceholder',
+    FLIGHT_DEPARTURE_CITY: 'flightDepartureCity',
+    FLIGHT_DEPARTURE_CITY_PLACEHOLDER: 'flightDepartureCityPlaceholder',
+    FLIGHT_ARRIVAL_CITY: 'flightArrivalCity',
+    FLIGHT_ARRIVAL_CITY_PLACEHOLDER: 'flightArrivalCityPlaceholder',
+    FLIGHT_PASSENGER: 'flightPassenger',
+    FLIGHT_SEAT: 'flightSeat',
+
+    HOTEL_NAME: 'hotelName',
+    HOTEL_NAME_PLACEHOLDER: 'hotelNamePlaceholder',
+    HOTEL_STARS: 'hotelStars',
+    HOTEL_ADDRESS: 'hotelAddress',
+    HOTEL_ADDRESS_PLACEHOLDER: 'hotelAddressPlaceholder',
+    HOTEL_ADD_ADDRESS_MANUALLY: 'hotelAddAddressManually',
+    HOTEL_ADD_ADDRESS_MANUALLY_ACCEPTED: 'hotelAddAddressManuallyAccepted',
+    HOTEL_ADDITIONNAL_INFO_PLACEHOLDER: 'hotelAdditionnalInfoPlaceholder',
+
+    TRANSPORT_NAME: 'transportName',
+    TRANSPORT_NAME_PLACEHOLDER: 'transportNamePlaceholder',
+    TRANSPORT_TYPE_TRAIN: 'transportTypeTrain',
+    TRANSPORT_TYPE_BUS: 'transportTypeBus',
+    TRANSPORT_TYPE_CAR: 'transportTypeCar',
+    TRANSPORT_DEPARTURE_CITY: 'transportDepartureCity',
+    TRANSPORT_DEPARTURE_CITY_PLACEHOLDER: 'transportDepartureCityPlaceholder',
+    TRANSPORT_ARRIVAL_CITY: 'transportArrivalCity',
+    TRANSPORT_ARRIVAL_CITY_PLACEHOLDER: 'transportArrivalCityPlaceholder',
+    TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER: 'transportAdditionnalInfoPlaceholder',
+
+    ADDITIONNAL_INFO: 'additionnalInfo',
+    ADDITIONNAL_INFO_PLACEHOLDER: 'additionnalInfoPlaceholder'
+}
+
+const CARDS = {
+    FLIGHT_CARD_PASSENGER: 'flightCardPassenger',
+    HOTEL_CARD_ADDRESS: 'hotelCardAddress',
+    CARD_ADDITIONAL_INFO: 'cardAdditionalInfo',
+
+}
+
 const DESTINATION = {
     WELCOME: 'welcome',
     TITLE: 'title',
@@ -26,6 +75,21 @@ const DIALOGS = {
 
 const MESSAGES = {
     EMPTY_CATEGORY_MESSAGE: 'emptyCategoryMessage',
+
+    FLIGHT_ADDED_MESSAGE: 'flightAddedMessage',
+    HOTEL_ADDED_MESSAGE: 'hotelAddedMessage',
+    TRANSPORT_ADDED_MESSAGE: 'transportAddedMessage',
+
+    DELETE_CARD_TITLE: 'deleteCardTitle',
+    DELETE_CARD_CONTENT: 'deleteCardContent',
+    DELETE_CARD_SUCCESS: 'deleteCardSuccess',
+
+    DELETE_FILE_TITLE: 'deleteFileTitle',
+    DELETE_FILE_CONTENT: 'deleteFileContent',
+    DELETE_FILE_SUCCESS: 'deleteFileSuccess',
+
+    REQUIRED_MESSAGE: 'requiredMessage',
+
 }
 
 const SETTINGS = {
@@ -49,6 +113,9 @@ const SETTINGS = {
 }
 
 export {
+    PAGE_TITLES,
+    FORM,
+    CARDS,
     DESTINATION,
     HOME,
     CATEGORIES,

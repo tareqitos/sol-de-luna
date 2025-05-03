@@ -3,8 +3,9 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
+import { FORM } from "../../locales/languagesConst";
 
-export default function RouteInput({ iataRef, setRoute }) {
+export default function RouteInput({ iataRef, setRoute, t }) {
     const { colors, typography } = useTheme();
 
     const [airports, setAirports] = useState({});
@@ -125,7 +126,8 @@ export default function RouteInput({ iataRef, setRoute }) {
             <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
 
                 <TextInput
-                    label={"Departure"}
+                    label={t(FORM.FLIGHT_DEPARTURE_CITY)}
+                    placeholder={t(FORM.FLIGHT_DEPARTURE_CITY_PLACEHOLDER)}
                     mode="flat"
                     value={departureAirport.city && departureAirport.iata ? `${departureAirport.city} (${departureAirport.iata})` : departureAirport.city}
                     onChangeText={(text) => showList(text, "departureAirport")}
@@ -134,7 +136,6 @@ export default function RouteInput({ iataRef, setRoute }) {
                         departureAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="e.g Brussels"
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
@@ -147,7 +148,8 @@ export default function RouteInput({ iataRef, setRoute }) {
 
                 <TextInput
                     ref={iataRef}
-                    label={"Arrival"}
+                    label={t(FORM.FLIGHT_ARRIVAL_CITY)}
+                    placeholder={t(FORM.FLIGHT_ARRIVAL_CITY_PLACEHOLDER)}
                     mode="flat"
                     value={arrivalAirport.city && arrivalAirport.iata ? `${arrivalAirport.city} (${arrivalAirport.iata})` : arrivalAirport.city}
                     onChangeText={(text) => showList(text, "arrivalAirport")}
@@ -157,7 +159,7 @@ export default function RouteInput({ iataRef, setRoute }) {
                         arrivalAirport.city.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="e.g Tokyo"
+
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}

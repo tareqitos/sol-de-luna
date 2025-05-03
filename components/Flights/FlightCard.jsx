@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native"
 
 import Collapsible from "react-native-collapsible"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, useTransition } from "react"
 import CollapseButton from "../UI/CollapseButton"
 import { s } from "../../styles/card.style"
 
@@ -16,12 +16,15 @@ import CardPassengers from "./CardPassengers"
 import CardSection from "../Cards/CardSection"
 import CardFilesManager from "../Cards/CardFilesManager"
 import { useSettings } from "../../hook/settings"
+import { useTranslation } from "react-i18next"
+import { CARDS, FORM } from "../../locales/languagesConst"
 
 
 export default function FlightCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
     const [isCollapsed, setIsCollapse] = useState(cardsOpen)
     const { colors, elevation } = useTheme()
+    const { t } = useTranslation();
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -53,15 +56,15 @@ export default function FlightCard({ item, onPress, destination }) {
             <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
                 {item.passengers.length !== 0 &&
                     <View style={s.card.add_container}>
-                        <CardSection style={styles.cardSection} text="Passengers">
+                        <CardSection style={styles.cardSection} text={t(CARDS.FLIGHT_CARD_PASSENGER)}>
                             <CardPassengers destination={destination} item={item} passengers={item.passengers} />
                         </CardSection>
                     </View>}
 
                 <View style={s.card.add_container}>
 
-                    <CardSection style={styles.cardSection} text={"Additional information"}>
-                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder="Airline, flight number, departure time, etc." />
+                    <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
+                        <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} />
                     </CardSection>
 
                     <CardFilesManager item={item} destinationID={destination.id} />

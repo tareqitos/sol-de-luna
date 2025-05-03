@@ -117,11 +117,10 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
             <DialogPopUp
                 visible={dialogVisible}
                 onDismiss={closeDialog}
-                title="Delete card"
-                content={<Txt>Do you want to delete this card?</Txt>}
+                title={t(MESSAGES.DELETE_CARD_TITLE)}
+                content={<Txt>{t(MESSAGES.DELETE_CARD_CONTENT)}</Txt>}
                 cancel={closeDialog}
                 validate={deleteConfirm}
-                validateText="Confirm"
             />
 
         </View >

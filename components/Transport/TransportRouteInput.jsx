@@ -3,8 +3,9 @@ import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
 import { TextInput, useTheme } from "react-native-paper";
+import { FORM, MESSAGES } from "../../locales/languagesConst";
 
-export default function TransportRouteInput({ control, errors }) {
+export default function TransportRouteInput({ t, control, errors }) {
     const { colors, typography } = useTheme();
 
     const { field: departureField } = useController({
@@ -25,14 +26,14 @@ export default function TransportRouteInput({ control, errors }) {
 
     const departureErrorColor = errors?.departure ? colors.error : typography.caption.color;
     const arrivalErrorColor = errors?.arrival ? colors.error : typography.caption.color;
-    const errorMessage = "Required"
+    const errorMessage = t(MESSAGES.REQUIRED_MESSAGE)
 
 
     return (
         <>
             <View>
                 <TextInput
-                    label={"From"}
+                    label={t(FORM.TRANSPORT_DEPARTURE_CITY)}
                     mode="flat"
                     value={departureField.value}
                     onBlur={departureField.onBlur}
@@ -42,7 +43,7 @@ export default function TransportRouteInput({ control, errors }) {
                         departureField.value?.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="Enter departure location"
+                    placeholder={t(FORM.TRANSPORT_DEPARTURE_CITY_PLACEHOLDER)}
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
@@ -52,7 +53,7 @@ export default function TransportRouteInput({ control, errors }) {
                 />
 
                 <TextInput
-                    label={"To"}
+                    label={t(FORM.TRANSPORT_ARRIVAL_CITY)}
                     mode="flat"
                     value={arrivalField.value}
                     onBlur={arrivalField.onBlur}
@@ -62,7 +63,7 @@ export default function TransportRouteInput({ control, errors }) {
                         arrivalField.value?.length == 0 ? typography.caption : typography.body,
                         { color: colors.onBackground, backgroundColor: colors.background }
                     ]}
-                    placeholder="Enter arrival location"
+                    placeholder={t(FORM.TRANSPORT_ARRIVAL_CITY_PLACEHOLDER)}
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}

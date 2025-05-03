@@ -40,6 +40,7 @@ const s = StyleSheet.create({
         alignItems: "center",
         gap: 10,
 
+        marginHorizontal: 2,
 
         paddingHorizontal: 15,
         paddingLeft: 5,

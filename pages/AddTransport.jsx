@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
@@ -17,14 +17,17 @@ import { s } from "../styles/styles.style";
 import { mergeDateAndTime } from "../services/date-service";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import TransportNumberInput from "../components/Transport/TransportNumberInput";
+import { useTranslation } from "react-i18next";
+import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 
 
 export default function AddTransport({ route }) {
     const nav = useNavigation();
-    const { colors, typography } = useTheme();
+    const { colors } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
     const { destination } = route.params;
     const { addItem } = useData()
+    const { t } = useTranslation();
 
     const [line, setLine] = useState(null)
     const [departDate, setDepartDate] = useState(new Date());
@@ -53,7 +56,7 @@ export default function AddTransport({ route }) {
         console.log("TRANSPORT: ", newItem)
 
 
-        setMessage("Transport has successfully been added")
+        setMessage(t(MESSAGES.TRANSPORT_ADDED_MESSAGE))
         toggleBar();
         nav.goBack()
     }
@@ -73,11 +76,11 @@ export default function AddTransport({ route }) {
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
-            <TitlePage title={"Add transport"} />
+            <TitlePage title={t(PAGE_TITLES.TRANSPORT_TITLE)} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <TransportInput transportType={transportType} saveTransportType={saveTransportType} />
-                <TransportNumberInput line={line} setLine={setLine} />
-                <TransportRouteInput control={control} errors={errors} />
+                <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
+                <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} line={line} setLine={setLine} />
+                <TransportRouteInput t={t} control={control} errors={errors} />
                 <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
                     <View style={{ gap: 20 }}>
                         <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
@@ -85,7 +88,7 @@ export default function AddTransport({ route }) {
                     </View>
                 </View>
                 <View style={[s.form.input_container, s.form.input_addInfos]}>
-                    <InformationInput placeholder="Reservation number, instructions, amenities, etc. (optional)" control={control} />
+                    <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                 </View>
             </ScrollView>
             <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>

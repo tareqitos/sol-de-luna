@@ -5,9 +5,12 @@ import Container from '../components/Utils/Container';
 import { useTheme } from 'react-native-paper';
 
 import { SettingsAbout, SettingsExportData, SettingsImportData, SettingsLanguages, SettingsTemperature, SettingsTheme, SettingsToggleCardCollapse } from '../components/Settings/SettingsComponents';
+import { useTranslation } from 'react-i18next';
+import { PAGE_TITLES, SETTINGS } from '../locales/languagesConst';
 
 
 const Settings = () => {
+    const { t } = useTranslation()
     const { colors } = useTheme()
     const [dialogVisible, setDialogVisible] = useState(false);
 
@@ -21,24 +24,24 @@ const Settings = () => {
     return (
         <Container style={[styles.container, { backgroundColor: colors.background }]}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <TitlePage title={"Settings"} />
+                <TitlePage title={t(PAGE_TITLES.SETTINGS_TITLE)} />
 
                 <SettingsCard title="App">
                     <SettingsTemperature />
                     <SettingsToggleCardCollapse />
                 </SettingsCard>
 
-                <SettingsCard title="Appearance">
+                <SettingsCard title={t(SETTINGS.APPEARANCE)}>
                     <SettingsTheme />
                     <SettingsLanguages />
                 </SettingsCard>
 
-                <SettingsCard title="Save and backup">
+                <SettingsCard title={t(SETTINGS.SAVE_AND_BACKUP)}>
                     <SettingsExportData />
                     <SettingsImportData dialogVisible={dialogVisible} setDialogVisible={setDialogVisible} />
                 </SettingsCard>
 
-                <SettingsCard title="About">
+                <SettingsCard title={t(SETTINGS.ABOUT)}>
                     <SettingsAbout />
                 </SettingsCard>
             </ScrollView>

@@ -5,6 +5,8 @@ import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Alert, Platform } from "react-native";
 import { useData } from "../hook/data";
+import { useTranslation } from "react-i18next";
+import { DIALOGS, MESSAGES } from "../locales/languagesConst";
 
 export const DocumentContext = createContext({
     pickDocument: async () => { },
@@ -13,8 +15,8 @@ export const DocumentContext = createContext({
 })
 
 export function DocumentProvider({ children }) {
-    const { updateItem, deleteItem } = useData()
-    const [visible, setVisible] = useState(false)
+    const { updateItem } = useData()
+    const { t } = useTranslation()
 
     const pickDocument = async (item) => {
         const result = await DocumentPicker.getDocumentAsync({
@@ -74,15 +76,15 @@ export function DocumentProvider({ children }) {
             const filteredItem = item.documents.filter((file) => file.name !== fileName);
             updateItem(destinationID, { ...item, documents: filteredItem });
         } else {
-            Alert.alert("Delete file", "Do you want to delete this file?", [
+            Alert.alert(t(MESSAGES.DELETE_FILE_TITLE), t(MESSAGES.DELETE_FILE_CONTENT), [
                 {
-                    text: 'Cancel',
+                    text: t(DIALOGS.CANCEL),
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel'
                 },
 
                 {
-                    text: 'Delete',
+                    text: t(DIALOGS.CONFIRM),
                     style: 'destructive',
                     onPress: () => {
                         const filteredItem = item.documents.filter((file) => file.name !== fileName);

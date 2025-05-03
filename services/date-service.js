@@ -1,6 +1,7 @@
-export const ConvertDateToString = (date) => {
+export const ConvertDateToString = (date, locale) => {
     const d = new Date(date)
-    return d.toLocaleDateString("us-US", { month: "long", day: "numeric", year: "numeric" });
+
+    return d.toLocaleDateString(locale, { month: "long", day: "numeric", year: "numeric" });
 }
 
 export const ConvertDateToNum = (date) => {

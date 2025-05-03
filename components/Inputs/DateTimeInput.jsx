@@ -3,9 +3,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform, View } from "react-native";
 import { themeHook } from "../../hook/theme";
 import { Button, Icon, useTheme } from "react-native-paper";
+import { useLocalization } from "../../hook/localization";
 
 export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     const { theme } = themeHook()
+    const { selected } = useLocalization();
     const { colors, typography } = useTheme()
     const [showDate, setShowDate] = useState(false);
     const [showTime, setShowTime] = useState(false);
@@ -62,7 +64,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
 
 
                         <Button mode="outlined" onPress={showTimePicker}>
-                            {time ? time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Select time"}
+                            {time ? time.toLocaleTimeString(selected.tag, { hour: "2-digit", minute: "2-digit" }) : "Select time"}
                         </Button>
 
 
@@ -84,6 +86,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                             value={time || new Date()}
                             onChange={handleChange}
                             themeVariant={theme}
+                            is24Hour
                             display="default"
                         />
                     )}
@@ -95,7 +98,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                         value={date || new Date()}
                         onChange={handleChange}
                         themeVariant={theme}
-                        locale="en"
+                        locale={selected.tag}
                         minimumDate={today}
                     />
 

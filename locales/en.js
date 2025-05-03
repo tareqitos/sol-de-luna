@@ -1,3 +1,5 @@
+import { set } from "react-hook-form";
+
 export default {
     // DESTINATION
     title: "Destination",
@@ -18,8 +20,66 @@ export default {
     transport: "Transport",
     Home: "Home",
 
-    // EMPTY CATEGORY MESSAGE
+    // PAGES TITLES
+    destinationTitle: "Destination",
+    flightTitle: "Add flight",
+    hotelTitle: "Add hotel",
+    transportTitle: "Add transport",
+    settingsTitle: "Settings",
+
+    // FORM
+    flightName: "Flight name",
+    flightNamePlaceholder: "e.g. Flight to Japan",
+    flightDepartureCity: "Departure",
+    flightDepartureCityPlaceholder: "e.g. Brussels",
+    flightArrivalCity: "Arrival",
+    flightArrivalCityPlaceholder: "e.g. Tokyo",
+    flightPassenger: "Passenger name",
+    flightSeat: "Seat",
+
+    hotelName: "Hotel / Stay name",
+    hotelNamePlaceholder: "e.g. Hotel in Tokyo",
+    hotelStars: "Stars",
+    hotelAddress: "Address",
+    hotelAddressPlaceholder: "Search for an address",
+    hotelAddAddressManually: "Or tap here to add address manually",
+    hotelAddAddrellManuallyAccepted: "Address added!",
+    hotelAdditionnalInfoPlaceholder: "e.g. Room number, access code, etc.",
+
+    transportName: "Line / Name",
+    transportNamePlaceholder: "e.g. 23, Line 92, ...",
+    transportTypeTrain: "Train",
+    transportTypeBus: "Bus",
+    transportTypeCar: "Car",
+    transportDepartureCity: "From",
+    transportDepartureCityPlaceholder: "Enter departure location",
+    transportArrivalCity: "To",
+    transportArrivalCityPlaceholder: "Enter arrival location",
+    transportAdditionnalInfoPlaceholder: "e.g. Train number, boarding gate, etc.",
+
+    additionnalInfo: "Additional information",
+    additionnalInfoPlaceholder: "e.g. Flight number, boarding gate, etc.",
+
+    // CARDS
+    flightCardPassenger: "Passengers",
+    hotelCardAddress: "Address",
+    cardAdditionalInfo: "Additional information",
+
+    // MESSAGE
     emptyCategoryMessage: "Nothing here, add your next ",
+    flightAddedMessage: "Flight has successfuly been added",
+    hotelAddedMessage: "Hotel has successfuly been added",
+    transportAddedMessage: "Transport has successfuly been added",
+
+    deleteCardTitle: "Delete card",
+    deleteCardContent: "Are you sure you want to delete this card?",
+    deleteCardSuccess: "Card deleted successfully",
+
+    deleteFileTitle: "Delete file",
+    deleteFileContent: "Are you sure you want to delete this file?",
+    deleteFileSuccess: "File deleted successfully",
+
+    requiredMessage: "This field is required",
 
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",
