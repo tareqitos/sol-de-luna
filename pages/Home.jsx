@@ -1,6 +1,6 @@
 import { Animated, Platform, ScrollView, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 
 import { s } from "../styles/styles.style";
 
@@ -26,6 +26,7 @@ export default function Home({ route }) {
     const nav = useNavigation()
     const destinationId = route.params.destination.id
     const [destination, setDestination] = useState(route.params.destination);
+    const [loading, setLoading] = useState(false)
 
     const overviewText = t(HOME.OVERVIEW);
     const upcomingText = t(HOME.UPCOMING);
@@ -50,7 +51,10 @@ export default function Home({ route }) {
     const categories = ["flights", "hotels", "transport"];
 
     const updateSelectedTab = useCallback((name) => {
+        setLoading(true);
         setSelectedTabName(name);
+        setTimeout(() => setLoading(false), 10);
+
     }, []);
 
     // ANIMATION
@@ -102,7 +106,7 @@ export default function Home({ route }) {
                     <Title title={destination.name || selectedTabName || "Overview"} textColor={colors.onBackground} />
                 </View>
 
-                {selectedTabName === "home" ?
+                {selectedTabName === "home" && !loading ?
                     <View style={{ flex: 1, paddingHorizontal: 10 }} >
 
                         <ScrollView
@@ -124,14 +128,16 @@ export default function Home({ route }) {
                         </ScrollView>
 
                     </View>
-                    :
-                    <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
-                        {categories.map((category) => (
-                            <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
-                                <CardContainer category={category} destination={destination} types={types} t_categories={t_categories} />
-                            </Animated.View>
-                        ))}
-                    </ScrollView>
+                    : !loading ?
+                        <ScrollView contentContainerStyle={{ padding: 5, gap: 20, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+                            {categories.map((category) => (
+                                <Animated.View key={category} style={[slideIn, { display: (selectedTabName === category) ? 'flex' : 'none' }]}>
+                                    <CardContainer category={category} destination={destination} types={types} t_categories={t_categories} />
+                                </Animated.View>
+                            ))}
+                        </ScrollView>
+                        :
+                        <ActivityIndicator style={{ flex: 1 }} size={60} animating={true} color={colors.primary} />
                 }
             </View>
             <View style={[s.home.tab_bottom_menu, { backgroundColor: colors.background, borderColor: colors.primary, borderTopWidth: 1, paddingBottom: Platform.OS === "ios" ? 10 : 20 }]}>
