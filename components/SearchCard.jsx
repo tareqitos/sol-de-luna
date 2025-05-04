@@ -1,26 +1,31 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useMemo } from "react";
 import { Searchbar, useTheme } from "react-native-paper";
 import { SEARCH } from "../locales/languagesConst";
 
-const SearchCard = memo(({ destination, setData, category, t }) => {
+const SearchCard = memo(({ query, setQuery, destination, setData, category, t }) => {
     const { colors } = useTheme();
-    const [query, setQuery] = useState("");
+
+    const categoryItems = useMemo(() =>
+        destination?.[category] || [],
+        [destination, category]
+    );
+
 
     const filterCards = useCallback((text) => {
         setQuery(text);
 
         if (!text.trim()) {
-            setData(destination?.[category] || []);
+            setData(categoryItems);
             return;
         }
 
-        const categoryItems = destination?.[category] || [];
+        const lowerText = text.toLowerCase();
         const filteredItems = categoryItems.filter(item =>
-            item.name?.toLowerCase().includes(text.toLowerCase())
+            item.name?.toLowerCase().includes(lowerText)
         );
 
         setData(filteredItems);
-    }, [destination, category, setData]);
+    }, [categoryItems, setData]);
 
     return (
         <Searchbar
@@ -29,6 +34,8 @@ const SearchCard = memo(({ destination, setData, category, t }) => {
             style={{ backgroundColor: colors.surface }}
             value={query}
             onChangeText={filterCards}
+            onClearIconPress={() => setQuery("")}
+            autoCorrect={false}
         />
     );
 });

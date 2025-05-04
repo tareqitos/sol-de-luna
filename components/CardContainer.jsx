@@ -1,22 +1,25 @@
-import { Animated, Platform, TouchableOpacity, Vibration, View } from "react-native";
+import { Vibration, View } from "react-native";
 import Collapsible from "react-native-collapsible";
-import Txt from "./Utils/Txt";
-import { s } from "../styles/card.style";
-import CollapseButton from "./UI/CollapseButton";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import FlightCard from "./Flights/FlightCard";
 import 'react-native-get-random-values';
-import { useData } from "../hook/data";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Icon, useTheme } from "react-native-paper";
+
+import { useData } from "../hook/data";
+import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc } from "../services/sort-service";
+import { s } from "../styles/card.style";
+import { MESSAGES, SEARCH } from "../locales/languagesConst";
+
+import Txt from "./Utils/Txt";
+import FilterCards from "./Utils/FilterCards";
+import CollapseButton from "./UI/CollapseButton";
+import DialogPopUp from "./UI/Dialog";
+import SearchCard from "./SearchCard";
+import CardItem from "./CardItem";
+
+import FlightCard from "./Flights/FlightCard";
 import HotelCard from "./Hotels/HotelCard";
 import TransportCard from "./Transport/TransportCard";
-import DialogPopUp from "./UI/Dialog";
-import { useTranslation } from "react-i18next";
-import { MESSAGES } from "../locales/languagesConst";
-import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
-import FilterCards from "./Utils/FilterCards";
-import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc } from "../services/sort-service";
-import SearchCard from "./SearchCard";
 
 
 const CardContainer = memo(({ category, destination, t_categories, style = {} }) => {
@@ -28,6 +31,7 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
     const [itemToDelete, setItemToDelete] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
     const [data, setData] = useState([])
+    const [query, setQuery] = useState("");
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -102,9 +106,23 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
     }, [destination, category]);
 
 
+    const CategoryContent = useMemo(() => {
 
-    // Memoize the card content to prevent re-renders
-    const categoryContent = useMemo(() => {
+        if (!data || !query && data.length === 0) {
+            return (
+                <Txt style={typography.body}>
+                    {t(MESSAGES.EMPTY_CATEGORY_MESSAGE) + t_category[category].toLowerCase() + '.'}
+                </Txt>
+            )
+        }
+
+        if (query && data.length === 0) {
+            return (
+                <Txt style={typography.body}>
+                    {t(SEARCH.SEARCH_NO_RESULT_MESSAGE) + query + "."}
+                </Txt>
+            )
+        }
 
         const cardMap = {
             flights: FlightCard,
@@ -113,42 +131,26 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
         };
 
         const CardComponent = cardMap[category];
-
-
         if (!CardComponent) return null;
 
-        if (!data || data.length == 0) {
-            return <Txt style={typography.body}>{t(MESSAGES.EMPTY_CATEGORY_MESSAGE) + t_category[category].toLowerCase() + '.'}</Txt>;
-        }
-        // console.log("DAAAAAAAATAAAAAAAAA: ", data)
-
-        return data && data.map((item) => {
-            const scaleValue = getScaleValue(item.id);
-
-            return (
-                <Animated.View
-                    key={item.id}
-                    style={{ transform: [{ scale: scaleValue }] }} // Apply scale transformation
-                >
-                    <TouchableOpacity
-                        onPressIn={() => handlePressIn(1.05, item.id)}
-                        onPressOut={() => handlePressOut(item.id)}
-                        onLongPress={() => Platform.OS === "android" ? handleDeleteItem(item) : deleteItem(destination.id, item)}
-                        activeOpacity={1}
-                    >
-                        <CardComponent
-                            item={item} destination={destination}
-                        />
-                    </TouchableOpacity>
-                </Animated.View>
-            )
-        });
-    }, [destination, category, deleteItem, data, dateAsc, nameAsc]);
+        return data.map(item => (
+            <CardItem
+                key={item.id}
+                item={item}
+                destination={destination}
+                deleteItem={deleteItem}
+                handleDeleteItem={handleDeleteItem}
+                CardComponent={CardComponent}
+            />
+        ))
+    }, [data, dateAsc, nameAsc, category, destination?.id, t])
 
     return (
         <>
             <View style={{ marginBottom: 20 }}>
                 <SearchCard
+                    query={query}
+                    setQuery={setQuery}
                     setData={setData}
                     destination={destination}
                     category={category}
@@ -170,7 +172,7 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
                     </View>
                 </View>
                 <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
-                    {categoryContent}
+                    {CategoryContent}
                 </Collapsible>
                 <DialogPopUp
                     visible={dialogVisible}
@@ -185,5 +187,6 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
         </>
     )
 });
+
 
 export default CardContainer

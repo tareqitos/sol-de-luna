@@ -24,6 +24,12 @@ import { LocalizationProvider } from './context/LocalizationContext';
 
 const Stack = createNativeStackNavigator();
 
+if (!__DEV__) {
+  console.log = () => { };
+  console.warn = () => { };
+  console.error = () => { };
+}
+
 function AppContent() {
   const { theme } = themeHook();
   let paperTheme = theme === 'dark' ? darkTheme : lightTheme;

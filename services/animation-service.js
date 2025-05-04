@@ -2,6 +2,12 @@ import { Animated } from "react-native";
 
 export let scaleValues = {}
 
+export const cleanupScaleValue = (id) => {
+    if (scaleValues[id]) {
+        delete scaleValues[id];
+    }
+}
+
 export const getScaleValue = (id) => {
     if (!scaleValues[id]) {
         scaleValues[id] = new Animated.Value(1);

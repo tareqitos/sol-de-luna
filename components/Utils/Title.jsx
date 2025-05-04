@@ -10,7 +10,7 @@ export default function Title({ title, subtitle }) {
     return (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={[s.header.container, { flexDirection: "row", alignItems: "baseline" }]}>
-                {title && <Txt style={[s.header.title, title.length < 15 ? typography.h0 : typography.h1, { lineHeight: 45 }]}>{title}</Txt>}
+                {title && <Txt style={[s.header.title, title.length < 15 ? typography.h0 : typography.h1, { lineHeight: 50 }]}>{title}</Txt>}
                 {subtitle && <Txt style={[s.header.subtitle, typography.h2, { fontFamily: "Raleway-Light" }]}>{subtitle}</Txt>}
             </View>
             <IconButton iconColor={colors.primary} icon="cog" size={24} onPress={() => nav.navigate('Settings')} />

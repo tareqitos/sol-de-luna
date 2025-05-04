@@ -1,8 +1,9 @@
 import { Text, useWindowDimensions } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useTheme } from "react-native-paper";
+import { memo } from "react";
 
-export default function Txt({ children, style }) {
+const Txt = memo(({ children, style }) => {
     const { colors } = useTheme();
     const { height } = useWindowDimensions();
     const fontSize = style?.fontSize || s.text.text.fontSize
@@ -11,4 +12,6 @@ export default function Txt({ children, style }) {
     return (
         <Text style={[s.text.text, { color: colors.onBackground, fontSize: adpatedFontsize }, style]}>{children}</Text>
     )
-}
+});
+
+export default memo(Txt);

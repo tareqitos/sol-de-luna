@@ -13,9 +13,8 @@ export default function Temperature({ coords }) {
     const { colors, typography } = useTheme()
 
 
-    const showWeather = async () => {
+    const setWeather = async (result) => {
         try {
-            const result = await API.fetchWeatherFromCoords(coords)
             let temp = result.current_weather.temperature;
 
             if (unit === "F") {
@@ -41,11 +40,28 @@ export default function Temperature({ coords }) {
         }
     }
 
+    // clean up API calls
     useEffect(() => {
-        if (coords.latitude) {
-            showWeather();
+        let isMounted = true;
+        let fetchTimeout;
+
+        const fetchWeather = async () => {
+            if (!coords?.latitude) return;
+
+            try {
+                const result = await API.fetchWeatherFromCoords(coords)
+                if (isMounted) setWeather(result)
+            } catch (error) {
+                console.log("Error fetching weather", error);
+            }
+        };
+
+        fetchTimeout = setTimeout(fetchWeather, 50);
+        return () => {
+            isMounted = false;
+            clearTimeout(fetchTimeout);
         }
-    }, [])
+    }, [coords?.latitude, coords?.longitude]);
 
     useEffect(() => {
         if (unit && temperature !== undefined)

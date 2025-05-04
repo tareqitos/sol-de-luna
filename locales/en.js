@@ -83,6 +83,7 @@ export default {
 
     // SEARCH
     search: "Search...",
+    searchNoResultMessage: "No results found for ",
 
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",

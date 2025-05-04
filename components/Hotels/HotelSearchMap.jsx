@@ -81,6 +81,9 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 data={results}
                 keyExtractor={(item) => item.place_id}
                 renderItem={({ item }) => <Item item={item} />}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                removeClippedSubviews={true}
                 style={styles.container}
                 keyboardShouldPersistTaps="always"
             />
@@ -104,6 +107,14 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
 
         setDebounceTimeout(timeout);
     };
+
+    useEffect(() => {
+        return () => {
+            if (debounceTimeout) {
+                clearTimeout(debounceTimeout);
+            }
+        }
+    }, [])
 
     useEffect(() => {
         if (query.trim().length > 2 && !isAddressSelected.current) {

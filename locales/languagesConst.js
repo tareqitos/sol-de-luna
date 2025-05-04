@@ -93,7 +93,8 @@ const MESSAGES = {
 }
 
 const SEARCH = {
-    SEARCH: 'search'
+    SEARCH: 'search',
+    SEARCH_NO_RESULT_MESSAGE: 'searchNoResultMessage'
 }
 
 const SETTINGS = {

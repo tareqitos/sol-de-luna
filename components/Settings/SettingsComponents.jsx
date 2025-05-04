@@ -234,12 +234,12 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
             importData(data)
             setMessage(t(SETTINGS.IMPORT_BACKUP_MESSAGE))
             toggleBar();
-            nav.goBack()
+            nav.navigate("Destination")
         } catch (error) {
             setMessage(t(SETTINGS.IMPORT_BACKUP_ERROR))
             toggleBar();
             console.log("Error saving JSON", error)
-            nav.goBack()
+            nav.navigate("Destination")
         }
     }
 
