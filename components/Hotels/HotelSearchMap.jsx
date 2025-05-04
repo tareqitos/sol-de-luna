@@ -19,7 +19,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
             console.log(data)
             if (data.length > 0) {
                 setResults(data)
-                console.log(data[0].display_name)
             } else {
                 setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
                 setResults([])

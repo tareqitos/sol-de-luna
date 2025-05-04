@@ -39,7 +39,7 @@ export default function Destination() {
     )
 
     const handleAddDestination = (emoji, dest) => {
-        if (dest.length > 0) {
+        if (dest && dest.length > 0) {
             addDestination(`${emoji} ${dest}`)
             setDialogVisible(false)
             setValue("")
@@ -68,9 +68,6 @@ export default function Destination() {
     const handleCloseKeyboard = () => {
         Keyboard.dismiss();
     };
-    // const triggerNotification = () => {
-    //     scheduleDepartureReminder(5);
-    // }
 
     return (
         <Container>

@@ -81,6 +81,10 @@ export default {
 
     requiredMessage: "Requis",
 
+
+    // SEARCH
+    search: "Rechercher...",
+
     // DIALOG CANCEL && CONFIRM
     cancel: "Annuler",
     confirm: "Continuer",

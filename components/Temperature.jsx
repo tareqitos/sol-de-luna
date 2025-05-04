@@ -42,7 +42,9 @@ export default function Temperature({ coords }) {
     }
 
     useEffect(() => {
-        showWeather();
+        if (coords.latitude) {
+            showWeather();
+        }
     }, [])
 
     useEffect(() => {

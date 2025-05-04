@@ -92,6 +92,10 @@ const MESSAGES = {
 
 }
 
+const SEARCH = {
+    SEARCH: 'search'
+}
+
 const SETTINGS = {
     USE_FAHRENHEIT: 'useFahrenheit',
     KEEP_CARDS_OPEN: 'keepCardsOpen',
@@ -121,5 +125,6 @@ export {
     CATEGORIES,
     DIALOGS,
     MESSAGES,
+    SEARCH,
     SETTINGS
 };  

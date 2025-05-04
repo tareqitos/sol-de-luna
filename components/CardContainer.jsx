@@ -3,7 +3,7 @@ import Collapsible from "react-native-collapsible";
 import Txt from "./Utils/Txt";
 import { s } from "../styles/card.style";
 import CollapseButton from "./UI/CollapseButton";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import FlightCard from "./Flights/FlightCard";
 import 'react-native-get-random-values';
 import { useData } from "../hook/data";
@@ -16,6 +16,7 @@ import { MESSAGES } from "../locales/languagesConst";
 import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
 import FilterCards from "./Utils/FilterCards";
 import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc } from "../services/sort-service";
+import SearchCard from "./SearchCard";
 
 
 const CardContainer = memo(({ category, destination, t_categories, style = {} }) => {
@@ -94,21 +95,22 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
     }
 
 
+    useEffect(() => {
+        if (destination && destination[category]) {
+            setData(destination[category]);
+        }
+    }, [destination, category]);
+
+
+
     // Memoize the card content to prevent re-renders
     const categoryContent = useMemo(() => {
-        const dataMap = {
-            flights: destination.flights,
-            hotels: destination.hotels,
-            transport: destination.transport,
-        };
 
         const cardMap = {
             flights: FlightCard,
             hotels: HotelCard,
             transport: TransportCard,
         };
-
-        setData(dataMap[category]);
 
         const CardComponent = cardMap[category];
 
@@ -118,6 +120,7 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
         if (!data || data.length == 0) {
             return <Txt style={typography.body}>{t(MESSAGES.EMPTY_CATEGORY_MESSAGE) + t_category[category].toLowerCase() + '.'}</Txt>;
         }
+        // console.log("DAAAAAAAATAAAAAAAAA: ", data)
 
         return data && data.map((item) => {
             const scaleValue = getScaleValue(item.id);
@@ -143,33 +146,43 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
     }, [destination, category, deleteItem, data, dateAsc, nameAsc]);
 
     return (
-
-        <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
-            <View style={s.card_container.title_container}>
-                <View style={s.card_container.title}>
-                    <View style={s.card.icon_container}>
-                        {categoryIcon()}
-                    </View>
-                    <Txt style={[typography.h3, { color: colors.primary, lineHeight: 22 }]}>{t_category[category]}</Txt>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                    <FilterCards dateAsc={dateAsc} nameAsc={nameAsc} filterByName={handleFilterByName} filterByDate={handleFilterByDate} />
-                    <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
-                </View>
+        <>
+            <View style={{ marginBottom: 20 }}>
+                <SearchCard
+                    setData={setData}
+                    destination={destination}
+                    category={category}
+                    t={t}
+                />
             </View>
-            <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
-                {categoryContent}
-            </Collapsible>
-            <DialogPopUp
-                visible={dialogVisible}
-                onDismiss={closeDialog}
-                title={t(MESSAGES.DELETE_CARD_TITLE)}
-                content={<Txt>{t(MESSAGES.DELETE_CARD_CONTENT)}</Txt>}
-                cancel={closeDialog}
-                validate={deleteConfirm}
-            />
 
-        </View >
+            <View style={[s.card_container.container, style, { backgroundColor: colors.surface }]}>
+                <View style={s.card_container.title_container}>
+                    <View style={s.card_container.title}>
+                        <View style={s.card.icon_container}>
+                            {categoryIcon()}
+                        </View>
+                        <Txt style={[typography.h3, { color: colors.primary, lineHeight: 22 }]}>{t_category[category]}</Txt>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                        <FilterCards dateAsc={dateAsc} nameAsc={nameAsc} filterByName={handleFilterByName} filterByDate={handleFilterByDate} />
+                        <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
+                    </View>
+                </View>
+                <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
+                    {categoryContent}
+                </Collapsible>
+                <DialogPopUp
+                    visible={dialogVisible}
+                    onDismiss={closeDialog}
+                    title={t(MESSAGES.DELETE_CARD_TITLE)}
+                    content={<Txt>{t(MESSAGES.DELETE_CARD_CONTENT)}</Txt>}
+                    cancel={closeDialog}
+                    validate={deleteConfirm}
+                />
+
+            </View >
+        </>
     )
 });
 

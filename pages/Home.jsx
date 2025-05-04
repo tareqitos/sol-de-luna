@@ -17,6 +17,7 @@ import Upcoming from "../components/Home/Upcoming";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES, HOME } from "../locales/languagesConst";
+import SearchCard from "../components/SearchCard";
 
 export default function Home({ route }) {
     const { colors, typography } = useTheme();
@@ -47,11 +48,11 @@ export default function Home({ route }) {
         hotels: destination.hotels,
         transport: destination.transport
     }
+
     const [selectedTabName, setSelectedTabName] = useState("home");
     const categories = ["flights", "hotels", "transport"];
-
-    console.log(selectedTabName)
     const isHomeTab = selectedTabName === "home";
+
     const updateSelectedTab = useCallback((name) => {
         const isChangingFromHome = selectedTabName === "home" && name !== "home";
 
