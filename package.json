@@ -30,7 +30,7 @@
     "expo-notifications": "^0.29.14",
     "expo-server-sdk": "^3.15.0",
     "expo-sharing": "^13.0.1",
-    "expo-splash-screen": "~0.29.22",
+    "expo-splash-screen": "~0.22.0",
     "expo-status-bar": "~2.0.1",
     "expo-updates": "~0.27.4",
     "i18n-js": "^4.5.1",
