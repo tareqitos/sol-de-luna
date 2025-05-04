@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "../Utils/Txt";
+import { Divider, HelperText, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 
@@ -16,7 +15,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
     const searchHotel = async () => {
         try {
             const data = await API.getAddressFromQuery(query || "");
-            console.log(data)
             if (data.length > 0) {
                 setResults(data)
             } else {
@@ -43,19 +41,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         closeKeyboard();
         setResults([])
     }
-
-    const handleManualInput = () => {
-        if (!query || query.trim().length < 3) {
-            console.log("Manual input is invalid. Please enter a valid address.");
-            return;
-        }
-
-        setCoords({ latitude: null, longitude: null });
-        isAddressSelected.current = true;
-        setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY_ACCEPTED))
-        console.log("Manual address accepted:", query);
-        setResults([]);
-    };
 
     const Item = ({ item }) => (
         <View>
@@ -87,9 +72,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 style={styles.container}
                 keyboardShouldPersistTaps="always"
             />
-            <TouchableOpacity onPress={handleManualInput} style={{ marginBottom: 20 }}>
-                <Txt style={{ color: colors.primary }}>{message}</Txt>
-            </TouchableOpacity>
         </View>
     )
 

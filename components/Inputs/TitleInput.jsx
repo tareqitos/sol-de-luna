@@ -1,10 +1,12 @@
-import { TextInput } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 import { s } from "../../styles/styles.style";
-import Txt from "../Utils/Txt";
 import { useController } from "react-hook-form";
 import { useTheme } from "react-native-paper";
+import { useTranslation } from "react-i18next";
+import { MESSAGES } from "../../locales/languagesConst";
 
 export default function TitleInput({ name, placeholder, maxLength, control, errors }) {
+    const { t } = useTranslation()
     const { colors, typography } = useTheme();
     const { field } = useController({
         control,
@@ -14,19 +16,17 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
             required: "Required"
         }
     })
-
-    const errorBorder = errors?.name ? colors.error : typography.caption.color;
+    const error = errors?.name ? true : false
     return (
         <>
             <TextInput
                 label={name}
                 mode="flat"
                 focusable
+                error={error}
                 value={field.value}
-                // onBlur={field.onBlur}
                 onChangeText={field.onChange}
                 textColor={colors.onBackground}
-                outlineColor={errorBorder}
                 style={[
                     s.form.input,
                     field.value.length == 0 ? typography.caption : typography.body,
@@ -37,7 +37,10 @@ export default function TitleInput({ name, placeholder, maxLength, control, erro
                 placeholderTextColor={typography.caption.color}
                 autoCorrect={false}
             />
-            {errors?.name && <Txt style={{ color: colors.error }}>{errors.name.message}</Txt>}
+            {error &&
+                <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={error}>
+                    {t(MESSAGES.REQUIRED_MESSAGE)}
+                </HelperText>}
         </>
     )
 }

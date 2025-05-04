@@ -2,7 +2,7 @@ import Txt from "../Utils/Txt";
 import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";
-import { TextInput, useTheme } from "react-native-paper";
+import { HelperText, TextInput, useTheme } from "react-native-paper";
 import { FORM, MESSAGES } from "../../locales/languagesConst";
 
 export default function TransportRouteInput({ t, control, errors }) {
@@ -24,8 +24,10 @@ export default function TransportRouteInput({ t, control, errors }) {
         }
     })
 
-    const departureErrorColor = errors?.departure ? colors.error : typography.caption.color;
-    const arrivalErrorColor = errors?.arrival ? colors.error : typography.caption.color;
+    const departureError = errors?.departure ? true : false
+    const arrivalError = errors?.arrival ? true : false
+    const departureErrorColor = departureError ? colors.error : typography.caption.color;
+    const arrivalErrorColor = arrivalError ? colors.error : typography.caption.color;
     const errorMessage = t(MESSAGES.REQUIRED_MESSAGE)
 
 
@@ -35,6 +37,7 @@ export default function TransportRouteInput({ t, control, errors }) {
                 <TextInput
                     label={t(FORM.TRANSPORT_DEPARTURE_CITY)}
                     mode="flat"
+                    error={departureError}
                     value={departureField.value}
                     onBlur={departureField.onBlur}
                     onChangeText={departureField.onChange}
@@ -51,10 +54,15 @@ export default function TransportRouteInput({ t, control, errors }) {
                     right={<TextInput.Icon icon="source-commit-start" style={{ alignSelf: "baseline" }} size={18} />}
 
                 />
+                {departureError &&
+                    <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={departureError}>
+                        {errorMessage}
+                    </HelperText>}
 
                 <TextInput
                     label={t(FORM.TRANSPORT_ARRIVAL_CITY)}
                     mode="flat"
+                    error={arrivalError}
                     value={arrivalField.value}
                     onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}
@@ -69,13 +77,15 @@ export default function TransportRouteInput({ t, control, errors }) {
                     autoCorrect={false}
                     outlineColor={arrivalErrorColor}
                     right={<TextInput.Icon icon="source-commit-end" style={{ alignSelf: "baseline" }} size={18} />}
-
                 />
 
+                {arrivalError &&
+                    <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={arrivalError}>
+                        {errorMessage}
+                    </HelperText>}
+
+
             </View>
-            {errors?.departure || errors?.arrival ?
-                <Txt style={{ color: colors.error }}>{errorMessage}</Txt> : null
-            }
         </>
     )
 }
