@@ -38,8 +38,6 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                     setTimeout(() => {
                         showTimePicker();
                     }, 100);
-                } else {
-                    showTimePicker();
                 }
             } else if (mode === 'time') {
                 setTime(selectedValue);

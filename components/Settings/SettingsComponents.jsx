@@ -287,27 +287,29 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
 
 export const SettingsAbout = () => {
 
-    const URL = 'https://github.com/tareqitos/sol-de-luna'
+    const URL = 'https://github.com/tareqitos/'
 
     return (
         <>
-            {/* <SettingsItem
+            <SettingsItem
                 icon="logo-github"
                 title="Source code"
                 onPress={() => { Linking.openURL(URL).catch(err => console.error("Cannot open link", err)) }}
                 rightText="Github"
-            /> */}
+            />
             <SettingsItem
                 icon="information-circle-outline"
                 title="App Info"
-                onPress={() => {/* Navigate to app info */ }}
                 rightText="Sol de Luna"
             />
             <SettingsItem
                 icon="code-slash-outline"
                 title="Version"
-                onPress={() => { }}
                 rightText="1.0.0"
+            />
+            <SettingsItem
+                icon="heart-outline"
+                title="Developed by Tareqitos"
             />
         </>
     )
