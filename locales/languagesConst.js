@@ -56,7 +56,9 @@ const DESTINATION = {
     GREETINGS: 'greetings',
     PLACEHOLDER: 'inputPlaceholder',
     DIALOG_TITLE: 'dialogTitle',
-    DIALOG_CONTENT: 'dialogContent'
+    DIALOG_CONTENT: 'dialogContent',
+    RENAME_TITLE: 'renameDestinationTitle',
+    RENAME_CONTENT: 'renameDestinationContent',
 }
 
 const HOME = {
@@ -76,6 +78,7 @@ const DIALOGS = {
     CONFIRM: 'confirm',
     EDIT: 'edit',
     DELETE: 'delete',
+    RENAME: 'rename'
 }
 
 const MESSAGES = {

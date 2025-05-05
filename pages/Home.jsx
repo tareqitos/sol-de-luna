@@ -109,7 +109,7 @@ export default function Home({ route }) {
         animation.setValue(0);
         Animated.timing(animation, {
             toValue: 1,
-            duration: 300,
+            duration: 200,
             useNativeDriver: true,
         }).start();
     }, [selectedTabName, loading]);

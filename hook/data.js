@@ -5,6 +5,7 @@ export function useData() {
     const {
         destinations,
         addDestination,
+        renameDestination,
         deleteDestination,
         addItem,
         updateItem,
@@ -15,6 +16,7 @@ export function useData() {
     return {
         destinations,
         addDestination,
+        renameDestination,
         deleteDestination,
         addItem,
         updateItem,

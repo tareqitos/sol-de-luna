@@ -7,6 +7,8 @@ export default {
 
     dialogTitle: "Supprimer la destination",
     dialogContent: "Êtes-vous sûr de vouloir supprimer cette destination et toutes ses données?",
+    renameDestinationTitle: "Renommer la destination",
+    renameDestinationContent: "Entrez un nouveau nom",
 
     // HOME
     overview: "Aperçu",
@@ -98,6 +100,7 @@ export default {
     confirm: "Continuer",
     edit: "Modifier",
     delete: "Supprimer",
+    rename: "Renommer",
 
     // SETTINGS
     // APP
