@@ -11,8 +11,6 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/raleway": "^0.2.3",
-    "@expo/config-plugins": "^9.0.0",
-    "@expo/prebuild-config": "^8.0.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/native": "^7.0.19",
