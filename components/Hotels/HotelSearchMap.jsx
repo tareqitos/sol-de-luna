@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, HelperText, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 
-export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboard, t }) {
+export default function HotelSearchMap({ editMode, query, setQuery, setCoords, closeKeyboard, t }) {
 
     const [results, setResults] = useState([]);
     const [message, setMessage] = useState(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
     const { colors, typography } = useTheme();
 
     const isAddressSelected = useRef(false);
+    const hasQuery = useRef(editMode);
 
     const searchHotel = async () => {
         try {
@@ -27,7 +28,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         }
     }
 
-    const handleSelectedAddress = async (lat, lon, address) => {
+    const handleSelectedAddress = useCallback(async (lat, lon, address) => {
         if (lat && lon) {
             setCoords({
                 latitude: lat,
@@ -40,9 +41,9 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         }
         closeKeyboard();
         setResults([])
-    }
+    }, [query])
 
-    const Item = ({ item }) => (
+    const Item = memo(({ item }) => (
         <View>
             <TouchableOpacity
                 onPress={() => handleSelectedAddress(item.lat, item.lon, item.display_name)}
@@ -57,26 +58,31 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
             </TouchableOpacity>
             <Divider />
         </View>
-    )
+    ))
 
-    const ResultList = () => (
-        <View>
-            <IconButton onPress={() => setResults([])} icon="close" size={18} iconColor={colors.onSurface} style={{ display: results.length > 0 ? "flex " : "none", position: "absolute", zIndex: 20, right: 0 }} />
-            <FlatList
-                data={results}
-                keyExtractor={(item) => item.place_id}
-                renderItem={({ item }) => <Item item={item} />}
-                initialNumToRender={10}
-                maxToRenderPerBatch={10}
-                removeClippedSubviews={true}
-                style={styles.container}
-                keyboardShouldPersistTaps="always"
-            />
-        </View>
-    )
+    const ResultList = useMemo(() => {
+        if (results.length === 0) return null;
+
+        return (
+            <View>
+                {results.length > 0 && (
+                    <IconButton onPress={() => setResults([])} icon="close" size={18} iconColor={colors.onSurface} style={{ position: "absolute", zIndex: 20, right: 0 }} />
+                )}
+                <FlatList
+                    data={results}
+                    keyExtractor={(item) => item.place_id}
+                    renderItem={({ item }) => <Item item={item} />}
+                    initialNumToRender={10}
+                    maxToRenderPerBatch={10}
+                    removeClippedSubviews={true}
+                    style={styles.container}
+                    keyboardShouldPersistTaps="always"
+                />
+            </View>
+        )
+    }, [results])
 
     const [debounceTimeout, setDebounceTimeout] = useState(null);
-
 
     const delayAPICall = () => {
         if (debounceTimeout) {
@@ -100,6 +106,11 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
 
     useEffect(() => {
         if (query.trim().length > 2 && !isAddressSelected.current) {
+            if (hasQuery.current) {
+                hasQuery.current = false;
+                return;
+            }
+
             delayAPICall();
         } else {
             setResults([])
@@ -136,7 +147,7 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 />
             </View>
 
-            <ResultList />
+            {ResultList}
         </>
     )
 }

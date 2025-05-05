@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 
-export default function RouteInput({ iataRef, setRoute, t }) {
+export default function RouteInput({ iataRef, route, setRoute, t }) {
     const { colors, typography } = useTheme();
 
     const [airports, setAirports] = useState({});
@@ -13,13 +13,30 @@ export default function RouteInput({ iataRef, setRoute, t }) {
     const [isVisible, setIsVisible] = useState(false);
     const [activeField, setActiveField] = useState(null);
 
-    const [departureAirport, setDepartureAirport] = useState({ city: "", iata: "" });
-    const [arrivalAirport, setArrivalAirport] = useState({ city: "", iata: "" });
+    const [departureAirport, setDepartureAirport] = useState(route.departureAirport || { city: "", iata: "" });
+    const [arrivalAirport, setArrivalAirport] = useState(route.arrivalAirport || { city: "", iata: "" });
 
     const [errors, setErrors] = useState({
         departureAirport: "",
         arrivalAirport: "",
     });
+
+    useEffect(() => {
+        const hasRouteChanged =
+            route?.departureAirport?.city !== departureAirport.city ||
+            route?.departureAirport?.iata !== departureAirport.iata ||
+            route?.arrivalAirport?.city !== arrivalAirport.city ||
+            route?.arrivalAirport?.iata !== arrivalAirport.iata;
+
+        if (hasRouteChanged) {
+            if (route?.departureAirport?.city || route?.departureAirport?.iata) {
+                setDepartureAirport(route.departureAirport);
+            }
+            if (route?.arrivalAirport?.city || route?.arrivalAirport?.iata) {
+                setArrivalAirport(route.arrivalAirport);
+            }
+        }
+    }, [route]);
 
     // Fetch airport data
     useEffect(() => {
@@ -43,11 +60,11 @@ export default function RouteInput({ iataRef, setRoute, t }) {
     };
 
     // Handle input changes and show filtered list
-    const showList = (value, field) => {
+    const showList = useCallback((value, field) => {
         if (field === "departureAirport") {
-            setDepartureAirport({ city: value, iata: "" });
+            setDepartureAirport(prev => ({ ...prev, city: value, iata: "" }));
         } else if (field === "arrivalAirport") {
-            setArrivalAirport({ city: value, iata: "" });
+            setArrivalAirport(prev => ({ ...prev, city: value, iata: "" }));
         }
 
         if (value.length > 1) {
@@ -57,40 +74,35 @@ export default function RouteInput({ iataRef, setRoute, t }) {
         } else {
             setIsVisible(false);
         }
-    };
+    }, [getFilterAirports]);
 
     // Save selected city and IATA code
-    const saveSelectedCity = (city, iata) => {
+    const saveSelectedCity = useCallback((city, iata) => {
         if (activeField === "departureAirport") {
             setDepartureAirport({ city, iata });
-            setErrors((prev) => ({ ...prev, departureAirport: "" }));
+            setErrors(prev => ({ ...prev, departureAirport: "" }));
         } else if (activeField === "arrivalAirport") {
             setArrivalAirport({ city, iata });
-            setErrors((prev) => ({ ...prev, arrivalAirport: "" }));
+            setErrors(prev => ({ ...prev, arrivalAirport: "" }));
         }
         setIsVisible(false);
-    };
+    }, [activeField]);
 
-    // Validate inputs
-    const validate = () => {
-        let valid = true;
-        const newErrors = { departureAirport: "", arrivalAirport: "" };
-
-        if (!departureAirport.city || !departureAirport.iata || !arrivalAirport.city || !arrivalAirport.iata) {
-            newErrors.departureAirport = "Please select a valid departure and arrival airport";
-            valid = false;
-        }
-        setErrors(newErrors);
-        return valid;
-    };
 
     // Trigger setRoute callback when airports are updated
     useEffect(() => {
-        setRoute({ departureAirport, arrivalAirport }); 2
-    }, [departureAirport, arrivalAirport]);
+        // Only update parent when we have actual data to avoid unnecessary re-renders
+        const shouldUpdate =
+            (departureAirport.city && departureAirport.iata) ||
+            (arrivalAirport.city && arrivalAirport.iata);
+
+        if (shouldUpdate) {
+            setRoute({ departureAirport, arrivalAirport });
+        }
+    }, [departureAirport, arrivalAirport, setRoute]);
 
     // Render individual airport item
-    const Item = ({ city, iata }) => (
+    const Item = memo(({ city, iata }) => (
         <View>
             <TouchableOpacity
                 onPress={() => saveSelectedCity(city, iata)}
@@ -104,22 +116,35 @@ export default function RouteInput({ iataRef, setRoute, t }) {
             </TouchableOpacity>
             <Divider />
         </View>
-    );
+    ));
 
     // Render filtered airport list
-    const ResultList = () => (
-        <View>
-            <IconButton onPress={() => setFilteredAirports([])} icon="close" size={18} iconColor={colors.onSurface} style={{ display: filteredAirports.length > 0 ? "flex " : "none", position: "absolute", zIndex: 20, right: 0 }} />
+    const ResultList = useMemo(() => {
+        if (!isVisible || filteredAirports.length === 0) return null;
 
-            <FlatList
-                data={filteredAirports}
-                renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
-                keyExtractor={(item) => item.IATA}
-                style={styles.container}
-                keyboardShouldPersistTaps="always"
-            />
-        </View>
-    );
+        return (
+            <View>
+                <IconButton
+                    onPress={() => setFilteredAirports([])}
+                    icon="close"
+                    size={18}
+                    iconColor={colors.onSurface}
+                    style={{ position: "absolute", zIndex: 20, right: 0 }}
+                />
+
+                <FlatList
+                    data={filteredAirports.slice(0, 20)} // Limit the results for better performance
+                    renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
+                    keyExtractor={(item) => item.IATA}
+                    style={styles.container}
+                    keyboardShouldPersistTaps="always"
+                    initialNumToRender={10}
+                    maxToRenderPerBatch={10}
+                    windowSize={5}
+                />
+            </View>
+        );
+    }, [isVisible, filteredAirports, colors, saveSelectedCity]);
 
     return (
         <View>
@@ -175,7 +200,7 @@ export default function RouteInput({ iataRef, setRoute, t }) {
                 </Txt>
             )}
 
-            {isVisible && <ResultList />}
+            {isVisible && ResultList}
 
         </View>
     );

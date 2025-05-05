@@ -141,6 +141,7 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
                 deleteItem={deleteItem}
                 handleDeleteItem={handleDeleteItem}
                 CardComponent={CardComponent}
+                t={t}
             />
         ))
     }, [data, dateAsc, nameAsc, category, destination?.id, t])

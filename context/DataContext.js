@@ -157,9 +157,9 @@ export function DataProvider({ children }) {
 
     // Load Data on initial render
     useEffect(() => {
-        // const clearAsyncStorage = async () => {
-        //     AsyncStorage.clear();
-        // }
+        const clearAsyncStorage = async () => {
+            AsyncStorage.clear();
+        }
         // clearAsyncStorage();
         loadDestinations();
     }, [])

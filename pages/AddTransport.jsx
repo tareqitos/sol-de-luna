@@ -26,7 +26,7 @@ export default function AddTransport({ route }) {
     const { colors } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
     const { destination } = route.params;
-    const { addItem } = useData()
+    const { addItem, updateItem } = useData()
     const { t } = useTranslation();
 
     const [line, setLine] = useState(null)
@@ -43,6 +43,22 @@ export default function AddTransport({ route }) {
         mode: "onBlur"
     })
 
+    const { isEdit, item, destinationId } = route?.params
+
+    const fillFieldsInEditMode = () => {
+        if (item.name) setLine(item.name);
+        if (item.transportType) setTransportType(item.transportType);
+        if (item.departureTime) setDepartDate(new Date(item.departureTime));
+        if (item.arrivalTime) setArriveDate(new Date(item.arrivalTime));
+        if (item.departure || item.arrival || item.additionalInformation) {
+            control._reset({
+                departure: item.departure || "",
+                arrival: item.arrival || "",
+                additionalInformation: item.additionalInformation || ""
+            });
+        }
+    }
+
     const onSubmit = (newData) => {
         const newItem = {
             name: line,
@@ -52,11 +68,15 @@ export default function AddTransport({ route }) {
             ...newData
         }
 
-        addItem(destination.id, "transport", newItem)
-        console.log("TRANSPORT: ", newItem)
+        if (isEdit) {
+            updateItem(destinationId, { ...newItem, documents: item.documents, id: item.id, type: "transport" })
+            setMessage(t(MESSAGES.TRANSPORT_EDITED_MESSAGE))
+        } else {
+            addItem(destination.id, "transport", newItem)
+            console.log("TRANSPORT: ", newItem)
+            setMessage(t(MESSAGES.TRANSPORT_ADDED_MESSAGE))
+        }
 
-
-        setMessage(t(MESSAGES.TRANSPORT_ADDED_MESSAGE))
         toggleBar();
         nav.goBack()
     }
@@ -66,17 +86,23 @@ export default function AddTransport({ route }) {
         console.log("Transport: ", type)
     }
 
-    const memoizedDepart = useMemo(() => {
-        setArriveDate(departDate);
-    }, [departDate]);
+    // const memoizedDepart = useMemo(() => {
+    //     setArriveDate(departDate);
+    // }, [departDate]);
+
+    // useEffect(() => {
+    //     memoizedDepart
+    // }, [departDate]);
 
     useEffect(() => {
-        memoizedDepart
-    }, [departDate]);
+        if (isEdit === true) {
+            fillFieldsInEditMode()
+        }
+    }, [])
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
-            <TitlePage title={t(PAGE_TITLES.TRANSPORT_TITLE)} />
+            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_TRANSPORT_TITLE) : t(PAGE_TITLES.TRANSPORT_TITLE)} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
                 <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} line={line} setLine={setLine} />
@@ -92,7 +118,14 @@ export default function AddTransport({ route }) {
                 </View>
             </ScrollView>
             <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
-                <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                {isEdit ?
+                    <>
+                        <IconButton icon={"arrow-left"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
+                        <IconButton icon={"check"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </>
+                    :
+                    <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                }
             </View>
         </Container>
     )

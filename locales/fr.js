@@ -24,6 +24,9 @@ export default {
     hotelTitle: "Ajouter un hôtel",
     transportTitle: "Ajouter un transport",
     settingsTitle: "Paramètres",
+    editFlightTitle: "Modifier le vol",
+    editHotelTitle: "Modifier l'hôtel",
+    editTransportTitle: "Modifier le transport",
 
     // FORM
     flightName: "Nom du vol",
@@ -71,6 +74,10 @@ export default {
     hotelAddedMessage: "L'hôtel a été ajouté avec succès",
     transportAddedMessage: "Le transport a été ajouté avec succès",
 
+    flightEditedMessage: "Le vol a été modifié avec succès",
+    hotelEditedMessage: "L'hôtel a été modifié avec succès",
+    transportEditedMessage: "Le transport a été modifié avec succès",
+
     deleteCardTitle: "Supprimer la carte",
     deleteCardContent: "Êtes-vous sûr de vouloir supprimer cette carte?",
     deleteCardSuccess: "Carte supprimée avec succès",
@@ -89,6 +96,8 @@ export default {
     // DIALOG CANCEL && CONFIRM
     cancel: "Annuler",
     confirm: "Continuer",
+    edit: "Modifier",
+    delete: "Supprimer",
 
     // SETTINGS
     // APP
