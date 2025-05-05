@@ -1,4 +1,4 @@
-import { Animated, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from "react-native";
+import { Animated, Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import Title from "../components/Utils/Title";
 import { Button, Surface, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
@@ -44,7 +44,7 @@ export default function Destination() {
             onChangeText={setValue}
             placeholder={t(DESTINATION.RENAME_CONTENT)}
             focusable
-            maxLength={20}
+            maxLength={30}
             textColor={colors.onBackground}
             style={{ backgroundColor: colors.surface }}
         />
@@ -128,10 +128,9 @@ export default function Destination() {
                     <Title title={t(DESTINATION.TITLE)} subtitle={""} textColor={colors.onBackground} />
                 </View>
             </View>
-
+            <View style={{ flex: .2 }}></View>
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={styles.wrapper}>
-
                     <DestinationInput
                         value={value}
                         setValue={setValue}
@@ -140,10 +139,9 @@ export default function Destination() {
                         typography={typography}
                         t={t}
                     />
-
-                    {DestinationList}
-
-
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {DestinationList}
+                    </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
 
@@ -180,13 +178,14 @@ export default function Destination() {
 
 const styles = StyleSheet.create({
     wrapper: {
-        flex: .7,
-        justifyContent: "center",
+        flex: 1,
+        justifyContent: "flex-start",
         paddingHorizontal: 20,
     },
 
     destinations: {
         marginVertical: 20,
+        paddingHorizontal: 5,
         flexDirection: "row",
         gap: 10,
         flexWrap: "wrap"

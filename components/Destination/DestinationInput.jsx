@@ -47,6 +47,7 @@ export default function DestinationInput({ value, setValue, addDestination, t, c
                 <TextInput
                     mode="flat"
                     value={value}
+                    maxLength={30}
                     onChangeText={setValue}
                     placeholder={t(DESTINATION.PLACEHOLDER)}
                     style={{ flex: 1, backgroundColor: colors.background }}
