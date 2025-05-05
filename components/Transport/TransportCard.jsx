@@ -61,7 +61,7 @@ export default function TransportCard({ item, onPress, destination }) {
 
 
 
-            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+            <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
 
                     {/* ADDITIONAL INFORMATION */}

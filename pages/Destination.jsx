@@ -38,9 +38,9 @@ export default function Destination() {
         <Txt>{t(DESTINATION.DIALOG_CONTENT)}</Txt>
     )
 
-    const handleAddDestination = (dest) => {
-        if (value.length > 0 && emoji) {
-            addDestination(dest)
+    const handleAddDestination = (emoji, dest) => {
+        if (dest && dest.length > 0) {
+            addDestination(`${emoji} ${dest}`)
             setDialogVisible(false)
             setValue("")
             console.log(destinations)
@@ -68,9 +68,6 @@ export default function Destination() {
     const handleCloseKeyboard = () => {
         Keyboard.dismiss();
     };
-    // const triggerNotification = () => {
-    //     scheduleDepartureReminder(5);
-    // }
 
     return (
         <Container>
@@ -103,7 +100,7 @@ export default function Destination() {
                                 onChangeText={setValue}
                                 placeholder={t(DESTINATION.PLACEHOLDER)}
                                 style={{ flex: 1, backgroundColor: colors.background }}
-                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(`${emoji} ${value}`) }} />}
+                                right={<TextInput.Icon icon="plus" size={24} onPress={() => { handleAddDestination(emoji, value) }} />}
                             />
                         </View>
                     </View>

@@ -15,7 +15,11 @@ export default function CardFiles({ file }) {
                         <View style={[styles.file]}>
                             <Image
                                 source={{ uri: file.uri }}
-                                style={styles.image} />
+                                style={styles.image}
+                                resizeMode="cover"
+                                fadeDuration={300}
+                                progressiveRenderingEnabled={true}
+                            />
                         </View> :
 
                         <View style={[styles.document, { backgroundColor: colors.secondary }]}>

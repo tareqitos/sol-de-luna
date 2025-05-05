@@ -43,7 +43,7 @@ export default {
     hotelAddress: "Address",
     hotelAddressPlaceholder: "Search for an address",
     hotelAddAddressManually: "Or tap here to add address manually",
-    hotelAddAddrellManuallyAccepted: "Address added!",
+    hotelAddAddressManuallyAccepted: "Address added!",
     hotelAdditionnalInfoPlaceholder: "e.g. Room number, access code, etc.",
 
     transportName: "Line / Name",
@@ -80,6 +80,10 @@ export default {
     deleteFileSuccess: "File deleted successfully",
 
     requiredMessage: "This field is required",
+
+    // SEARCH
+    search: "Search...",
+    searchNoResultMessage: "No results found for ",
 
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",

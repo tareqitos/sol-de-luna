@@ -1,16 +1,24 @@
 {
-    "build": {
-        "preview": {
-            "android": {
-                "buildType": "apk"
-            }
-        },
-        "development": {
-            "developmentClient": true,
-            "distribution": "internal"
-        },
-        "production": {
-            "channel": "production"
-        }
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "preview"
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "production": {
+      "channel": "production",
+      "android": {
+        "buildType": "apk"
+      },
+      "experimental": {
+        "prebuildCommand": "expo prebuild --clean"
+      }
     }
+  }
 }

@@ -4,13 +4,17 @@
     "slug": "sol-de-luna",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "./assets/splash-icon-dark.png",
+        "backgroundColor": "#121212"
+      }
     },
     "ios": {
       "supportsTablet": true,
@@ -27,6 +31,7 @@
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
+        "INTERNET",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET"
@@ -51,8 +56,8 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
             "enableProguardInReleaseBuilds": true
           }
         }
@@ -63,13 +68,16 @@
           "backgroundColor": "#FDFDFD",
           "image": "./assets/splash-icon.png",
           "dark": {
-            "image": "./assets/splash-icon.png",
+            "image": "./assets/splash-icon-dark.png",
             "backgroundColor": "#121212"
           },
-          "imageWidth": 200
+          "imageWidth": 200,
+          "androidSplashScreen": {
+            "imageResizeMode": "contain",
+            "splashScreenBackgroundColor": "#FDFDFD"
+          }
         }
-      ],
-      "expo-localization"
+      ]
     ],
     "extra": {
       "eas": {

@@ -30,7 +30,7 @@ export default function AddHotels({ route }) {
     const { t } = useTranslation();
 
     const [query, setQuery] = useState("");
-    const [coords, setCoords] = useState(null)
+    const [coords, setCoords] = useState()
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date());
     const [stars, setStars] = useState(-1);
@@ -48,8 +48,8 @@ export default function AddHotels({ route }) {
 
         const newItem = {
             address: query || null,
-            latitude: coords.latitude || null,
-            longitude: coords.longitude || null,
+            latitude: coords?.latitude || null,
+            longitude: coords?.longitude || null,
 
             checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
             checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),

@@ -67,12 +67,14 @@ export default function HotelCard({ item, onPress, destination }) {
             </CardSection>
 
 
-            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+            <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
                     {/* ADDRESS */}
-                    <CardSection style={styles.cardSection} text={t(CARDS.HOTEL_CARD_ADDRESS)}>
-                        <CardAddress item={item} />
-                    </CardSection>
+                    {item.address &&
+                        <CardSection style={styles.cardSection} text={t(CARDS.HOTEL_CARD_ADDRESS)}>
+                            <CardAddress item={item} />
+                        </CardSection>
+                    }
 
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>

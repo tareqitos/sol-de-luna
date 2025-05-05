@@ -53,7 +53,7 @@ export default function FlightCard({ item, onPress, destination }) {
 
             <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
 
-            <Collapsible collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true}>
+            <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true} >
                 {item.passengers.length !== 0 &&
                     <View style={s.card.add_container}>
                         <CardSection style={styles.cardSection} text={t(CARDS.FLIGHT_CARD_PASSENGER)}>

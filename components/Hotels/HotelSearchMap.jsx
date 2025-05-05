@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
-import Txt from "../Utils/Txt";
+import { Divider, HelperText, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 
@@ -16,10 +15,8 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
     const searchHotel = async () => {
         try {
             const data = await API.getAddressFromQuery(query || "");
-            console.log(data)
             if (data.length > 0) {
                 setResults(data)
-                console.log(data[0].display_name)
             } else {
                 setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
                 setResults([])
@@ -45,19 +42,6 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
         setResults([])
     }
 
-    const handleManualInput = () => {
-        if (!query || query.trim().length < 3) {
-            console.log("Manual input is invalid. Please enter a valid address.");
-            return;
-        }
-
-        setCoords({ latitude: null, longitude: null });
-        isAddressSelected.current = true;
-        setMessage(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY_ACCEPTED))
-        console.log("Manual address accepted:", query);
-        setResults([]);
-    };
-
     const Item = ({ item }) => (
         <View>
             <TouchableOpacity
@@ -82,12 +66,12 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
                 data={results}
                 keyExtractor={(item) => item.place_id}
                 renderItem={({ item }) => <Item item={item} />}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                removeClippedSubviews={true}
                 style={styles.container}
                 keyboardShouldPersistTaps="always"
             />
-            <TouchableOpacity onPress={handleManualInput} style={{ marginBottom: 20 }}>
-                <Txt style={{ color: colors.primary }}>{message}</Txt>
-            </TouchableOpacity>
         </View>
     )
 
@@ -105,6 +89,14 @@ export default function HotelSearchMap({ query, setQuery, setCoords, closeKeyboa
 
         setDebounceTimeout(timeout);
     };
+
+    useEffect(() => {
+        return () => {
+            if (debounceTimeout) {
+                clearTimeout(debounceTimeout);
+            }
+        }
+    }, [])
 
     useEffect(() => {
         if (query.trim().length > 2 && !isAddressSelected.current) {
