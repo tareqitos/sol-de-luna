@@ -56,7 +56,6 @@ const CardItem = memo(({ item, destination, deleteItem, handleDeleteItem, CardCo
 
                 <Button onPress={deleteCard}>{t(DIALOGS.DELETE)}</Button>
             </ModalCard>
-
         </Animated.View>
     )
 });

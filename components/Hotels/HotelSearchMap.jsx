@@ -41,6 +41,7 @@ export default function HotelSearchMap({ editMode, query, setQuery, setCoords, c
         }
         closeKeyboard();
         setResults([])
+
     }, [query])
 
     const Item = memo(({ item }) => (

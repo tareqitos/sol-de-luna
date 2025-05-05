@@ -121,6 +121,7 @@ export default function Destination() {
         )
     }, [destinations, value, showModal])
 
+
     return (
         <Container>
             <View>
