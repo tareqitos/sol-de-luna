@@ -17,6 +17,7 @@ import { useSettings } from '../../hook/settings';
 import { useLocalization } from '../../hook/localization';
 import { useTranslation } from 'react-i18next';
 import { SETTINGS } from '../../locales/languagesConst';
+import ModalCard from '../UI/Modal';
 
 const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightText, style }) => {
     const { colors } = useTheme();
@@ -157,17 +158,13 @@ export const SettingsLanguages = () => {
         hideModal();
     }
 
-    const containerStyle = { backgroundColor: colors.surface, borderRadius: 10, paddingVertical: 20 };
-
     const modal = (
-        <Portal>
-            <Modal visible={visible} onDismiss={hideModal} style={styles.langugageModal} contentContainerStyle={containerStyle}>
-                {languages.map(language => (
-                    <Button key={language.tag} onPress={() => handleSelectLanguage(language.tag)} style={styles.languageSelection}>{language.name}</Button>
-                ))}
+        <ModalCard visible={visible} onDismiss={hideModal}>
+            {languages.map(language => (
+                <Button key={language.tag} onPress={() => handleSelectLanguage(language.tag)} style={styles.languageSelection}>{language.name}</Button>
+            ))}
 
-            </Modal>
-        </Portal>
+        </ModalCard>
     )
 
     return (

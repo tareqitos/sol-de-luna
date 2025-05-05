@@ -3,7 +3,10 @@ const PAGE_TITLES = {
     FLIGHT_TITLE: 'flightTitle',
     HOTEL_TITLE: 'hotelTitle',
     TRANSPORT_TITLE: 'transportTitle',
-    SETTINGS_TITLE: 'settingsTitle'
+    SETTINGS_TITLE: 'settingsTitle',
+    EDIT_FLIGHT_TITLE: 'editFlightTitle',
+    EDIT_HOTEL_TITLE: 'editHotelTitle',
+    EDIT_TRANSPORT_TITLE: 'editTransportTitle',
 }
 
 const FORM = {
@@ -53,7 +56,9 @@ const DESTINATION = {
     GREETINGS: 'greetings',
     PLACEHOLDER: 'inputPlaceholder',
     DIALOG_TITLE: 'dialogTitle',
-    DIALOG_CONTENT: 'dialogContent'
+    DIALOG_CONTENT: 'dialogContent',
+    RENAME_TITLE: 'renameDestinationTitle',
+    RENAME_CONTENT: 'renameDestinationContent',
 }
 
 const HOME = {
@@ -70,7 +75,10 @@ const CATEGORIES = {
 
 const DIALOGS = {
     CANCEL: 'cancel',
-    CONFIRM: 'confirm'
+    CONFIRM: 'confirm',
+    EDIT: 'edit',
+    DELETE: 'delete',
+    RENAME: 'rename'
 }
 
 const MESSAGES = {
@@ -79,6 +87,10 @@ const MESSAGES = {
     FLIGHT_ADDED_MESSAGE: 'flightAddedMessage',
     HOTEL_ADDED_MESSAGE: 'hotelAddedMessage',
     TRANSPORT_ADDED_MESSAGE: 'transportAddedMessage',
+
+    FLIGHT_EDITED_MESSAGE: 'flightEditedMessage',
+    HOTEL_EDITED_MESSAGE: 'hotelEditedMessage',
+    TRANSPORT_EDITED_MESSAGE: 'transportEditedMessage',
 
     DELETE_CARD_TITLE: 'deleteCardTitle',
     DELETE_CARD_CONTENT: 'deleteCardContent',

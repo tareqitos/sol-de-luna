@@ -29,6 +29,22 @@ export function DataProvider({ children }) {
         ]);
     }
 
+    const renameDestination = (destinationId, newName) => {
+        if (!newName || newName.trim().length === 0) {
+            console.log("Invalid name for destination:", newName);
+            return false;
+        }
+
+        setDestinations(prev => prev.map(destination => {
+            if (destination.id !== destinationId) return destination;
+
+            return {
+                ...destination,
+                name: newName
+            };
+        }));
+    }
+
     const deleteDestination = (destinationId) => {
         if (Platform.OS === "android") {
 
@@ -157,9 +173,9 @@ export function DataProvider({ children }) {
 
     // Load Data on initial render
     useEffect(() => {
-        // const clearAsyncStorage = async () => {
-        //     AsyncStorage.clear();
-        // }
+        const clearAsyncStorage = async () => {
+            AsyncStorage.clear();
+        }
         // clearAsyncStorage();
         loadDestinations();
     }, [])
@@ -178,6 +194,7 @@ export function DataProvider({ children }) {
         <DataContext.Provider value={{
             destinations,
             addDestination,
+            renameDestination,
             deleteDestination,
             addItem,
             updateItem,

@@ -9,6 +9,8 @@ export default {
 
     dialogTitle: "Delete Destination",
     dialogContent: "Are you sure you want to delete this destination and all its data?",
+    renameDestinationTitle: "Rename destination",
+    renameDestinationContent: "Enter a new name",
 
     // HOME 
     overview: "Overview",
@@ -26,6 +28,9 @@ export default {
     hotelTitle: "Add hotel",
     transportTitle: "Add transport",
     settingsTitle: "Settings",
+    editFlightTitle: "Edit flight",
+    editHotelTitle: "Edit hotel",
+    editTransportTitle: "Edit transport",
 
     // FORM
     flightName: "Flight name",
@@ -71,6 +76,10 @@ export default {
     hotelAddedMessage: "Hotel has successfuly been added",
     transportAddedMessage: "Transport has successfuly been added",
 
+    flightEditedMessage: "Flight has successfuly been edited",
+    hotelEditedMessage: "Hotel has successfuly been edited",
+    transportEditedMessage: "Transport has successfuly been edited",
+
     deleteCardTitle: "Delete card",
     deleteCardContent: "Are you sure you want to delete this card?",
     deleteCardSuccess: "Card deleted successfully",
@@ -88,6 +97,9 @@ export default {
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",
     confirm: "Continue",
+    edit: "Edit",
+    delete: "Delete",
+    rename: "Rename",
 
     // SETTINGS
     // APP

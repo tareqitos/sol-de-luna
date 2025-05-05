@@ -23,8 +23,9 @@ import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 
 export default function AddHotels({ route }) {
     const nav = useNavigation();
+
     const { destination } = route.params;
-    const { addItem } = useData()
+    const { addItem, updateItem } = useData()
     const { colors, typography } = useTheme();
     const { setMessage, toggleBar } = useSnackbar();
     const { t } = useTranslation();
@@ -35,7 +36,6 @@ export default function AddHotels({ route }) {
     const [checkOut, setCheckOut] = useState(new Date());
     const [stars, setStars] = useState(-1);
 
-
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: "",
@@ -43,6 +43,17 @@ export default function AddHotels({ route }) {
         },
         mode: "onBlur"
     })
+
+    const { isEdit, item, destinationId } = route?.params
+
+    const fillFieldsInEditMode = () => {
+        if (item.name) control._reset({ name: item.name, additionalInformation: item.additionalInformation })
+        if (item.address) setQuery(item.address);
+        if (item.latitude) setCoords({ latitude: item.latitude, longitude: item.longitude });
+        if (item.checkIn) setCheckIn(new Date(item.checkIn));
+        if (item.checkOut) setCheckOut(new Date(item.checkOut));
+        if (stars > -1) setStars(item.stars);
+    }
 
     const onSubmit = (newData) => {
 
@@ -57,10 +68,15 @@ export default function AddHotels({ route }) {
             ...newData,
         }
 
-        addItem(destination.id, "hotels", newItem)
-        console.log("HOTELS: ", newItem)
+        if (isEdit) {
+            updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "hotels" })
+            setMessage(t(MESSAGES.HOTEL_EDITED_MESSAGE))
+        } else {
+            addItem(destination.id, "hotels", newItem)
+            console.log("HOTELS: ", newItem)
+            setMessage(t(MESSAGES.HOTEL_ADDED_MESSAGE))
+        }
 
-        setMessage(t(MESSAGES.HOTEL_ADDED_MESSAGE))
         toggleBar();
         nav.goBack()
     }
@@ -70,18 +86,24 @@ export default function AddHotels({ route }) {
         Keyboard.dismiss();
     };
 
-    const memoizedCheckOut = useMemo(() => {
-        setCheckOut(checkIn);
-    }, [checkIn]);
-
     useEffect(() => {
-        memoizedCheckOut
-    }, [checkIn]);
+        if (isEdit === true) {
+            fillFieldsInEditMode()
+        }
+    }, [])
+
+    // const memoizedCheckOut = useMemo(() => {
+    //     setCheckOut(checkIn);
+    // }, [checkIn]);
+
+    // useEffect(() => {
+    //     memoizedCheckOut
+    // }, [checkIn]);
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
 
-            <TitlePage title={t(PAGE_TITLES.HOTEL_TITLE)} />
+            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={{ flex: 1 }}>
                     <View style={s.form.container}>
@@ -90,9 +112,10 @@ export default function AddHotels({ route }) {
                             <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
                             <StarInput stars={stars} setStars={setStars} />
                         </View>
-                        {/* <AddressInput name="Address" placeholder="e.g. 123 Beverly Hills..." control={control} errors={errors} /> */}
-                        <HotelSearchMap query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
+                        <View style={{ marginVertical: 10 }}>
+                            <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
 
+                        </View>
                         <View style={{ gap: 20 }}>
                             <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
                             <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
@@ -104,7 +127,14 @@ export default function AddHotels({ route }) {
                 </View>
             </TouchableWithoutFeedback>
             <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
-                <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                {isEdit ?
+                    <>
+                        <IconButton icon={"arrow-left"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
+                        <IconButton icon={"check"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </>
+                    :
+                    <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                }
             </View>
         </Container >
     )

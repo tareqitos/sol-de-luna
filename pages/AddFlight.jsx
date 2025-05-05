@@ -21,7 +21,7 @@ import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
-    const { addItem } = useData()
+    const { addItem, updateItem } = useData()
     const { setMessage, toggleBar } = useSnackbar();
     const { colors } = useTheme();
     const { t } = useTranslation();
@@ -39,12 +39,35 @@ export default function AddFlight({ route }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             name: "",
-            departureAirport: { city: "", iata: "" },
-            arrivalAirport: { city: "", iata: "" },
             additionalInformation: "",
         },
         mode: "onBlur"
     });
+
+    const { isEdit, item, destinationId } = route?.params || {};
+
+    const fillFieldsInEditMode = () => {
+        if (item.name || item.additionalInformation) {
+            reset({
+                name: item.name || "",
+                additionalInformation: item.additionalInformation || ""
+            });
+        }
+        if (item.departureAirport && item.arrivalAirport) {
+            setRoutes({
+                departureAirport: item.departureAirport,
+                arrivalAirport: item.arrivalAirport
+            });
+        }
+        if (item.departureDate) {
+            const departureDate = new Date(item.departureDate);
+            setDate(departureDate);
+            setTime(departureDate);
+        }
+        if (item.passengers) {
+            setPassengers(item.passengers);
+        }
+    }
 
     const onSubmit = (newData) => {
 
@@ -57,10 +80,15 @@ export default function AddFlight({ route }) {
         }
 
 
-        addItem(destination.id, "flights", newItem)
-        console.log("FLIGHTS: ", newItem)
+        if (isEdit) {
+            updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "flights" })
+            setMessage(t(MESSAGES.FLIGHT_EDITED_MESSAGE))
+        } else {
+            addItem(destination.id, "flights", newItem)
+            console.log("FLIGHTS: ", newItem)
+            setMessage(t(MESSAGES.FLIGHT_ADDED_MESSAGE))
+        }
 
-        setMessage(t(MESSAGES.FLIGHT_ADDED_MESSAGE))
         toggleBar();
         nav.goBack()
     }
@@ -70,6 +98,11 @@ export default function AddFlight({ route }) {
         Keyboard.dismiss();
     };
 
+    useEffect(() => {
+        if (isEdit === true) {
+            fillFieldsInEditMode();
+        }
+    }, []);
 
     useEffect(() => {
         if (routes?.departureAirport && routes?.arrivalAirport) {
@@ -87,7 +120,7 @@ export default function AddFlight({ route }) {
             <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
                 <View style={{ flex: 1 }}>
 
-                    <TitlePage title={t(PAGE_TITLES.FLIGHT_TITLE)} />
+                    <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_FLIGHT_TITLE) : t(PAGE_TITLES.FLIGHT_TITLE)} />
 
                     <View style={{ flex: 1 }}>
                         <View style={s.form.container}>
@@ -98,6 +131,7 @@ export default function AddFlight({ route }) {
                             <View style={s.form.input_container}>
                                 <RouteInput
                                     iataRef={iataRef}
+                                    route={routes}
                                     setRoute={setRoutes}
                                     t={t}
                                 />
@@ -118,7 +152,14 @@ export default function AddFlight({ route }) {
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
-                        <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                        {isEdit ?
+                            <>
+                                <IconButton icon={"arrow-left"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
+                                <IconButton icon={"check"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                            </>
+                            :
+                            <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                        }
                     </View>
                 </View>
             </TouchableWithoutFeedback>
