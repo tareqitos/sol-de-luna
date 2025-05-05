@@ -64,21 +64,32 @@ export default function HotelSearchMap({ editMode, query, setQuery, setCoords, c
         if (results.length === 0) return null;
 
         return (
-            <View>
-                {results.length > 0 && (
-                    <IconButton onPress={() => setResults([])} icon="close" size={18} iconColor={colors.onSurface} style={{ position: "absolute", zIndex: 20, right: 0 }} />
-                )}
-                <FlatList
-                    data={results}
-                    keyExtractor={(item) => item.place_id}
-                    renderItem={({ item }) => <Item item={item} />}
-                    initialNumToRender={10}
-                    maxToRenderPerBatch={10}
-                    removeClippedSubviews={true}
-                    style={styles.container}
-                    keyboardShouldPersistTaps="always"
-                />
-            </View>
+            <>
+                <View>
+                    {results.length > 0 && (
+                        <IconButton
+                            onPress={() => setResults([])}
+                            icon="close"
+                            size={18}
+                            iconColor={colors.onSurface}
+                            style={Platform.OS === "ios" ? { backgroundColor: colors.surface, width: "auto" } : { position: "absolute", zIndex: 200, right: 0 }}
+                        />
+                    )}
+                </View>
+                <View>
+
+                    <FlatList
+                        data={results}
+                        keyExtractor={(item) => item.place_id}
+                        renderItem={({ item }) => <Item item={item} />}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        removeClippedSubviews={true}
+                        style={Platform.OS === 'ios' ? styles.containerIOS : styles.container}
+                        keyboardShouldPersistTaps="always"
+                    />
+                </View>
+            </>
         )
     }, [results])
 
@@ -164,6 +175,13 @@ const styles = StyleSheet.create({
         maxHeight: 500,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
+    },
+    containerIOS: {
+        position: "absolute",
+        width: "100%",
+        zIndex: 10,
+        maxHeight: 500,
+        borderRadius: 10
     },
     item: {
         paddingVertical: 5,

@@ -1,9 +1,10 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
+import airportsData from "../../data/airports.json"
 
 export default function RouteInput({ iataRef, route, setRoute, t }) {
     const { colors, typography } = useTheme();
@@ -40,15 +41,11 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
 
     // Fetch airport data
     useEffect(() => {
-        const getIataApi = async () => {
-            try {
-                const result = await API.getIATA();
-                setAirports(result);
-            } catch (error) {
-                console.error("Error fetching API:", error);
-            }
-        };
-        getIataApi();
+        const airportsObj = {};
+        airportsData.forEach(airport => {
+            airportsObj[airport.IATA] = airport;
+        });
+        setAirports(airportsObj)
     }, []);
 
     // Filter airports based on input
@@ -123,26 +120,32 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
         if (!isVisible || filteredAirports.length === 0) return null;
 
         return (
-            <View>
-                <IconButton
-                    onPress={() => setFilteredAirports([])}
-                    icon="close"
-                    size={18}
-                    iconColor={colors.onSurface}
-                    style={{ position: "absolute", zIndex: 20, right: 0 }}
-                />
+            <>
+                <View>
+                    <IconButton
+                        onPress={() => setFilteredAirports([])}
+                        icon="close"
+                        size={18}
+                        iconColor={colors.onSurface}
+                        background={colors.surface}
+                        style={Platform.OS === "ios" ? { backgroundColor: colors.surface, width: "auto" } : { position: "absolute", zIndex: 200, right: 0 }}
+                    />
 
-                <FlatList
-                    data={filteredAirports.slice(0, 20)} // Limit the results for better performance
-                    renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
-                    keyExtractor={(item) => item.IATA}
-                    style={styles.container}
-                    keyboardShouldPersistTaps="always"
-                    initialNumToRender={10}
-                    maxToRenderPerBatch={10}
-                    windowSize={5}
-                />
-            </View>
+                </View>
+                <View>
+
+                    <FlatList
+                        data={filteredAirports.slice(0, 20)} // Limit the results for better performance
+                        renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
+                        keyExtractor={(item) => item.IATA}
+                        style={Platform.OS === 'ios' ? styles.containerIOS : styles.container}
+                        keyboardShouldPersistTaps="always"
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={5}
+                    />
+                </View>
+            </>
         );
     }, [isVisible, filteredAirports, colors, saveSelectedCity]);
 
@@ -165,7 +168,12 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
                     inputMode="text"
                     autoCorrect={false}
                     outlineColor={errors.departureAirport ? colors.error : colors.outline}
-                    right={<TextInput.Icon icon="airplane-takeoff" style={{ alignSelf: "baseline" }} size={18} />}
+                    right={
+                        <TextInput.Icon
+                            icon="airplane-takeoff"
+                            size={18}
+                            style={{ alignSelf: "baseline" }}
+                        />}
 
                 />
 
@@ -215,6 +223,15 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
     },
+
+    containerIOS: {
+        position: "absolute",
+        width: "100%",
+        zIndex: 10,
+        maxHeight: 500,
+        borderRadius: 10
+    },
+
     item: {
         paddingVertical: 5,
         paddingHorizontal: 10,
