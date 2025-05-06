@@ -1,7 +1,7 @@
 import { Badge, Chip, Divider, IconButton, List, Surface, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { calculateDayBetweenTwoDates, ConvertDateToString } from "../../services/date-service";
+import { calculateDayBetweenTwoDates, ConvertDateToString, ConvertTimeToString } from "../../services/date-service";
 import { showLocation } from "react-native-map-link";
 import { useLocalization } from "../../hook/localization";
 
@@ -86,7 +86,12 @@ export default function Upcoming({ updatedTab, categories, types, t_categories }
                                     <List.Item
                                         title={item.name || item.arrival}
                                         left={() => <List.Icon icon={category === "transport" ? item.transportType : categoryContent[category].icon} />}
-                                        description={() => <Txt style={[typography.bodyInter, { opacity: .5 }]}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime, selected.tag)}</Txt>}
+                                        description={() => (
+                                            <>
+                                                <Txt style={[typography.bodyInter, { opacity: .5 }]}>{ConvertTimeToString(item.departureDate || item.checkIn || item.departureTime, selected.tag)}</Txt>
+                                                <Txt style={[typography.bodyInter, { opacity: .5 }]}>{ConvertDateToString(item.departureDate || item.checkIn || item.departureTime, selected.tag)}</Txt>
+                                            </>
+                                        )}
                                         contentStyle={{ justifyContent: "center" }}
                                         titleStyle={typography.body}
                                         style={{ flex: 1 }}

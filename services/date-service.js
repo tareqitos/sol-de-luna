@@ -9,7 +9,7 @@ export const ConvertDateToNum = (date) => {
     return d.toLocaleDateString("us-US", { month: "numeric", day: "numeric", year: "numeric" });
 }
 
-export const ConvertTimetoString = (time) => {
+export const ConvertTimeToString = (time) => {
     return time.split("T")[1].substr(0, 5)
 }
 
