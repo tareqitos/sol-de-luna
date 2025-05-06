@@ -15,9 +15,6 @@
       "channel": "production",
       "android": {
         "buildType": "apk"
-      },
-      "experimental": {
-        "prebuildCommand": "expo prebuild --clean"
       }
     }
   }
