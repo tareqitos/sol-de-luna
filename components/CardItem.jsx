@@ -4,7 +4,6 @@ import { getScaleValue, handlePressIn, handlePressOut, cleanupScaleValue } from 
 import { Button, Divider, Modal, Portal } from "react-native-paper";
 import ModalCard from "./UI/Modal";
 import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
 import { DIALOGS } from "../locales/languagesConst";
 
 const CardItem = memo(({ item, destination, deleteItem, handleDeleteItem, CardComponent, t }) => {
