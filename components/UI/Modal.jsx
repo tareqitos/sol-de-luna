@@ -1,4 +1,5 @@
-import { Modal, Portal, useTheme } from "react-native-paper";
+import { Button, Divider, IconButton, Modal, Portal, useTheme } from "react-native-paper";
+import Txt from "../Utils/Txt";
 
 export default function ModalCard({ visible, onDismiss, children }) {
     const { colors } = useTheme()
@@ -14,6 +15,7 @@ export default function ModalCard({ visible, onDismiss, children }) {
                 style={modalStyle}
                 contentContainerStyle={containerStyle}
             >
+                <Divider style={{ marginVertical: 20 }} />
                 {children}
             </Modal>
         </Portal>

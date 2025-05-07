@@ -24,7 +24,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
     };
 
     const today = new Date()
-    const handleChange = (event, selectedValue) => {
+    const handleDateChange = (event, selectedValue) => {
         if (Platform.OS === 'android') {
             setShowDate(false);
             setShowTime(false);
@@ -39,14 +39,18 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                         showTimePicker();
                     }, 100);
                 }
-            } else if (mode === 'time') {
-                setTime(selectedValue);
-            } else if (mode === 'datetime') {
-                setDate(selectedValue);
-                setTime(selectedValue);
             }
         }
-    };
+    }
+
+    const handleTimeChange = (event, selectedValue) => {
+        if (Platform.OS === 'android') {
+            setShowDate(false);
+            setShowTime(false);
+        }
+
+        setTime(selectedValue)
+    }
 
     // console.log(mergeDateAndTime(date, time))
 
@@ -71,7 +75,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                         <DateTimePicker
                             mode="date"
                             value={date || new Date()}
-                            onChange={handleChange}
+                            onChange={handleDateChange}
                             themeVariant={theme}
                             minimumDate={today}
                             display="default"
@@ -82,7 +86,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                         <DateTimePicker
                             mode="time"
                             value={time || new Date()}
-                            onChange={handleChange}
+                            onChange={handleTimeChange}
                             themeVariant={theme}
                             is24Hour
                             display="default"
@@ -94,7 +98,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                     <DateTimePicker
                         mode="date"
                         value={date || new Date()}
-                        onChange={handleChange}
+                        onChange={handleDateChange}
                         themeVariant={theme}
                         locale={selected.tag}
                         minimumDate={today}
@@ -103,7 +107,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                     <DateTimePicker
                         mode="time"
                         value={time || new Date()}
-                        onChange={handleChange}
+                        onChange={handleTimeChange}
                         themeVariant={theme}
                         minimumDate={today}
                     />
