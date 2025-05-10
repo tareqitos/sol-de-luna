@@ -28,4 +28,20 @@ export class API {
             )
         ).data;
     }
+    static async fetchImageFromUnsplash(name) {
+        const API_KEY = process.env.EXPO_PUBLIC_UNSPLASH_API_KEY;
+        if (!API_KEY) {
+            console.warn("Unsplash API key is not defined in environment variables.");
+            return null;
+        }
+        return (
+            await axios.get(
+                `https://api.unsplash.com/photos/random?query=${name}&topics=holiday&orientation=landscape&client_id=${API_KEY}`,
+                {
+                    headers: {
+                        'Accept-Version': "v1"
+                    }
+                }
+            )).data;
+    }
 }

@@ -15,10 +15,11 @@ import Txt from "../components/Utils/Txt";
 
 import { s } from "../styles/styles.style";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
-import { mergeDateAndTime } from "../services/date-service";
+import { ConvertTimeToString, getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import HotelSearchMap from "../components/Hotels/HotelSearchMap";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
+import { scheduleNotification } from "../services/notifications";
 
 
 export default function AddHotels({ route }) {
@@ -50,35 +51,53 @@ export default function AddHotels({ route }) {
         if (item.name) control._reset({ name: item.name, additionalInformation: item.additionalInformation })
         if (item.address) setQuery(item.address);
         if (item.latitude) setCoords({ latitude: item.latitude, longitude: item.longitude });
-        if (item.checkIn) setCheckIn(new Date(item.checkIn));
-        if (item.checkOut) setCheckOut(new Date(item.checkOut));
+        if (item.checkIn) {
+            const date = new Date(item.checkIn);
+            setCheckIn(getTimeZoneOffset(date));
+        };
+        if (item.checkOut) {
+            const date = new Date(item.checkOut)
+            setCheckOut(getTimeZoneOffset(date))
+        };
         if (stars > -1) setStars(item.stars);
     }
 
-    const onSubmit = (newData) => {
+    const onSubmit = async (newData) => {
+        try {
+            const notificationId = await scheduleNotification(
+                "Check-in reminder! 🏨",
+                `Your check-in is tomorrow!`,
+                checkIn, checkIn
+            );
 
-        const newItem = {
-            address: query || null,
-            latitude: coords?.latitude || null,
-            longitude: coords?.longitude || null,
+            const newItem = {
+                address: query || null,
+                latitude: coords?.latitude || null,
+                longitude: coords?.longitude || null,
 
-            checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
-            checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),
-            stars: stars + 1,
-            ...newData,
+                checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
+                checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),
+                stars: stars + 1,
+                notificationId: notificationId || null,
+
+                ...newData,
+            }
+
+            if (isEdit) {
+                updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "hotels" })
+                setMessage(t(MESSAGES.HOTEL_EDITED_MESSAGE))
+            } else {
+                addItem(destination.id, "hotels", newItem)
+                console.log("HOTELS: ", newItem)
+                setMessage(t(MESSAGES.HOTEL_ADDED_MESSAGE))
+            }
+
+            toggleBar();
+            nav.goBack()
+
+        } catch (error) {
+            console.log("Failed to save hotel: ", error)
         }
-
-        if (isEdit) {
-            updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "hotels" })
-            setMessage(t(MESSAGES.HOTEL_EDITED_MESSAGE))
-        } else {
-            addItem(destination.id, "hotels", newItem)
-            console.log("HOTELS: ", newItem)
-            setMessage(t(MESSAGES.HOTEL_ADDED_MESSAGE))
-        }
-
-        toggleBar();
-        nav.goBack()
     }
 
     // Handle keyboard dismissal

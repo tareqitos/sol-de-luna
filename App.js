@@ -21,8 +21,10 @@ import Destination from './pages/Destination';
 import SnackbarMessage from './components/UI/Snackbar';
 import { SettingsProvider } from './context/SettingsContext';
 import { LocalizationProvider } from './context/LocalizationContext';
+import { initializeNotifications } from './services/notifications';
 
 const Stack = createNativeStackNavigator();
+initializeNotifications();
 
 function AppContent() {
   const { theme } = themeHook();

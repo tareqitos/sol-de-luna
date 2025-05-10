@@ -2,7 +2,7 @@ import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import { IconButton, useTheme } from "react-native-paper";
+import { Button, IconButton, useTheme } from "react-native-paper";
 
 import Container from "../components/Utils/Container";
 import TitleInput from "../components/Inputs/TitleInput";
@@ -15,9 +15,10 @@ import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { s } from "../styles/styles.style";
 import { useData } from "../hook/data";
 import { useSnackbar } from "../hook/useSnackbar";
-import { mergeDateAndTime } from "../services/date-service";
+import { getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
+import { cancelNotification, scheduleNotification } from "../services/notifications";
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
@@ -60,37 +61,50 @@ export default function AddFlight({ route }) {
             });
         }
         if (item.departureDate) {
-            const departureDate = new Date(item.departureDate);
-            setDate(departureDate);
-            setTime(departureDate);
+            const date = new Date(item.departureDate);
+            setDate(getTimeZoneOffset(date));
+            setTime(getTimeZoneOffset(date));
         }
         if (item.passengers) {
             setPassengers(item.passengers);
         }
     }
 
-    const onSubmit = (newData) => {
+    const onSubmit = async (newData) => {
 
-        const newItem = {
-            departureDate: mergeDateAndTime(date, time) || new Date(),
-            passengers: passengers,
-            departureAirport: routes?.departureAirport || {},
-            arrivalAirport: routes?.arrivalAirport || {},
-            ...newData
+        try {
+            const notificationId = await scheduleNotification(
+                "Get ready to fly! 🚀",
+                "Your adventure starts tomorrow! Pack your bags and prepare for takeoff!",
+                date, time
+            );
+
+            const newItem = {
+                departureDate: mergeDateAndTime(date, time) || new Date(),
+                passengers: passengers,
+                departureAirport: routes?.departureAirport || {},
+                arrivalAirport: routes?.arrivalAirport || {},
+                notificationId: notificationId || null,
+                ...newData
+            }
+
+            if (isEdit) {
+                updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "flights" })
+                setMessage(t(MESSAGES.FLIGHT_EDITED_MESSAGE))
+            } else {
+                addItem(destination.id, "flights", newItem)
+                console.log("FLIGHTS: ", newItem)
+                setMessage(t(MESSAGES.FLIGHT_ADDED_MESSAGE))
+            }
+
+            toggleBar();
+            nav.goBack()
+
+        } catch (error) {
+            console.log("Failed to save flight: ", error)
         }
 
 
-        if (isEdit) {
-            updateItem(destinationId, { ...newItem, id: item.id, documents: item.documents, type: "flights" })
-            setMessage(t(MESSAGES.FLIGHT_EDITED_MESSAGE))
-        } else {
-            addItem(destination.id, "flights", newItem)
-            console.log("FLIGHTS: ", newItem)
-            setMessage(t(MESSAGES.FLIGHT_ADDED_MESSAGE))
-        }
-
-        toggleBar();
-        nav.goBack()
     }
 
     // Handle keyboard dismissal

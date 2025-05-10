@@ -13,6 +13,7 @@ import { DESTINATION, DIALOGS } from "../locales/languagesConst";
 import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
 import DestinationInput from "../components/Destination/DestinationInput";
 import ModalCard from "../components/UI/Modal";
+import * as Notifications from "expo-notifications";
 
 export default function Destination() {
     const nav = useNavigation();
@@ -120,7 +121,6 @@ export default function Destination() {
             </View>
         )
     }, [destinations, value, showModal])
-
 
     return (
         <Container>
