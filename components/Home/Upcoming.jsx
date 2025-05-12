@@ -76,11 +76,12 @@ export default function Upcoming({ updatedTab, categories, types, t_categories }
     return (
         <View>
             {categories.map((category) => (
-                categoryContent[category].data.length > 0 &&
+                categoryContent[category].data.filter(item => !item.completed).length > 0 &&
                 <List.Section key={category}>
                     <List.Subheader>{categoryContent[category].title}</List.Subheader>
                     <Surface style={[styles.section, { backgroundColor: colors.surface }]} elevation={1}>
-                        {categoryContent[category].data.slice(0, 3).map((item, index, array) => (
+                        {categoryContent[category].data.filter(item => !item.completed).slice(0, 3).map((item, index, array) => (
+
                             <TouchableOpacity activeOpacity={1} onPress={() => updatedTab(category)} key={item.id}>
                                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                                     <List.Item
@@ -95,12 +96,12 @@ export default function Upcoming({ updatedTab, categories, types, t_categories }
                                         contentStyle={{ justifyContent: "center" }}
                                         titleStyle={typography.body}
                                         style={{ flex: 1 }}
-
                                     />
                                     {Infos(category, item)}
                                 </View>
                                 {index < array.length - 1 && <Divider />}
                             </TouchableOpacity>
+
                         ))}
                     </Surface>
                 </List.Section>

@@ -78,7 +78,9 @@ const DIALOGS = {
     CONFIRM: 'confirm',
     EDIT: 'edit',
     DELETE: 'delete',
-    RENAME: 'rename'
+    RENAME: 'rename',
+    MARK_AS_DONE: 'markAsDone',
+    MARK_AS_NOT_DONE: 'markAsNotDone',
 }
 
 const MESSAGES = {

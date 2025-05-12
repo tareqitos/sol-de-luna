@@ -41,7 +41,7 @@ export default function HotelCard({ item, onPress, destination }) {
             {/* TITLE */}
             <View style={s.card.title_container}>
                 <CardTitle title={item.name} />
-                <Temperature coords={{ latitude: item.latitude, longitude: item.longitude }} />
+                <Temperature completed={item.completed} coords={{ latitude: item.latitude, longitude: item.longitude }} />
             </View>
 
             {/* STARS */}

@@ -101,7 +101,8 @@ export default {
     edit: "Modifier",
     delete: "Supprimer",
     rename: "Renommer",
-
+    markAsDone: "Marquer comme terminé",
+    markAsNotDone: "Marquer comme non terminé",
     // SETTINGS
     // APP
     useFahrenheit: "Utiliser Fahrenheit / °F",

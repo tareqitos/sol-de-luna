@@ -97,9 +97,11 @@ export default {
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",
     confirm: "Continue",
-    edit: "Edit",
-    delete: "Delete",
-    rename: "Rename",
+    edit: "Modify",
+    delete: "Remove",
+    rename: "Change name",
+    markAsDone: "Mark as done",
+    markAsNotDone: "Mark as not done",
 
     // SETTINGS
     // APP

@@ -18,7 +18,8 @@
             "outlineVariant": "#6E6E6E",
             "error": "#D32F2F",
             "onError": "#FFFFFF",
-            "backdrop": "#FFFFFF90"
+            "backdrop": "#FFFFFF90",
+            "grey": "#00000044"
         },
         "elevation": {
             "level0": {
@@ -155,7 +156,8 @@
             "outlineVariant": "#6E6E6E",
             "error": "#EF5350",
             "onError": "#1F0000",
-            "backdrop": "#00000090"
+            "backdrop": "#00000090",
+            "grey": "#ffffff44"
         },
         "elevation": {
             "level0": {
