@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Divider, HelperText, IconButton, List, TextInput, useTheme } from "react-native-paper";
+import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Icon, useTheme } from "react-native-paper";
 
 import { useData } from "../hook/data";
-import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc } from "../services/sort-service";
+import { filteredDataByDateAsc, filteredDataByDateDesc, filteredDataByNameAsc, filteredDataByNameDesc, filterOutCompletedCard } from "../services/sort-service";
 import { s } from "../styles/card.style";
 import { MESSAGES, SEARCH } from "../locales/languagesConst";
 
@@ -77,6 +77,7 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
     // FILTER DATA FUNCTIONS
     const [dateAsc, setDateAsc] = useState(true)
     const [nameAsc, setNameAsc] = useState(false)
+    const [showComplete, setShowComplete] = useState(true)
 
     const handleFilterByDate = () => {
         if (dateAsc) {
@@ -95,6 +96,17 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
         } else {
             setData(filteredDataByNameDesc(data))
             setNameAsc(false)
+        }
+    }
+
+    const handleFilterCompleted = () => {
+        if (showComplete) {
+            const filteredData = filterOutCompletedCard(data)
+            setData(filteredData)
+            setShowComplete(false)
+        } else {
+            setData(destination[category])
+            setShowComplete(true)
         }
     }
 
@@ -168,7 +180,14 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
                         <Txt style={[typography.h3, { color: colors.primary, lineHeight: 22 }]}>{t_category[category]}</Txt>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                        <FilterCards dateAsc={dateAsc} nameAsc={nameAsc} filterByName={handleFilterByName} filterByDate={handleFilterByDate} />
+                        <FilterCards
+                            dateAsc={dateAsc}
+                            nameAsc={nameAsc}
+                            showComplete={showComplete}
+                            filterByName={handleFilterByName}
+                            filterByDate={handleFilterByDate}
+                            filterOutCompletedCard={handleFilterCompleted}
+                        />
                         <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
                     </View>
                 </View>

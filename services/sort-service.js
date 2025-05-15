@@ -21,3 +21,7 @@ export const filteredDataByNameDesc = (data) => {
         return y.name.localeCompare(x.name);
     });
 }
+
+export const filterOutCompletedCard = (data) => {
+    return data.filter((item) => !item.completed);
+}

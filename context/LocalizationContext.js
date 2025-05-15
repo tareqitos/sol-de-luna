@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react"
 import i18n, { getCurrentLocale, setLocale } from "../locales"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { loadFromStorage, saveToStorage } from "../services/storage"
 
 export const LocalizationContext = createContext({

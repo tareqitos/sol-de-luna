@@ -2,7 +2,6 @@ import { SegmentedButtons, useTheme } from "react-native-paper";
 import { FORM } from "../../locales/languagesConst";
 
 export default function TransportInput({ transportType, saveTransportType, t }) {
-    const { colors } = useTheme();
     return (
         <SegmentedButtons
             value={transportType}
@@ -24,6 +23,11 @@ export default function TransportInput({ transportType, saveTransportType, t }) 
                     value: 'car',
                     label: t(FORM.TRANSPORT_TYPE_CAR),
                     icon: 'car',
+                },
+                {
+                    value: 'ferry',
+                    label: t(FORM.TRANSPORT_TYPE_BOAT),
+                    icon: 'ferry',
                 }
             ]}
         />

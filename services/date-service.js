@@ -54,3 +54,7 @@ export const calculateDayBetweenTwoDates = (day1, day2) => {
     return Math.round(Math.abs((firstDate - secondDate) / oneDay));
 }
 
+export const getTimeZoneOffset = (date) => {
+    return new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
+}
+

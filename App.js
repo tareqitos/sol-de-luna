@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Appearance, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useFonts as useRaleway, Raleway_300Light, Raleway_400Regular, Raleway_600SemiBold } from '@expo-google-fonts/raleway';
 import { Inter_300Light, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
@@ -21,21 +21,25 @@ import Destination from './pages/Destination';
 import SnackbarMessage from './components/UI/Snackbar';
 import { SettingsProvider } from './context/SettingsContext';
 import { LocalizationProvider } from './context/LocalizationContext';
+import { initializeNotifications } from './services/notifications';
 
 const Stack = createNativeStackNavigator();
+initializeNotifications();
 
 function AppContent() {
   const { theme } = themeHook();
-  let paperTheme = theme === 'dark' ? darkTheme : lightTheme;
+  const systemTheme = Appearance.getColorScheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  let paperTheme = currentTheme === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <View style={[{ flex: 1 }, { backgroundColor: theme === 'dark' ? "#121212" : "#FDFDFD" }]}>
+    <View style={[{ flex: 1 }, { backgroundColor: currentTheme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
         <LocalizationProvider>
 
           <NavigationContainer>
             <SettingsProvider>
-              <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+              <StatusBar style={currentTheme === 'dark' ? 'light' : 'dark'} />
               <DataProvider>
                 <SnackbarProvider>
                   <DocumentProvider>

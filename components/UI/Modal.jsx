@@ -1,4 +1,4 @@
-import { Button, Divider, IconButton, Modal, Portal, useTheme } from "react-native-paper";
+import { Divider, Modal, Portal, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 
 export default function ModalCard({ visible, onDismiss, children }) {

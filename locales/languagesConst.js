@@ -33,6 +33,7 @@ const FORM = {
     TRANSPORT_TYPE_TRAIN: 'transportTypeTrain',
     TRANSPORT_TYPE_BUS: 'transportTypeBus',
     TRANSPORT_TYPE_CAR: 'transportTypeCar',
+    TRANSPORT_TYPE_BOAT: 'transportTypeBoat',
     TRANSPORT_DEPARTURE_CITY: 'transportDepartureCity',
     TRANSPORT_DEPARTURE_CITY_PLACEHOLDER: 'transportDepartureCityPlaceholder',
     TRANSPORT_ARRIVAL_CITY: 'transportArrivalCity',
@@ -78,7 +79,9 @@ const DIALOGS = {
     CONFIRM: 'confirm',
     EDIT: 'edit',
     DELETE: 'delete',
-    RENAME: 'rename'
+    RENAME: 'rename',
+    MARK_AS_DONE: 'markAsDone',
+    MARK_AS_NOT_DONE: 'markAsNotDone',
 }
 
 const MESSAGES = {

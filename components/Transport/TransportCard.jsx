@@ -49,7 +49,7 @@ export default function TransportCard({ item, onPress, destination }) {
                     <View style={styles.row}>
                         <CardTitle title={item.departure} style={[typography.h5, { lineHeight: 18 }]} />
                         <Icon source="arrow-right-thin" size={24} color={colors.primary} />
-                        <CardTitle title={item.arrival} style={[typography.h5, { lineHeight: 18 }]} />
+                        <CardTitle title={item.arrival} style={[typography.h5, { flex: 1, lineHeight: 18 }]} />
                     </View>
                     <View style={styles.row}>
                         <CardTime time={item.departureTime} hasIcon={true} />

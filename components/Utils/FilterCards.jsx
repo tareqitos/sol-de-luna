@@ -1,13 +1,20 @@
 import { View } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
-import { filteredDataByDateAsc, filteredDataByDateDesc } from "../../services/sort-service";
-import { useEffect, useState } from "react";
 
-export default function FilterCards({ dateAsc, nameAsc, filterByName, filterByDate }) {
+export default function FilterCards({ dateAsc, nameAsc, showComplete, filterByName, filterByDate, filterOutCompletedCard }) {
     const { colors } = useTheme()
 
     return (
         <View style={{ flexDirection: "row", padding: 0 }}>
+            <IconButton
+                icon="passport-biometric"
+                size={22}
+                onPress={filterOutCompletedCard}
+                animated
+                iconColor={showComplete ? colors.primary : colors.grey}
+                style={{ margin: 0 }}
+
+            />
             <IconButton
                 icon={nameAsc ? "sort-alphabetical-ascending" : "sort-alphabetical-descending"}
                 size={22}

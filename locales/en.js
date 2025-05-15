@@ -56,6 +56,7 @@ export default {
     transportTypeTrain: "Train",
     transportTypeBus: "Bus",
     transportTypeCar: "Car",
+    transportTypeBoat: "Ferry",
     transportDepartureCity: "From",
     transportDepartureCityPlaceholder: "Enter departure location",
     transportArrivalCity: "To",
@@ -97,9 +98,11 @@ export default {
     // DIALOG CANCEL && CONFIRM
     cancel: "Cancel",
     confirm: "Continue",
-    edit: "Edit",
-    delete: "Delete",
+    edit: "Modify",
+    delete: "Remove",
     rename: "Rename",
+    markAsDone: "Mark as done",
+    markAsNotDone: "Mark as not done",
 
     // SETTINGS
     // APP

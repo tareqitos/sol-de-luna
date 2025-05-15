@@ -14,11 +14,12 @@ import TransportRouteInput from "../components/Transport/TransportRouteInput";
 import InformationInput from "../components/Inputs/InformationInput";
 
 import { s } from "../styles/styles.style";
-import { mergeDateAndTime } from "../services/date-service";
+import { getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import DateTimeInput from "../components/Inputs/DateTimeInput";
 import TransportNumberInput from "../components/Transport/TransportNumberInput";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
+import { scheduleNotification } from "../services/notifications";
 
 
 export default function AddTransport({ route }) {
@@ -48,8 +49,14 @@ export default function AddTransport({ route }) {
     const fillFieldsInEditMode = () => {
         if (item.name) setLine(item.name);
         if (item.transportType) setTransportType(item.transportType);
-        if (item.departureTime) setDepartDate(new Date(item.departureTime));
-        if (item.arrivalTime) setArriveDate(new Date(item.arrivalTime));
+        if (item.departureTime) {
+            const date = new Date(item.departureTime)
+            setDepartDate(getTimeZoneOffset(date))
+        };
+        if (item.arrivalTime) {
+            const date = new Date(item.arrivalTime)
+            setArriveDate(getTimeZoneOffset(date))
+        };
         if (item.departure || item.arrival || item.additionalInformation) {
             control._reset({
                 departure: item.departure || "",
@@ -59,26 +66,40 @@ export default function AddTransport({ route }) {
         }
     }
 
-    const onSubmit = (newData) => {
-        const newItem = {
-            name: line,
-            transportType: transportType,
-            departureTime: mergeDateAndTime(departDate, departDate) || null,
-            arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
-            ...newData
+    const onSubmit = async (newData) => {
+        try {
+            const notificationId = scheduleNotification(
+                "Your trip starts tomorrow! 🚗",
+                "Get ready for your journey!",
+                departDate, departDate
+            );
+
+            const newItem = {
+                name: line,
+                transportType: transportType,
+                departureTime: mergeDateAndTime(departDate, departDate) || null,
+                arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
+                notificationId: notificationId || null,
+
+                ...newData
+            }
+
+            if (isEdit) {
+                updateItem(destinationId, { ...newItem, documents: item.documents, id: item.id, type: "transport" })
+                setMessage(t(MESSAGES.TRANSPORT_EDITED_MESSAGE))
+            } else {
+                addItem(destination.id, "transport", newItem)
+                console.log("TRANSPORT: ", newItem)
+                setMessage(t(MESSAGES.TRANSPORT_ADDED_MESSAGE))
+            }
+
+            toggleBar();
+            nav.goBack()
+
+        } catch (error) {
+            console.log("Failed to save hotel: ", error)
         }
 
-        if (isEdit) {
-            updateItem(destinationId, { ...newItem, documents: item.documents, id: item.id, type: "transport" })
-            setMessage(t(MESSAGES.TRANSPORT_EDITED_MESSAGE))
-        } else {
-            addItem(destination.id, "transport", newItem)
-            console.log("TRANSPORT: ", newItem)
-            setMessage(t(MESSAGES.TRANSPORT_ADDED_MESSAGE))
-        }
-
-        toggleBar();
-        nav.goBack()
     }
 
     const saveTransportType = (type) => {

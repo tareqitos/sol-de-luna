@@ -2,7 +2,6 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Divider, IconButton, List, TextInput, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
-import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 import airportsData from "../../data/airports.json"
 

@@ -4,6 +4,7 @@ import { Alert, Platform, Vibration } from "react-native";
 import { v4 as uuidv4 } from 'uuid';
 import { DESTINATION, DIALOGS, MESSAGES } from "../locales/languagesConst";
 import { useTranslation } from "react-i18next";
+import { cancelNotification } from "../services/notifications";
 
 export const DataContext = createContext({
     destinations: [],
@@ -106,6 +107,7 @@ export function DataProvider({ children }) {
         if (Platform.OS === "android") {
             setDestinations(prev => prev.map(destination => {
                 if (destination.id !== destinationId) return destination;
+                cancelNotification(item.notificationId)
 
                 return {
                     ...destination,
@@ -125,6 +127,7 @@ export function DataProvider({ children }) {
                     onPress: () => {
                         setDestinations(prev => prev.map(destination => {
                             if (destination.id !== destinationId) return destination;
+                            cancelNotification(item.notificationId)
 
                             return {
                                 ...destination,

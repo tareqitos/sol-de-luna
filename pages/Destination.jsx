@@ -1,13 +1,12 @@
 import { Animated, Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import Title from "../components/Utils/Title";
-import { Button, Surface, TextInput, useTheme } from "react-native-paper";
+import { Button, Chip, Surface, TextInput, useTheme } from "react-native-paper";
 import Container from "../components/Utils/Container";
 import Txt from "../components/Utils/Txt";
-import { memo, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import DialogPopUp from "../components/UI/Dialog";
 import { useData } from "../hook/data";
 import { useNavigation } from "@react-navigation/native";
-import { generateDestinationEmoji } from "../services/services";
 import { useTranslation } from "react-i18next";
 import { DESTINATION, DIALOGS } from "../locales/languagesConst";
 import { getScaleValue, handlePressIn, handlePressOut } from "../services/animation-service";
@@ -98,14 +97,19 @@ export default function Destination() {
                             <TouchableOpacity
                                 key={destination.id}
                                 activeOpacity={1}
-                                onPressIn={() => handlePressIn(1.1, destination.id)}
+                                onPressIn={() => handlePressIn(0.95, destination.id)}
                                 onPressOut={() => handlePressOut(destination.id)}
                                 onPress={() => nav.navigate('Home', { destination })}
                                 onLongPress={showModal}
                             >
 
                                 <Surface style={[styles.item, { backgroundColor: colors.surface }]} elevation={1}>
-                                    <Txt style={typography.h5}>{destination && destination.name}</Txt>
+                                    <Txt style={typography.h3}>{destination && destination.name}</Txt>
+                                    <View style={styles.chips}>
+                                        <Chip icon="airplane" mode="outlined">{destination.flights.length}</Chip>
+                                        <Chip icon="home-city" mode="outlined">{destination.hotels.length}</Chip>
+                                        <Chip icon="car" mode="outlined">{destination.transport.length}</Chip>
+                                    </View>
                                 </Surface>
                             </TouchableOpacity>
 
@@ -120,7 +124,6 @@ export default function Destination() {
             </View>
         )
     }, [destinations, value, showModal])
-
 
     return (
         <Container>
@@ -186,16 +189,28 @@ const styles = StyleSheet.create({
 
     destinations: {
         marginVertical: 20,
+        marginBottom: 40,
         paddingHorizontal: 5,
-        flexDirection: "row",
         gap: 10,
-        flexWrap: "wrap"
+        flex: 1
     },
 
     item: {
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 20,
         borderRadius: 10,
+        // flexDirection: "row",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+
+        gap: 10,
+        flex: 1
+    },
+
+    chips: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 5,
     },
 
     greetings: {

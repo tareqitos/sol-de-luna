@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { Chip, useTheme } from "react-native-paper";
 import { useSettings } from "../hook/settings";
 import { convertCelciusToFahrenheit, convertFahrenheitToCelcius, getWeatherInterpretation } from "../services/weather-service";
-import Txt from "./Utils/Txt";
 
-export default function Temperature({ coords }) {
+export default function Temperature({ completed, coords }) {
     const [temperature, setTemperature] = useState();
     const [interpretation, setInterpretation] = useState();
     const { unit } = useSettings();
@@ -42,26 +41,29 @@ export default function Temperature({ coords }) {
 
     // clean up API calls
     useEffect(() => {
-        let isMounted = true;
-        let fetchTimeout;
+        if (!completed) {
 
-        const fetchWeather = async () => {
-            if (!coords?.latitude) return;
+            let isMounted = true;
+            let fetchTimeout;
 
-            try {
-                const result = await API.fetchWeatherFromCoords(coords)
-                if (isMounted) setWeather(result)
-            } catch (error) {
-                console.log("Error fetching weather", error);
+            const fetchWeather = async () => {
+                if (!coords?.latitude) return;
+
+                try {
+                    const result = await API.fetchWeatherFromCoords(coords)
+                    if (isMounted) setWeather(result)
+                } catch (error) {
+                    console.log("Error fetching weather", error);
+                }
+            };
+
+            fetchTimeout = setTimeout(fetchWeather, 50);
+            return () => {
+                isMounted = false;
+                clearTimeout(fetchTimeout);
             }
-        };
-
-        fetchTimeout = setTimeout(fetchWeather, 50);
-        return () => {
-            isMounted = false;
-            clearTimeout(fetchTimeout);
         }
-    }, [coords?.latitude, coords?.longitude]);
+    }, [coords?.latitude, coords?.longitude, completed]);
 
     useEffect(() => {
         if (unit && temperature !== undefined)
