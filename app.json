@@ -77,6 +77,15 @@
             "splashScreenBackgroundColor": "#FDFDFD"
           }
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notif_icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": false
+        }
       ]
     ],
     "extra": {
