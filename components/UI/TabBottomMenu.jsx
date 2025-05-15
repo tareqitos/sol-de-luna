@@ -1,4 +1,3 @@
-
 import { TouchableOpacity, View } from "react-native";
 import Txt from "../Utils/Txt";
 import { s } from "../../styles/styles.style";

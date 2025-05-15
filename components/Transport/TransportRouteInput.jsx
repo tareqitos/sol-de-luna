@@ -1,4 +1,3 @@
-import Txt from "../Utils/Txt";
 import { View } from "react-native";
 import { s } from "../../styles/styles.style";
 import { useController } from "react-hook-form";

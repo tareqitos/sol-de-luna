@@ -23,6 +23,11 @@ export default function TransportInput({ transportType, saveTransportType, t }) 
                     value: 'car',
                     label: t(FORM.TRANSPORT_TYPE_CAR),
                     icon: 'car',
+                },
+                {
+                    value: 'ferry',
+                    label: t(FORM.TRANSPORT_TYPE_BOAT),
+                    icon: 'ferry',
                 }
             ]}
         />

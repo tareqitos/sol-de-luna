@@ -54,6 +54,7 @@ export default {
     transportTypeTrain: "Train",
     transportTypeBus: "Bus",
     transportTypeCar: "Voiture",
+    transportTypeBoat: "Ferry",
     transportDepartureCity: "De",
     transportDepartureCityPlaceholder: "Entrez le lieu de départ",
     transportArrivalCity: "À",
