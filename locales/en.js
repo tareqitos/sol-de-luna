@@ -99,7 +99,7 @@ export default {
     confirm: "Continue",
     edit: "Modify",
     delete: "Remove",
-    rename: "Change name",
+    rename: "Rename",
     markAsDone: "Mark as done",
     markAsNotDone: "Mark as not done",
 
