@@ -1,8 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import Txt from "../Utils/Txt";
 import { Icon, Surface, useTheme } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import { CATEGORIES } from "../../locales/languagesConst";
 
 export default function OverviewCard({ updateTabName, categories, types, t_categories }) {
     const { colors, typography } = useTheme();

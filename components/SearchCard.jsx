@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo, useMemo } from "react";
+import React, { useCallback, memo, useMemo } from "react";
 import { Searchbar, useTheme } from "react-native-paper";
 import { SEARCH } from "../locales/languagesConst";
 

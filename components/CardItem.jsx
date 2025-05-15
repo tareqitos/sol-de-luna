@@ -1,11 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
 import { Animated, TouchableOpacity, Platform, View, StyleSheet } from "react-native";
 import { getScaleValue, handlePressIn, handlePressOut, cleanupScaleValue } from "../services/animation-service";
-import { Button, Divider, Icon, Modal, Portal } from "react-native-paper";
+import { Button, Icon } from "react-native-paper";
 import ModalCard from "./UI/Modal";
 import { useNavigation } from "@react-navigation/native";
 import { DIALOGS } from "../locales/languagesConst";
-import Txt from "./Utils/Txt";
 import { useData } from "../hook/data";
 
 const CardItem = memo(({ item, destination, deleteItem, handleDeleteItem, CardComponent, t }) => {

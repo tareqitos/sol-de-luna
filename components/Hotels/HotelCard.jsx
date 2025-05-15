@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import { useCallback, useEffect, useState } from "react";
-import { Divider, Icon, IconButton, MD3DarkTheme, useTheme } from "react-native-paper";
+import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
 import { s } from "../../styles/card.style";
 import CollapseButton from "../UI/CollapseButton";
 import CardTitle from "../Cards/CardTitle";

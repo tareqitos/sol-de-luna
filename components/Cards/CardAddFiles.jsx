@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useData } from "../../hook/data";
 import { useDocument } from "../../hook/document";
-import { Button, IconButton, useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 
 export default function CardAddFiles({ item, destinationID }) {
     const { colors } = useTheme()
