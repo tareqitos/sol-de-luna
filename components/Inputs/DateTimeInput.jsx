@@ -5,7 +5,7 @@ import { themeHook } from "../../hook/theme";
 import { Button, Icon, useTheme } from "react-native-paper";
 import { useLocalization } from "../../hook/localization";
 
-export default function DateTimeInput({ label, time, setTime, date, setDate }) {
+export default function DateTimeInput({ label, time, setTime, date, setDate, hasDate = true, hasTime = true }) {
     const { theme } = themeHook()
     const { selected } = useLocalization();
     const { colors, typography } = useTheme()
@@ -60,14 +60,14 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
             {Platform.OS === "android" ? (
                 <>
                     <View style={{ flexDirection: "row", gap: 10 }}>
-                        <Button mode="outlined" onPress={showDatePicker}>
+                        {hasDate && <Button mode="outlined" onPress={showDatePicker}>
                             {date ? date.toLocaleDateString() : "Select date"}
-                        </Button>
+                        </Button>}
 
 
-                        <Button mode="outlined" onPress={showTimePicker}>
+                        {hasTime && <Button mode="outlined" onPress={showTimePicker}>
                             {time ? time.toLocaleTimeString(selected.tag, { hour: "2-digit", minute: "2-digit" }) : "Select time"}
-                        </Button>
+                        </Button>}
 
 
                     </View>
