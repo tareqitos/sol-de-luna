@@ -30,6 +30,8 @@ export default function AddFlight({ route }) {
 
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
+    const [arrivalTime, setArrivalTime] = useState(new Date());
+    const [arrivalDate, setArrivalDate] = useState(new Date());
     const [passengers, setPassengers] = useState([])
     const [routes, setRoutes] = useState({
         departureAirport: { city: "", iata: "" },
@@ -66,6 +68,11 @@ export default function AddFlight({ route }) {
             setDate(getTimeZoneOffset(date));
             setTime(getTimeZoneOffset(date));
         }
+        if (item.arrivalDate) {
+            const date = new Date(item.arrivalDate);
+            setArrivalDate(getTimeZoneOffset(date));
+            setArrivalTime(getTimeZoneOffset(date));
+        }
         if (item.passengers) {
             setPassengers(item.passengers);
         }
@@ -82,6 +89,7 @@ export default function AddFlight({ route }) {
 
             const newItem = {
                 departureDate: mergeDateAndTime(date, time) || new Date(),
+                arrivalDate: mergeDateAndTime(arrivalDate, arrivalTime || new Date()),
                 passengers: passengers,
                 departureAirport: routes?.departureAirport || {},
                 arrivalAirport: routes?.arrivalAirport || {},
@@ -157,8 +165,9 @@ export default function AddFlight({ route }) {
                                     </View>
 
                                     <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
-                                        <View style={[s.form.input_container, { flex: 1 }]}>
-                                            <DateTimeInput label="airplane-clock" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                        <View style={[s.form.input_container, { flex: 1, gap: 20 }]}>
+                                            <DateTimeInput label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                            <DateTimeInput label="airplane-landing" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
                                         </View>
                                     </View>
 
