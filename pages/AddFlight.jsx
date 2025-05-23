@@ -1,8 +1,8 @@
 import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import { Button, IconButton, useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 
 import Container from "../components/Utils/Container";
 import TitleInput from "../components/Inputs/TitleInput";
@@ -19,7 +19,6 @@ import { getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { cancelNotification, scheduleNotification } from "../services/notifications";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
@@ -112,8 +111,6 @@ export default function AddFlight({ route }) {
         } catch (error) {
             console.log("Failed to save flight: ", error)
         }
-
-
     }
 
     // Handle keyboard dismissal
@@ -136,6 +133,14 @@ export default function AddFlight({ route }) {
             }));
         }
     }, [routes, reset]);
+
+    const memoizedDepart = useMemo(() => {
+        setArrivalDate(date);
+    }, [date]);
+
+    useEffect(() => {
+        memoizedDepart
+    }, [date]);
 
     const buttonStyle = { position: "absolute", bottom: 20, right: 20 }
     const buttonSize = 34
@@ -164,10 +169,14 @@ export default function AddFlight({ route }) {
                                         />
                                     </View>
 
-                                    <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
-                                        <View style={[s.form.input_container, { flex: 1, gap: 20 }]}>
-                                            <DateTimeInput label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
-                                            <DateTimeInput label="airplane-landing" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
+                                    <View style={{ gap: 15, marginTop: 20 }}>
+                                        <View style={[s.form.input_container]}>
+                                            <DateTimeInput hasTime={false} label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                        </View>
+
+                                        <View style={[s.form.input_container, { flexDirection: "row", flex: 1, gap: 10 }]}>
+                                            <DateTimeInput hasDate={false} label="airplane-clock" time={time} setTime={setTime} />
+                                            <DateTimeInput hasDate={false} label="arrow-right" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
                                         </View>
                                     </View>
 

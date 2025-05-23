@@ -18,6 +18,10 @@ import CardFilesManager from "../Cards/CardFilesManager"
 import { useSettings } from "../../hook/settings"
 import { useTranslation } from "react-i18next"
 import { CARDS, FORM } from "../../locales/languagesConst"
+import CardRouteCity from "./CardRouteCity"
+import Txt from "../Utils/Txt"
+import { calculateDuration } from "../../services/date-service"
+import CardDuration from "../Cards/CardDuration"
 
 
 export default function FlightCard({ item, onPress, destination }) {
@@ -42,16 +46,26 @@ export default function FlightCard({ item, onPress, destination }) {
 
             <View style={s.card.title_container}>
                 <CardTitle title={item.name} />
+                <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
             </View>
 
             <Divider theme={MD3DarkTheme} />
 
+            <CardRouteCity departure={item.departureAirport} arrival={item.arrivalAirport} />
+
             <View style={s.card.time_container}>
-                <CardDate date={item.departureDate} />
-                <CardTime time={item.departureDate} />
+                <CardDate icon="airplane-takeoff" date={item.departureDate} />
             </View>
 
-            <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} />
+            {item.arrivalDate &&
+                <View style={s.card.time_container}>
+                    <CardTime icon="calendar-blank-outline" time={item.departureDate} />
+                    <CardTime icon="arrow-right" time={item.arrivalDate} />
+                    <CardDuration departureTime={item.departureDate} arrivalTime={item.arrivalDate} />
+                </View>
+            }
+
+
 
             <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true} >
                 {item.passengers.length !== 0 &&
