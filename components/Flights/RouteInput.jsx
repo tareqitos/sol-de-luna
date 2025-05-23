@@ -87,17 +87,16 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
 
     // Trigger setRoute callback when airports are updated
     useEffect(() => {
-        // Only update parent when we have actual data to avoid unnecessary re-renders
-        const shouldUpdate =
-            (departureAirport.city && departureAirport.iata) ||
-            (arrivalAirport.city && arrivalAirport.iata);
+        const timer = setTimeout(() => {
+            if (departureAirport.city && departureAirport.iata) {
+                setRoute({ departureAirport, arrivalAirport });
+                console.log(route)
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [departureAirport, arrivalAirport]);
 
-        if (shouldUpdate) {
-            setRoute({ departureAirport, arrivalAirport });
-        }
-    }, [departureAirport, arrivalAirport, setRoute]);
 
-    // Render individual airport item
     const Item = memo(({ city, iata }) => (
         <View>
             <TouchableOpacity
