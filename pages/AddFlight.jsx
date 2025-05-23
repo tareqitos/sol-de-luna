@@ -58,8 +58,8 @@ export default function AddFlight({ route }) {
         }
         if (item.departureAirport && item.arrivalAirport) {
             setRoutes({
-                departureAirport: item.departureAirport,
-                arrivalAirport: item.arrivalAirport
+                departureAirport: item.departureAirport || {},
+                arrivalAirport: item.arrivalAirport || {}
             });
         }
         if (item.departureDate) {
@@ -125,21 +125,7 @@ export default function AddFlight({ route }) {
     }, []);
 
     useEffect(() => {
-        if (routes?.departureAirport && routes?.arrivalAirport) {
-            reset((prevState) => ({
-                ...prevState,
-                departureAirport: routes.departureAirport,
-                arrivalAirport: routes.arrivalAirport,
-            }));
-        }
-    }, [routes, reset]);
-
-    const memoizedDepart = useMemo(() => {
         setArrivalDate(date);
-    }, [date]);
-
-    useEffect(() => {
-        memoizedDepart
     }, [date]);
 
     const buttonStyle = { position: "absolute", bottom: 20, right: 20 }

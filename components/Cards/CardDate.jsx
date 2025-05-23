@@ -11,7 +11,7 @@ export default function CardDate({ icon, hasIcon = true, date }) {
     return (
         <View style={s.card.date}>
             {hasIcon && <Icon source={icon || "calendar-blank-outline"} color={colors.primary} size={16} />}
-            <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertDateToString(date, selected.tag)}</Txt>
+            <Txt style={[s.card.date, typography.bodyInter, { color: colors.onBackground }]}>{ConvertDateToString(date, selected.tag)}</Txt>
         </View>
     )
 }

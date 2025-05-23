@@ -11,7 +11,7 @@ export default function CardDuration({ icon, departureTime, arrivalTime, hasIcon
     return (
         <View style={s.card.date}>
             {hasIcon && <Icon source={icon || "clock-outline"} color={colors.primary} size={16} />}
-            <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{duration.hours + "h" + duration.minutes + "m"}</Txt>
+            <Txt style={[s.card.date, typography.bodyInter, { color: colors.onBackground }]}>{duration.hours + "h" + duration.minutes + "m"}</Txt>
         </View>
     )
 }
