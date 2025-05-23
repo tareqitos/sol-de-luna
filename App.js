@@ -36,7 +36,6 @@ function AppContent() {
     <View style={[{ flex: 1 }, { backgroundColor: currentTheme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
         <LocalizationProvider>
-
           <NavigationContainer>
             <SettingsProvider>
               <StatusBar style={currentTheme === 'dark' ? 'light' : 'dark'} />

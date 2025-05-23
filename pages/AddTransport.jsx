@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { ScrollView, View } from "react-native";
+import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { IconButton, useTheme } from "react-native-paper";
@@ -107,13 +107,9 @@ export default function AddTransport({ route }) {
         console.log("Transport: ", type)
     }
 
-    // const memoizedDepart = useMemo(() => {
-    //     setArriveDate(departDate);
-    // }, [departDate]);
-
-    // useEffect(() => {
-    //     memoizedDepart
-    // }, [departDate]);
+    const handleCloseKeyboard = () => {
+        Keyboard.dismiss();
+    };
 
     useEffect(() => {
         if (isEdit === true) {
@@ -121,31 +117,46 @@ export default function AddTransport({ route }) {
         }
     }, [])
 
+    const buttonStyle = { position: "absolute", bottom: 20, right: 20 }
+    const buttonSize = 34
+
     return (
+
         <Container style={{ paddingHorizontal: 20 }}>
-            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_TRANSPORT_TITLE) : t(PAGE_TITLES.TRANSPORT_TITLE)} />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
-                <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} line={line} setLine={setLine} />
-                <TransportRouteInput t={t} control={control} errors={errors} />
-                <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
-                    <View style={{ gap: 20 }}>
-                        <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
-                        <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
-                    </View>
-                </View>
-                <View style={[s.form.input_container, s.form.input_addInfos]}>
-                    <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                </View>
-            </ScrollView>
-            <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+            <TouchableWithoutFeedback onPress={handleCloseKeyboard} >
+                <FlatList
+                    data={[{ key: 'content' }]}
+                    renderItem={({ item }) => (
+                        <View style={{ flex: 1 }}>
+                            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_TRANSPORT_TITLE) : t(PAGE_TITLES.TRANSPORT_TITLE)} />
+                            <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
+                            <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} line={line} setLine={setLine} />
+                            <TransportRouteInput t={t} control={control} errors={errors} />
+                            <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
+                                <View style={{ gap: 20 }}>
+                                    <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
+                                    <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
+                                </View>
+                            </View>
+                            <View style={[s.form.input_container, s.form.input_addInfos]}>
+                                <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
+                            </View>
+                        </View>
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="always"
+                />
+            </TouchableWithoutFeedback>
+            <View style={buttonStyle}>
                 {isEdit ?
                     <>
-                        <IconButton icon={"arrow-left"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
-                        <IconButton icon={"check"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                        <IconButton icon={"arrow-left"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
+                        <IconButton icon={"check"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
                     </>
                     :
-                    <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    <>
+                        <IconButton icon={"plus"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </>
                 }
             </View>
         </Container>

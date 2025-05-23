@@ -79,11 +79,7 @@ const s = StyleSheet.create({
         input_container: {
             gap: 5,
         },
-
-        // input_addInfos: {
-        //     marginTop: 20
-        // },
-
+        
         input: {
             borderRadius: 5,
             justifyContent: "center",
