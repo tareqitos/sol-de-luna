@@ -9,7 +9,7 @@ export default function FilterCards({ dateAsc, nameAsc, showComplete, filterByNa
 
     return (
         <View style={{ flexDirection: "row", padding: 0 }}>
-            <Tooltip title={t(TOOLTIPS.SHOW_HIDE_COMPLETED)} leaveTouchDelay={100}>
+            <Tooltip title={t(TOOLTIPS.SHOW_HIDE_COMPLETED)} leaveTouchDelay={500}>
                 <IconButton
                     icon="passport-biometric"
                     size={22}
@@ -20,7 +20,7 @@ export default function FilterCards({ dateAsc, nameAsc, showComplete, filterByNa
                 />
             </Tooltip>
 
-            <Tooltip title={t(TOOLTIPS.SORT_BY_NAME)} leaveTouchDelay={100}>
+            <Tooltip title={t(TOOLTIPS.SORT_BY_NAME)} leaveTouchDelay={500}>
                 <IconButton
                     icon={nameAsc ? "sort-alphabetical-ascending" : "sort-alphabetical-descending"}
                     size={22}
@@ -31,7 +31,7 @@ export default function FilterCards({ dateAsc, nameAsc, showComplete, filterByNa
                 />
             </Tooltip>
 
-            <Tooltip title={t(TOOLTIPS.SORT_BY_DATE)} leaveTouchDelay={100}>
+            <Tooltip title={t(TOOLTIPS.SORT_BY_DATE)} leaveTouchDelay={500}>
                 <IconButton
                     icon={dateAsc ? "sort-clock-ascending-outline" : "sort-clock-descending-outline"}
                     size={22}
