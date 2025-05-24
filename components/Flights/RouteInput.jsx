@@ -16,11 +16,6 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
     const [departureAirport, setDepartureAirport] = useState(route.departureAirport || { city: "", iata: "" });
     const [arrivalAirport, setArrivalAirport] = useState(route.arrivalAirport || { city: "", iata: "" });
 
-    const [errors, setErrors] = useState({
-        departureAirport: "",
-        arrivalAirport: "",
-    });
-
     useEffect(() => {
         const hasRouteChanged =
             route?.departureAirport?.city !== departureAirport.city ||
@@ -76,10 +71,8 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
     const saveSelectedCity = useCallback((city, iata) => {
         if (activeField === "departureAirport") {
             setDepartureAirport({ city, iata });
-            setErrors(prev => ({ ...prev, departureAirport: "" }));
         } else if (activeField === "arrivalAirport") {
             setArrivalAirport({ city, iata });
-            setErrors(prev => ({ ...prev, arrivalAirport: "" }));
         }
         setIsVisible(false);
     }, [activeField]);
@@ -165,7 +158,7 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
-                    outlineColor={errors.departureAirport ? colors.error : colors.outline}
+                    outlineColor={colors.outline}
                     right={
                         <TextInput.Icon
                             icon="airplane-takeoff"
@@ -194,17 +187,11 @@ export default function RouteInput({ iataRef, route, setRoute, t }) {
                     placeholderTextColor={typography.caption.color}
                     inputMode="text"
                     autoCorrect={false}
-                    outlineColor={errors.arrivalAirport ? colors.error : colors.outline}
+                    outlineColor={colors.outline}
                     right={<TextInput.Icon icon="airplane-landing" style={{ alignSelf: "baseline" }} size={18} />}
                 />
 
             </View>
-
-            {errors.departureAirport && (
-                <Txt style={{ color: colors.error, marginTop: 5 }}>
-                    {errors.departureAirport}
-                </Txt>
-            )}
 
             {isVisible && ResultList}
 
