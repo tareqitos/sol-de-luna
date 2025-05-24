@@ -2,7 +2,7 @@ import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Touchab
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import { IconButton, useTheme } from "react-native-paper";
+import { Checkbox, IconButton, useTheme } from "react-native-paper";
 
 import Container from "../components/Utils/Container";
 import TitleInput from "../components/Inputs/TitleInput";
@@ -19,6 +19,7 @@ import { getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { cancelNotification, scheduleNotification } from "../services/notifications";
+import { AddOneDayInput } from "../components/Flights/AddOneDayInput";
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
@@ -31,10 +32,11 @@ export default function AddFlight({ route }) {
     const [time, setTime] = useState(new Date());
     const [arrivalTime, setArrivalTime] = useState(new Date());
     const [arrivalDate, setArrivalDate] = useState(new Date());
+    const [plusOneDay, setPlusOneDay] = useState(false);
     const [passengers, setPassengers] = useState([])
     const [routes, setRoutes] = useState({
         departureAirport: { city: "", iata: "" },
-        arrivalAirport: { city: "", iata: "" }
+        arrivalAirport: { city: "", iata: "" },
     });
 
     const nav = useNavigation();
@@ -72,6 +74,13 @@ export default function AddFlight({ route }) {
             setArrivalDate(getTimeZoneOffset(date));
             setArrivalTime(getTimeZoneOffset(date));
         }
+
+        if (item.plusOneDay) {
+            setPlusOneDay(item.plusOneDay);
+        } else {
+            setPlusOneDay(false);
+        }
+
         if (item.passengers) {
             setPassengers(item.passengers);
         }
@@ -89,6 +98,7 @@ export default function AddFlight({ route }) {
             const newItem = {
                 departureDate: mergeDateAndTime(date, time) || new Date(),
                 arrivalDate: mergeDateAndTime(arrivalDate, arrivalTime || new Date()),
+                plusOneDay: plusOneDay,
                 passengers: passengers,
                 departureAirport: routes?.departureAirport || {},
                 arrivalAirport: routes?.arrivalAirport || {},
@@ -160,9 +170,11 @@ export default function AddFlight({ route }) {
                                             <DateTimeInput hasTime={false} label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
                                         </View>
 
-                                        <View style={[s.form.input_container, { flexDirection: "row", flex: 1, gap: 10 }]}>
+
+                                        <View style={[s.form.input_container, { flexDirection: "row", alignItems: "center", flex: 1, gap: 5 }]}>
                                             <DateTimeInput hasDate={false} label="airplane-clock" time={time} setTime={setTime} />
                                             <DateTimeInput hasDate={false} label="arrow-right" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
+                                            <AddOneDayInput date={arrivalDate} setDate={setArrivalDate} setPlusOneDay={setPlusOneDay} />
                                         </View>
                                     </View>
 

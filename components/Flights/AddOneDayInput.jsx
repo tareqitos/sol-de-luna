@@ -3,7 +3,7 @@ import { Checkbox, useTheme } from "react-native-paper";
 import { View } from "react-native";
 
 export const AddOneDayInput = ({ date, setDate, setPlusOneDay }) => {
-    const { colors, typography } = useTheme();
+    const { colors } = useTheme();
     const [checked, setChecked] = useState(false);
 
     const handleCheckboxChange = () => {
