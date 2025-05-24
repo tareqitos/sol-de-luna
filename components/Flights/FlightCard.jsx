@@ -9,7 +9,6 @@ import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper"
 import CardTitle from "../Cards/CardTitle"
 import CardDate from "../Cards/CardDate"
 import CardTime from "../Cards/CardTime"
-import CardRoute from "./CardRoute"
 import CardInformation from "../Cards/CardInformation"
 import CardAddFiles from "../Cards/CardAddFiles"
 import CardPassengers from "./CardPassengers"
@@ -21,13 +20,16 @@ import { CARDS, FORM } from "../../locales/languagesConst"
 import CardRouteCity from "./CardRouteCity"
 import CardDuration from "../Cards/CardDuration"
 import Txt from "../Utils/Txt"
+import { calculateDuration } from "../../services/date-service"
 
 
 export default function FlightCard({ item, onPress, destination }) {
-    const { cardsOpen } = useSettings()
-    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
-    const { colors, elevation, typography } = useTheme()
     const { t } = useTranslation();
+    const { cardsOpen } = useSettings()
+    const { colors, elevation, typography } = useTheme()
+    const [isCollapsed, setIsCollapse] = useState(cardsOpen)
+    const duration = calculateDuration(item.departureDate, item.arrivalDate)
+
 
     const handleCollapsible = useCallback(() => {
         setIsCollapse(prev => !prev);
@@ -83,7 +85,7 @@ export default function FlightCard({ item, onPress, destination }) {
                         <View style={styles.middleColumn}>
 
                             {/* the line + duration */}
-                            <CardDuration departureTime={item.departureDate} arrivalTime={item.arrivalDate} />
+                            {item.arrivalDate && <CardDuration duration={duration} />}
                             <View style={styles.lineContainer}>
                                 <View style={[styles.line, { backgroundColor: colors.primary }]} />
 
@@ -106,7 +108,10 @@ export default function FlightCard({ item, onPress, destination }) {
 
                         {/* ── right column ── */}
                         <View style={[styles.sideColumn, styles.rightAlign]}>
-                            {item.arrivalDate && <CardTime hasIcon={false} time={item.arrivalDate} />}
+                            <View style={{ flexDirection: "row", gap: 5 }}>
+                                {item.arrivalDate && <CardTime hasIcon={false} time={item.arrivalDate} />}
+                                {item.plusOneDay && <Txt style={[typography.bodyInter, { color: colors.primary }]} >+1</Txt>}
+                            </View>
                             <Txt style={[typography.h5, styles.airportCode]}>{item.arrivalAirport.iata}</Txt>
                         </View>
                     </View>
@@ -115,9 +120,7 @@ export default function FlightCard({ item, onPress, destination }) {
                         <CardRouteCity departure={item.departureAirport} />
                         <CardRouteCity arrival={item.arrivalAirport} />
                     </View>
-
                 </>
-
             }
 
 

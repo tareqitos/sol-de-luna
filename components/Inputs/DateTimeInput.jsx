@@ -5,7 +5,7 @@ import { themeHook } from "../../hook/theme";
 import { Button, Icon, useTheme } from "react-native-paper";
 import { useLocalization } from "../../hook/localization";
 
-export default function DateTimeInput({ label, time, setTime, date, setDate, hasDate = true, hasTime = true }) {
+export default function DateTimeInput({ label, time, setTime, date, setDate, hasDate = true, hasTime = true, hasCheckbox = false }) {
     const { theme } = themeHook()
     const { selected } = useLocalization();
     const { colors, typography } = useTheme()
@@ -82,6 +82,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate, has
                             style={{ background: colors.primary }}
                         />
                     )}
+
                     {showTime && (
                         <DateTimePicker
                             mode="time"
