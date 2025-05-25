@@ -4,197 +4,133 @@ import { Divider, IconButton, List, TextInput, useTheme } from "react-native-pap
 import Txt from "../Utils/Txt";
 import { FORM } from "../../locales/languagesConst";
 import airportsData from "../../data/airports.json"
+import { RouteField } from "./RouteField";
+import { useTranslation } from "react-i18next";
 
-export default function RouteInput({ iataRef, route, setRoute, t }) {
+export default function RouteInput({ iataRef, route, setRoute, hasStop = false }) {
+    const { t } = useTranslation();
     const { colors, typography } = useTheme();
 
-    const [airports, setAirports] = useState({});
+    // Local state
+    const [departureAirport, setDepartureAirport] = useState(route.departureAirport || { city: "", iata: "" });
+    const [arrivalAirport, setArrivalAirport] = useState(route.arrivalAirport || { city: "", iata: "" });
+    const [stopAirport, setStopAirport] = useState(route.stopAirport || { city: "", iata: "" });
+
     const [filteredAirports, setFilteredAirports] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
     const [activeField, setActiveField] = useState(null);
 
-    const [departureAirport, setDepartureAirport] = useState(route.departureAirport || { city: "", iata: "" });
-    const [arrivalAirport, setArrivalAirport] = useState(route.arrivalAirport || { city: "", iata: "" });
-
+    // Sync with route changes
     useEffect(() => {
-        const hasRouteChanged =
-            route?.departureAirport?.city !== departureAirport.city ||
-            route?.departureAirport?.iata !== departureAirport.iata ||
-            route?.arrivalAirport?.city !== arrivalAirport.city ||
-            route?.arrivalAirport?.iata !== arrivalAirport.iata;
-
-        if (hasRouteChanged) {
-            if (route?.departureAirport?.city || route?.departureAirport?.iata) {
-                setDepartureAirport(route.departureAirport);
-            }
-            if (route?.arrivalAirport?.city || route?.arrivalAirport?.iata) {
-                setArrivalAirport(route.arrivalAirport);
-            }
-        }
+        setDepartureAirport(route.departureAirport || { city: "", iata: "" });
+        setArrivalAirport(route.arrivalAirport || { city: "", iata: "" });
+        setStopAirport(route.stopAirport || { city: "", iata: "" });
     }, [route]);
 
-    // Fetch airport data
-    useEffect(() => {
-        const airportsObj = {};
-        airportsData.forEach(airport => {
-            airportsObj[airport.IATA] = airport;
-        });
-        setAirports(airportsObj)
-    }, []);
-
     // Filter airports based on input
-    const getFilterAirports = (value) => {
-        const filtered = Object.values(airports).filter((airport) =>
-            airport.City.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredAirports(filtered);
-    };
-
-    // Handle input changes and show filtered list
-    const showList = useCallback((value, field) => {
-        if (field === "departureAirport") {
-            setDepartureAirport(prev => ({ ...prev, city: value, iata: "" }));
-        } else if (field === "arrivalAirport") {
-            setArrivalAirport(prev => ({ ...prev, city: value, iata: "" }));
-        }
+    const handleInputChange = (value, field) => {
+        const update = { city: value, iata: "" };
+        if (field === "departureAirport") setDepartureAirport(update);
+        else if (field === "stopAirport") setStopAirport(update);
+        else setArrivalAirport(update);
 
         if (value.length > 1) {
-            getFilterAirports(value);
+            setFilteredAirports(
+                airportsData.filter((a) =>
+                    a.City.toLowerCase().includes(value.toLowerCase())
+                )
+            );
             setIsVisible(true);
             setActiveField(field);
         } else {
             setIsVisible(false);
         }
-    }, [getFilterAirports]);
+    };
 
-    // Save selected city and IATA code
-    const saveSelectedCity = useCallback((city, iata) => {
-        if (activeField === "departureAirport") {
-            setDepartureAirport({ city, iata });
-        } else if (activeField === "arrivalAirport") {
-            setArrivalAirport({ city, iata });
-        }
+    // Save selection
+    const handleSelectAirport = (city, iata) => {
+        if (activeField === "departureAirport") setDepartureAirport({ city, iata });
+        else if (activeField === "stopAirport") setStopAirport({ city, iata });
+        else setArrivalAirport({ city, iata });
         setIsVisible(false);
-    }, [activeField]);
+    };
 
-
-    // Trigger setRoute callback when airports are updated
+    // Trigger setRoute on changes
     useEffect(() => {
         const timer = setTimeout(() => {
             if (departureAirport.city && departureAirport.iata) {
-                setRoute({ departureAirport, arrivalAirport });
+                setRoute({ departureAirport, arrivalAirport, stopAirport });
                 console.log(route)
             }
         }, 500);
         return () => clearTimeout(timer);
-    }, [departureAirport, arrivalAirport]);
+    }, [departureAirport, arrivalAirport, stopAirport]);
 
-
+    // Airport List Item
     const Item = memo(({ city, iata }) => (
-        <View>
-            <TouchableOpacity
-                onPress={() => saveSelectedCity(city, iata)}
-                activeOpacity={1}
-                style={[{ backgroundColor: colors.surface }]}
-            >
-                <List.Item
-                    title={`${city} - ${iata}`}
-                    style={[styles.item, typography.body]}
-                />
-            </TouchableOpacity>
+        <View style={[{ backgroundColor: colors.surface }]}>
+            <List.Item
+                title={`${city} - ${iata}`}
+                onPress={() => handleSelectAirport(city, iata)}
+                style={[styles.item, typography.body, { backgroundColor: colors.surface }]}
+            />
             <Divider />
         </View>
     ));
 
     // Render filtered airport list
-    const ResultList = useMemo(() => {
-        if (!isVisible || filteredAirports.length === 0) return null;
-
-        return (
-            <>
-                <View>
-                    <IconButton
-                        onPress={() => setFilteredAirports([])}
-                        icon="close"
-                        size={18}
-                        iconColor={colors.onSurface}
-                        background={colors.surface}
-                        style={Platform.OS === "ios" ? { backgroundColor: colors.surface, width: "auto" } : { position: "absolute", zIndex: 200, right: 0 }}
-                    />
-
-                </View>
-                <View>
-
-                    <FlatList
-                        data={filteredAirports.slice(0, 20)} // Limit the results for better performance
-                        renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
-                        keyExtractor={(item) => item.IATA}
-                        style={Platform.OS === 'ios' ? styles.containerIOS : styles.container}
-                        keyboardShouldPersistTaps="always"
-                        initialNumToRender={10}
-                        maxToRenderPerBatch={10}
-                        windowSize={5}
-                    />
-                </View>
-            </>
+    const renderAirportList = () =>
+        isVisible && filteredAirports.length > 0 && (
+            <View>
+                <IconButton
+                    onPress={() => setFilteredAirports([])}
+                    icon="close"
+                    size={18}
+                    iconColor={colors.onSurface}
+                    style={Platform.OS === "ios" ? { backgroundColor: colors.surface } : { position: "absolute", zIndex: 200, right: 0 }}
+                />
+                <FlatList
+                    data={filteredAirports.slice(0, 20)}
+                    renderItem={({ item }) => <Item city={item.City} iata={item.IATA} />}
+                    keyExtractor={(item) => item.IATA}
+                    style={Platform.OS === "ios" ? styles.containerIOS : styles.container}
+                    keyboardShouldPersistTaps="always"
+                />
+            </View>
         );
-    }, [isVisible, filteredAirports, colors, saveSelectedCity]);
 
     return (
         <View>
-            <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
-
-                <TextInput
+            {!hasStop ?
+                <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
+                    <RouteField
+                        label={t(FORM.FLIGHT_DEPARTURE_CITY)}
+                        placeholder={t(FORM.FLIGHT_DEPARTURE_CITY_PLACEHOLDER)}
+                        field={departureAirport}
+                        fieldText="departureAirport"
+                        showList={handleInputChange}
+                        icon="airplane-takeoff"
+                    />
+                    <RouteField
+                        label={t(FORM.FLIGHT_ARRIVAL_CITY)}
+                        placeholder={t(FORM.FLIGHT_ARRIVAL_CITY_PLACEHOLDER)}
+                        field={arrivalAirport}
+                        fieldText="arrivalAirport"
+                        showList={handleInputChange}
+                        icon="airplane-landing"
+                    />
+                </View>
+                :
+                <RouteField
                     label={t(FORM.FLIGHT_DEPARTURE_CITY)}
                     placeholder={t(FORM.FLIGHT_DEPARTURE_CITY_PLACEHOLDER)}
-                    mode="flat"
-                    value={departureAirport.city && departureAirport.iata ? `${departureAirport.city} (${departureAirport.iata})` : departureAirport.city}
-                    onChangeText={(text) => showList(text, "departureAirport")}
-                    style={[
-                        styles.input,
-                        departureAirport.city.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground, backgroundColor: colors.background }
-                    ]}
-                    placeholderTextColor={typography.caption.color}
-                    inputMode="text"
-                    autoCorrect={false}
-                    outlineColor={colors.outline}
-                    right={
-                        <TextInput.Icon
-                            icon="airplane-takeoff"
-                            size={18}
-                            style={{ alignSelf: "baseline" }}
-                        />}
-
+                    field={stopAirport}
+                    fieldText="stopAirport"
+                    showList={handleInputChange}
+                    icon="airplane-plus"
                 />
-
-
-
-                <TextInput
-                    ref={iataRef}
-                    label={t(FORM.FLIGHT_ARRIVAL_CITY)}
-                    placeholder={t(FORM.FLIGHT_ARRIVAL_CITY_PLACEHOLDER)}
-                    mode="flat"
-                    value={arrivalAirport.city && arrivalAirport.iata ? `${arrivalAirport.city} (${arrivalAirport.iata})` : arrivalAirport.city}
-                    onChangeText={(text) => showList(text, "arrivalAirport")}
-
-                    style={[
-                        styles.input,
-                        arrivalAirport.city.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground, backgroundColor: colors.background }
-                    ]}
-
-                    placeholderTextColor={typography.caption.color}
-                    inputMode="text"
-                    autoCorrect={false}
-                    outlineColor={colors.outline}
-                    right={<TextInput.Icon icon="airplane-landing" style={{ alignSelf: "baseline" }} size={18} />}
-                />
-
-            </View>
-
-            {isVisible && ResultList}
-
+            }
+            {renderAirportList()}
         </View>
     );
 }

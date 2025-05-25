@@ -1,13 +1,16 @@
 import { StyleSheet, View } from "react-native";
-import { s } from "../../styles/card.style";
-import { Icon, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 
-export default function CardRouteCity({ departure, arrival }) {
+export default function CardRouteCity({ departure, stop, arrival }) {
     const { colors, typography } = useTheme()
 
     const DepartureCity = () => {
         return <Txt style={[typography.h5, { lineHeight: 15 }]}>{departure.city}</Txt>
+    }
+
+    const StopCity = () => {
+        return <Txt style={[typography.h5, { lineHeight: 15 }]}>{stop.city}</Txt>
     }
 
     const ArrivalCity = () => {
@@ -16,6 +19,7 @@ export default function CardRouteCity({ departure, arrival }) {
     return (
         <View>
             {departure && <DepartureCity />}
+            {stop && <StopCity />}
             {arrival && <ArrivalCity />}
         </View>
     )
