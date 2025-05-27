@@ -4,12 +4,12 @@ import { Icon, useTheme } from "react-native-paper";
 import Txt from "../Utils/Txt";
 import { ConvertTimeToString } from "../../services/date-service";
 
-export default function CardTime({ time, hasIcon = true }) {
+export default function CardTime({ icon, time, hasIcon = true }) {
     const { colors, typography } = useTheme()
     return (
         <View style={s.card.date}>
-            {hasIcon && <Icon source="clock-outline" color={colors.primary} size={16} />}
-            <Txt style={[s.card.date, typography.caption, { color: colors.onBackground }]}>{ConvertTimeToString(time)}</Txt>
+            {hasIcon && <Icon source={icon || "clock-outline"} color={colors.primary} size={16} />}
+            <Txt style={[s.card.date, typography.bodyInter, { color: colors.onBackground }]}>{ConvertTimeToString(time)}</Txt>
         </View>
     )
 }

@@ -149,7 +149,7 @@ export function DataProvider({ children }) {
     const saveDestinations = async () => {
         try {
             await AsyncStorage.setItem(DESTINATIONS_STORAGE_KEY, JSON.stringify(destinations))
-            console.log("SAVED DESTINATIONS: ", destinations)
+            // console.log("SAVED DESTINATIONS: ", destinations)
         } catch (error) {
             console.log("Unable to save destinations to AsyncStorage");
         }

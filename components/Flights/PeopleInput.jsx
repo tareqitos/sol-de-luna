@@ -41,7 +41,7 @@ export default function PeopleInput({ passengerLabel, seatLabel, passengers, set
                 {passengers && passengers.map((passenger, index) => (
                     <Surface style={[s.surface, { backgroundColor: colors.surface }]} elevation={1} key={index}>
                         <TouchableOpacity activeOpacity={.8} onPress={() => updateEmoji(passenger.id)}>
-                            <Avatar.Text label={passenger.emoji} size={36} />
+                            <Avatar.Text color='black' label={passenger.emoji} size={36} />
                         </TouchableOpacity>
                         {passenger.name && <Txt style={[typography.h5, { flex: 1 }]}>{passenger.name}</Txt>}
                         {passenger.seat && <Txt style={[typography.caption, { flex: 1 }]}>{passenger.seat}</Txt>}

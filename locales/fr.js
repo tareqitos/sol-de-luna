@@ -104,6 +104,13 @@ export default {
     rename: "Renommer",
     markAsDone: "Marquer comme terminé",
     markAsNotDone: "Marquer comme non terminé",
+
+    // TOOLTIPS
+    showhideCompleted: "Afficher / masquer complété",
+    sortByName: "Trier par nom",
+    sortByDate: "Trier par date",
+
+
     // SETTINGS
     // APP
     useFahrenheit: "Utiliser Fahrenheit / °F",

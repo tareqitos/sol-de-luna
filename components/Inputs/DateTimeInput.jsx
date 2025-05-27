@@ -5,7 +5,7 @@ import { themeHook } from "../../hook/theme";
 import { Button, Icon, useTheme } from "react-native-paper";
 import { useLocalization } from "../../hook/localization";
 
-export default function DateTimeInput({ label, time, setTime, date, setDate }) {
+export default function DateTimeInput({ label, time, setTime, date, setDate, hasDate = true, hasTime = true, hasCheckbox = false }) {
     const { theme } = themeHook()
     const { selected } = useLocalization();
     const { colors, typography } = useTheme()
@@ -34,11 +34,11 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
             if (mode === 'date') {
                 setDate(selectedValue);
                 // After date is selected, show the time picker
-                if (Platform.OS === 'android') {
-                    setTimeout(() => {
-                        showTimePicker();
-                    }, 100);
-                }
+                // if (Platform.OS === 'android') {
+                //     setTimeout(() => {
+                //         showTimePicker();
+                //     }, 100);
+                // }
             }
         }
     }
@@ -52,22 +52,22 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
         setTime(selectedValue)
     }
 
-    // console.log(mergeDateAndTime(date, time))
+    const labelStyle = { marginHorizontal: 15, marginVertical: 5 }
 
     return (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
             <Icon source={label} size={18} color={typography.caption.color} />
             {Platform.OS === "android" ? (
                 <>
                     <View style={{ flexDirection: "row", gap: 10 }}>
-                        <Button mode="outlined" onPress={showDatePicker}>
+                        {hasDate && <Button mode="outlined" labelStyle={labelStyle} onPress={showDatePicker}>
                             {date ? date.toLocaleDateString() : "Select date"}
-                        </Button>
+                        </Button>}
 
 
-                        <Button mode="outlined" onPress={showTimePicker}>
+                        {hasTime && <Button mode="outlined" labelStyle={labelStyle} onPress={showTimePicker}>
                             {time ? time.toLocaleTimeString(selected.tag, { hour: "2-digit", minute: "2-digit" }) : "Select time"}
-                        </Button>
+                        </Button>}
 
 
                     </View>
@@ -82,6 +82,7 @@ export default function DateTimeInput({ label, time, setTime, date, setDate }) {
                             style={{ background: colors.primary }}
                         />
                     )}
+
                     {showTime && (
                         <DateTimePicker
                             mode="time"

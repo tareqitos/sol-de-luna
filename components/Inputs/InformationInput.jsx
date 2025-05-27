@@ -25,8 +25,9 @@ export default function InformationInput({ label, placeholder, control }) {
                 style={[
                     s.form.input,
                     field.value.length == 0 ? typography.caption : typography.body,
-                    { color: colors.onBackground, backgroundColor: colors.background, }
+                    { color: colors.onBackground, backgroundColor: colors.background }
                 ]}
+                multiline
                 outlineColor={typography.caption.color}
                 autoCorrect={false}
                 right={<TextInput.Icon icon="information" style={{ alignSelf: "baseline" }} size={18} />}

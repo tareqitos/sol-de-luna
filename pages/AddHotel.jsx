@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { FlatList, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, useTheme } from "react-native-paper";
 import { useForm } from "react-hook-form";
@@ -111,50 +111,55 @@ export default function AddHotels({ route }) {
         }
     }, [])
 
-    // const memoizedCheckOut = useMemo(() => {
-    //     setCheckOut(checkIn);
-    // }, [checkIn]);
-
-    // useEffect(() => {
-    //     memoizedCheckOut
-    // }, [checkIn]);
+    const buttonStyle = { position: "absolute", bottom: 20, right: 20 }
+    const buttonSize = 34
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
+            <TouchableWithoutFeedback onPress={handleCloseKeyboard} >
+                <FlatList
+                    data={[{ key: 'content' }]}
+                    renderItem={({ item }) => (
+                        <View style={{ flex: 1 }}>
+                            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
+                            <View style={{ flex: 1 }}>
+                                <View style={s.form.container}>
+                                    <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} control={control} errors={errors} />
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                        <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
+                                        <StarInput stars={stars} setStars={setStars} />
+                                    </View>
+                                    <View style={{ marginVertical: 10 }}>
+                                        <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
 
-            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
-            <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
-                <View style={{ flex: 1 }}>
-                    <View style={s.form.container}>
-                        <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} control={control} errors={errors} />
-                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                            <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
-                            <StarInput stars={stars} setStars={setStars} />
+                                    </View>
+                                    <View style={{ gap: 20 }}>
+                                        <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
+                                        <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
+                                    </View>
+                                    <View style={[s.form.input_container, s.form.input_addInfos]}>
+                                        <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
+                                    </View>
+                                </View>
+                            </View>
                         </View>
-                        <View style={{ marginVertical: 10 }}>
-                            <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
-
-                        </View>
-                        <View style={{ gap: 20 }}>
-                            <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
-                            <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
-                        </View>
-                        <View style={[s.form.input_container, s.form.input_addInfos]}>
-                            <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                        </View>
-                    </View>
-                </View>
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="always"
+                />
             </TouchableWithoutFeedback>
-            <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 40 }}>
+            <View style={buttonStyle}>
                 {isEdit ?
                     <>
-                        <IconButton icon={"arrow-left"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
-                        <IconButton icon={"check"} size={30} mode="contained" style={{ width: "50%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                        <IconButton icon={"arrow-left"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={() => nav.goBack()} />
+                        <IconButton icon={"check"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
                     </>
                     :
-                    <IconButton icon={"plus"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    <>
+                        <IconButton icon={"plus"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                    </>
                 }
             </View>
-        </Container >
+        </Container>
     )
 }

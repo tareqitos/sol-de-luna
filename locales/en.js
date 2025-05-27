@@ -104,6 +104,11 @@ export default {
     markAsDone: "Mark as done",
     markAsNotDone: "Mark as not done",
 
+    // TOOLTIPS
+    showhideCompleted: "Show / hide completed",
+    sortByName: "Sort by name",
+    sortByDate: "Sort by date",
+
     // SETTINGS
     // APP
     useFahrenheit: "Use Farhenheit / °F",

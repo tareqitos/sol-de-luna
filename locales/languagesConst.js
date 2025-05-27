@@ -112,6 +112,12 @@ const SEARCH = {
     SEARCH_NO_RESULT_MESSAGE: 'searchNoResultMessage'
 }
 
+const TOOLTIPS = {
+    SHOW_HIDE_COMPLETED: 'showhideCompleted',
+    SORT_BY_NAME: 'sortByName',
+    SORT_BY_DATE: 'sortByDate',
+}
+
 const SETTINGS = {
     USE_FAHRENHEIT: 'useFahrenheit',
     KEEP_CARDS_OPEN: 'keepCardsOpen',
@@ -142,5 +148,6 @@ export {
     DIALOGS,
     MESSAGES,
     SEARCH,
+    TOOLTIPS,
     SETTINGS
 };  

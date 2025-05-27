@@ -58,3 +58,18 @@ export const getTimeZoneOffset = (date) => {
     return new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
 }
 
+
+export const calculateDuration = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const duration = endDate < startDate ? startDate - endDate : endDate - startDate;
+
+    const days = Math.floor(duration / (24 * 60 * 60 * 1000));
+    let hours = Math.floor((duration % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const minutes = Math.floor(((duration % (24 * 60 * 60 * 1000)) % (60 * 60 * 1000)) / (60 * 1000));
+
+    hours = endDate < startDate ? 24 - hours : hours;
+
+    return { days, hours, minutes };
+}
