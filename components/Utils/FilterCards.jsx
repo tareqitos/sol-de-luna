@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+
 import { IconButton, Tooltip, useTheme } from "react-native-paper";
 import { TOOLTIPS } from "../../locales/languagesConst";
 

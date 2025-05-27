@@ -110,6 +110,7 @@ export default {
     sortByName: "Trier par nom",
     sortByDate: "Trier par date",
 
+
     // SETTINGS
     // APP
     useFahrenheit: "Utiliser Fahrenheit / °F",

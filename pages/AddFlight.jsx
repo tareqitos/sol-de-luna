@@ -2,7 +2,9 @@ import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSh
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
+
 import { Checkbox, IconButton, useTheme } from "react-native-paper";
+
 
 import Container from "../components/Utils/Container";
 import TitleInput from "../components/Inputs/TitleInput";
@@ -15,11 +17,13 @@ import DateTimeInput from "../components/Inputs/DateTimeInput";
 import { s } from "../styles/styles.style";
 import { useData } from "../hook/data";
 import { useSnackbar } from "../hook/useSnackbar";
+
 import { calculateDuration, getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { cancelNotification, scheduleNotification } from "../services/notifications";
 import { AddOneDayInput } from "../components/Flights/AddOneDayInput";
+
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
@@ -90,6 +94,7 @@ export default function AddFlight({ route }) {
             const date = new Date(item.departureDate);
             setDate(getTimeZoneOffset(date));
             setTime(getTimeZoneOffset(date));
+
         }
         if (item.arrivalDate) {
             const date = new Date(item.arrivalDate);
@@ -101,6 +106,7 @@ export default function AddFlight({ route }) {
             setPlusOneDay(item.plusOneDay);
         } else {
             setPlusOneDay(false);
+
         }
 
         if (item.passengers) {
@@ -122,6 +128,7 @@ export default function AddFlight({ route }) {
                 stopEndTime: mergeDateAndTime(date, stopEndTime) || new Date(),
                 stopAirport: hasStop ? routes?.stopAirport || {} : null,
             }
+
 
             const newItem = {
                 departureDate: mergeDateAndTime(date, time) || new Date(),
@@ -150,6 +157,7 @@ export default function AddFlight({ route }) {
         } catch (error) {
             console.log("Failed to save flight: ", error)
         }
+
     }
 
     // Handle keyboard dismissal
