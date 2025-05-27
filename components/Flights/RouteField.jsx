@@ -13,7 +13,7 @@ export const RouteField = ({ label, placeholder, field, fieldText, showList, ico
             onChangeText={(text) => showList(text, fieldText)}
             style={[
                 styles.input,
-                field.city.length == 0 ? typography.caption : typography.body,
+                field.city && field.city.length == 0 ? typography.caption : typography.body,
                 { color: colors.onBackground, backgroundColor: colors.background }
             ]}
             placeholderTextColor={typography.caption.color}
