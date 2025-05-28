@@ -10,7 +10,8 @@ export function useData() {
         addItem,
         updateItem,
         deleteItem,
-        importData
+        importData,
+        deleteAllData
     } = useContext(DataContext)
 
     return {
@@ -21,6 +22,7 @@ export function useData() {
         addItem,
         updateItem,
         deleteItem,
-        importData
+        importData,
+        deleteAllData
     }
 }

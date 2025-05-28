@@ -142,8 +142,13 @@ export function DataProvider({ children }) {
 
     const importData = (newDestinations) => {
         if (Array.isArray(newDestinations)) {
-            setDestinations(newDestinations);
+            setDestinations(prev => [...prev, ...newDestinations]);
         }
+    }
+
+    const deleteAllData = () => {
+        setDestinations([]);
+        AsyncStorage.removeItem(DESTINATIONS_STORAGE_KEY);
     }
 
     const saveDestinations = async () => {
@@ -202,7 +207,8 @@ export function DataProvider({ children }) {
             addItem,
             updateItem,
             deleteItem,
-            importData
+            importData,
+            deleteAllData
         }}>
             {children}
         </DataContext.Provider>

@@ -19,18 +19,20 @@ import { useTranslation } from 'react-i18next';
 import { SETTINGS } from '../../locales/languagesConst';
 import ModalCard from '../UI/Modal';
 
-const SettingsItem = ({ icon, title, onPress, value, onValueChange, type, rightText, style }) => {
+const SettingsItem = ({ icon, title, onPress, onLongPress, value, onValueChange, type, textColor, rightText, style }) => {
     const { colors } = useTheme();
     const { t } = useTranslation();
     return (
         <TouchableOpacity
             style={[styles.settingsItem, style]}
+            activeOpacity={0.7}
             onPress={onPress}
+            onLongPress={onLongPress}
             disabled={type === 'switch'}
         >
             <View style={styles.settingsItemLeft}>
-                <Ionicons name={icon} size={22} color={colors.onSurface} style={styles.settingsItemIcon} />
-                <Text style={[styles.settingsItemTitle, { color: colors.onSurface }]}>{t(title)}</Text>
+                <Ionicons name={icon} size={22} color={textColor || colors.onSurface} style={styles.settingsItemIcon} />
+                <Text style={[styles.settingsItemTitle, { color: textColor || colors.onSurface }]}>{t(title)}</Text>
             </View>
             {type === 'switch' ? (
                 <Switch
@@ -222,12 +224,15 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
     const { colors } = useTheme()
     const { t } = useTranslation();
 
+    const hideDialog = () => {
+        setDialogVisible({ import: false });
+    }
+
     const setImportedJSONData = async () => {
         try {
-            setDialogVisible(false)
+            setDialogVisible({ ...dialogVisible, import: false });
             const importedData = await importJSONData();
             const data = importedData;
-            // console.log("DATA: ", data)
             importData(data)
             setMessage(t(SETTINGS.IMPORT_BACKUP_MESSAGE))
             toggleBar();
@@ -263,22 +268,65 @@ export const SettingsImportData = ({ dialogVisible, setDialogVisible }) => {
             <SettingsItem
                 icon="download-outline"
                 title={SETTINGS.IMPORT_BACKUP}
-                onPress={() => Platform.OS === "android" ? setDialogVisible(true) : iOSImportJSONData()}
+                onPress={() => Platform.OS === "android" ? setDialogVisible({ ...dialogVisible, import: true }) : iOSImportJSONData()}
                 colors={colors}
             />
             {dialogVisible && (
                 <DialogPopUp
                     visible={dialogVisible}
-                    onDismiss={() => setDialogVisible(false)}
+                    onDismiss={hideDialog}
                     title={t(SETTINGS.IMPORT_BACKUP_ALERT_TITLE)}
                     content={dialogContent}
-                    cancel={() => setDialogVisible(false)}
+                    cancel={hideDialog}
                     validate={() => setImportedJSONData()}
                 />
             )}
         </>
     );
 }
+
+export const SettingsDeleteData = ({ dialogVisible, setDialogVisible }) => {
+    const nav = useNavigation();
+    const { colors } = useTheme();
+    const { setMessage, toggleBar } = useSnackbar();
+    const { deleteAllData } = useData();
+    const { t } = useTranslation();
+
+    const hideDialog = () => {
+        setDialogVisible({ ...dialogVisible, import: false });
+    }
+
+    const handleDeleteData = () => {
+        setDialogVisible({ ...dialogVisible, delete: false });
+        deleteAllData();
+        nav.navigate("Destination");
+        setMessage(t(SETTINGS.DELETE_DATA_SUCCESS));
+        toggleBar();
+    };
+
+    const dialogContent = <Txt>{t(SETTINGS.DELETE_DATA_CONTENT)}</Txt>;
+
+    return (
+        <>
+            <SettingsItem
+                icon="trash-outline"
+                title={t(SETTINGS.DELETE_DATA)}
+                onLongPress={() => setDialogVisible({ ...dialogVisible, delete: true })}
+                textColor={colors.error}
+            />
+            {dialogVisible && (
+                <DialogPopUp
+                    visible={dialogVisible}
+                    onDismiss={hideDialog}
+                    title={t(SETTINGS.DELETE_DATA_TITLE)}
+                    content={dialogContent}
+                    cancel={hideDialog}
+                    validate={() => handleDeleteData()}
+                />
+            )}
+        </>
+    );
+};
 
 // ABOUT
 
