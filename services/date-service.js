@@ -1,3 +1,5 @@
+import en from "../locales/en";
+
 export const ConvertDateToString = (date, locale) => {
     const d = new Date(date)
 
@@ -59,17 +61,18 @@ export const getTimeZoneOffset = (date) => {
 }
 
 
-export const calculateDuration = (start, end) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
+export const calculateDuration = (startIso, endIso) => {
+    const startDate = new Date(startIso);
+    const endDate = new Date(endIso);
 
-    const duration = endDate < startDate ? startDate - endDate : endDate - startDate;
+    // if end is not strictly after start, assume it’s next-day
+    if (endDate <= startDate) {
+        endDate.setTime(endDate.getTime() + 24 * 60 * 60 * 1000);
+    }
 
-    const days = Math.floor(duration / (24 * 60 * 60 * 1000));
-    let hours = Math.floor((duration % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-    const minutes = Math.floor(((duration % (24 * 60 * 60 * 1000)) % (60 * 60 * 1000)) / (60 * 1000));
+    const diffMs = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
-    hours = endDate < startDate ? 24 - hours : hours;
-
-    return { days, hours, minutes };
-}
+    return { hours, minutes };
+};
