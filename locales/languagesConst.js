@@ -18,6 +18,12 @@ const FORM = {
     FLIGHT_ARRIVAL_CITY_PLACEHOLDER: 'flightArrivalCityPlaceholder',
     FLIGHT_PASSENGER: 'flightPassenger',
     FLIGHT_SEAT: 'flightSeat',
+    PLUS_ONE_DAY: 'plusOneDay',
+    ADD_A_STOP: 'addAStop',
+    STOP_OVER: 'stopover',
+    STOP_OVER_PLACEHOLDER: 'stopoverPlaceholder',
+    FLIGHT_RESERVATION: 'flightReservation',
+    FLIGHT_RESERVATION_PLACEHOLDER: 'flightReservationPlaceholder',
 
     HOTEL_NAME: 'hotelName',
     HOTEL_NAME_PLACEHOLDER: 'hotelNamePlaceholder',
@@ -27,6 +33,8 @@ const FORM = {
     HOTEL_ADD_ADDRESS_MANUALLY: 'hotelAddAddressManually',
     HOTEL_ADD_ADDRESS_MANUALLY_ACCEPTED: 'hotelAddAddressManuallyAccepted',
     HOTEL_ADDITIONNAL_INFO_PLACEHOLDER: 'hotelAdditionnalInfoPlaceholder',
+    HOTEL_BOOKING_REFERENCE: 'hotelBookingReference',
+    HOTEL_BOOKING_REFERENCE_PLACEHOLDER: 'hotelBookingReferencePlaceholder',
 
     TRANSPORT_NAME: 'transportName',
     TRANSPORT_NAME_PLACEHOLDER: 'transportNamePlaceholder',
@@ -39,6 +47,8 @@ const FORM = {
     TRANSPORT_ARRIVAL_CITY: 'transportArrivalCity',
     TRANSPORT_ARRIVAL_CITY_PLACEHOLDER: 'transportArrivalCityPlaceholder',
     TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER: 'transportAdditionnalInfoPlaceholder',
+    TRANSPORT_BOOKING_REFERENCE: 'transportBookingReference',
+    TRANSPORT_BOOKING_REFERENCE_PLACEHOLDER: 'transportBookingReferencePlaceholder',
 
     ADDITIONNAL_INFO: 'additionnalInfo',
     ADDITIONNAL_INFO_PLACEHOLDER: 'additionnalInfoPlaceholder'
@@ -48,6 +58,7 @@ const CARDS = {
     FLIGHT_CARD_PASSENGER: 'flightCardPassenger',
     HOTEL_CARD_ADDRESS: 'hotelCardAddress',
     CARD_ADDITIONAL_INFO: 'cardAdditionalInfo',
+    STOP_OVER: 'stopover',
 
 }
 
@@ -135,6 +146,10 @@ const SETTINGS = {
     IMPORT_BACKUP_ERROR: 'importBackupError',
     IMPORT_BACKUP_ALERT_TITLE: 'importBackupAlertTitle',
     IMPORT_BACKUP_ALERT_CONTENT: 'importBackupAlertContent',
+    DELETE_DATA: 'deleteData',
+    DELETE_DATA_TITLE: 'deleteData',
+    DELETE_DATA_CONTENT: 'deleteDataMessage',
+    DELETE_DATA_SUCCESS: 'deleteDataSuccess',
     ABOUT: 'about'
 }
 
