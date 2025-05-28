@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
 import { AddOneDayInput } from "../components/Flights/AddOneDayInput";
+import { BookingRefInput } from "../components/BookingRefInput";
 
 
 export default function AddFlight({ route }) {
@@ -56,6 +57,7 @@ export default function AddFlight({ route }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             name: "",
+            bookingReference: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -64,9 +66,10 @@ export default function AddFlight({ route }) {
     const { isEdit, item, destinationId } = route?.params || {};
 
     const fillFieldsInEditMode = () => {
-        if (item.name || item.additionalInformation) {
+        if (item.name || item.additionalInformation || item.bookingReference) {
             reset({
                 name: item.name || "",
+                bookingReference: item.bookingReference || "",
                 additionalInformation: item.additionalInformation || ""
             });
         }
@@ -244,9 +247,9 @@ export default function AddFlight({ route }) {
                                 </View>
 
 
-                                <View style={{ marginVertical: 20 }}>
+                                <View style={{ marginVertical: 10 }}>
                                     <View style={[styles.dateTimeContainer, styles.arrivalContainer]}>
-                                        <View >
+                                        <View>
                                             <DateTimeInput hasTime={false} label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
                                         </View>
                                         <View style={styles.row}>
@@ -259,7 +262,7 @@ export default function AddFlight({ route }) {
                                     <View style={[styles.inputContainer, styles.stopContainer]}>
                                         <AddOneDayInput date={hasStop ? stopStartTime : arrivalDate} setDate={hasStop ? setStopStartTime : setArrivalDate} plusOneDay={plusOneDay} setPlusOneDay={setPlusOneDay} />
                                         <Checkbox.Item
-                                            label="Add a stop"
+                                            label={t(FORM.ADD_A_STOP)}
                                             position="leading"
                                             status={hasStop ? 'checked' : 'unchecked'}
                                             onPress={() => setHasStop(!hasStop)}
@@ -269,8 +272,8 @@ export default function AddFlight({ route }) {
 
                                     {hasStop &&
                                         <>
-                                            <View style={styles.row}>
-                                                <View style={[styles.inputContainer, { flex: 1, gap: 10 }]}>
+                                            <View style={[{ flex: 1 }]}>
+                                                <View style={[styles.inputContainer, { gap: 10 }]}>
                                                     <RouteInput
                                                         iataRef={iataRef}
                                                         route={routes}
@@ -279,8 +282,10 @@ export default function AddFlight({ route }) {
                                                         error={error}
                                                     />
                                                 </View>
-                                                <DateTimeInput hasDate={false} time={stopStartTime} setTime={setStopStartTime} />
-                                                <DateTimeInput hasDate={false} time={stopEndTime} setTime={setStopEndTime} label="arrow-right" />
+                                                <View style={styles.row}>
+                                                    <DateTimeInput hasDate={false} time={stopStartTime} setTime={setStopStartTime} />
+                                                    <DateTimeInput hasDate={false} time={stopEndTime} setTime={setStopEndTime} label="arrow-right" />
+                                                </View>
                                             </View>
                                         </>
                                     }
@@ -288,6 +293,9 @@ export default function AddFlight({ route }) {
 
                                 <PeopleInput passengerLabel={t(FORM.FLIGHT_PASSENGER)} seatLabel={t(FORM.FLIGHT_SEAT)} passengers={passengers} setPassengers={setPassengers} />
 
+                                <View>
+                                    <BookingRefInput label={t(FORM.FLIGHT_RESERVATION)} placeholder={t(FORM.FLIGHT_RESERVATION_PLACEHOLDER)} control={control} errors={errors} />
+                                </View>
                                 <View style={[styles.inputContainer]}>
                                     <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                                 </View>

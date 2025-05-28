@@ -144,8 +144,8 @@ export default function RouteInput({ route, setRoute, error, hasStop = false }) 
                 :
                 <>
                     <RouteField
-                        label={t(FORM.FLIGHT_DEPARTURE_CITY)}
-                        placeholder={t(FORM.FLIGHT_DEPARTURE_CITY_PLACEHOLDER)}
+                        label={t(FORM.STOP_OVER)}
+                        placeholder={t(FORM.STOP_OVER_PLACEHOLDER)}
                         field={stopAirport}
                         fieldText="stopAirport"
                         showList={handleInputChange}

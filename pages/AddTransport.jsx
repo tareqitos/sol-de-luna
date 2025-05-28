@@ -20,6 +20,7 @@ import TransportNumberInput from "../components/Transport/TransportNumberInput";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
+import { BookingRefInput } from "../components/BookingRefInput";
 
 
 export default function AddTransport({ route }) {
@@ -39,6 +40,7 @@ export default function AddTransport({ route }) {
         defaultValues: {
             departure: "",
             arrival: "",
+            bookingReference: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -63,6 +65,9 @@ export default function AddTransport({ route }) {
                 arrival: item.arrival || "",
                 additionalInformation: item.additionalInformation || ""
             });
+        }
+        if (item.bookingReference) {
+            control._reset({ bookingReference: item.bookingReference });
         }
     }
 
@@ -137,6 +142,9 @@ export default function AddTransport({ route }) {
                                     <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
                                     <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
                                 </View>
+                            </View>
+                            <View>
+                                <BookingRefInput label={t(FORM.TRANSPORT_BOOKING_REFERENCE)} placeholder={t(FORM.TRANSPORT_DEPARTURE_CITY_PLACEHOLDER)} control={control} errors={errors} />
                             </View>
                             <View style={[s.form.input_container, s.form.input_addInfos]}>
                                 <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
