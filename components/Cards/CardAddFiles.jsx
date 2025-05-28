@@ -15,8 +15,8 @@ export default function CardAddFiles({ item, destinationID }) {
     }
 
     return (
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <IconButton icon={"file-upload-outline"} size={30} mode="contained" style={{ width: "100%" }} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handlePickDocument} />
+        <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+            <IconButton icon={"file-upload-outline"} size={30} mode="contained" style={{}} iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handlePickDocument} />
         </View>
     )
 }
