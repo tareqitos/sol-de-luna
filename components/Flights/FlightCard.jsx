@@ -191,10 +191,9 @@ const styles = StyleSheet.create({
     airportCode: {
         fontSize: 18,
         fontWeight: '600',
-
     },
     middleColumn: {
-        flex: 2.2,
+        flex: 1.5,
         alignItems: 'center',
     },
     lineContainer: {
