@@ -119,24 +119,22 @@ export default function AddHotels({ route }) {
             <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
             <TouchableWithoutFeedback onPress={handleCloseKeyboard} >
                 <View style={{ flex: 1 }}>
-                    <View style={{ flex: 1 }}>
-                        <View style={s.form.container}>
-                            <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} control={control} errors={errors} />
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                                <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
-                                <StarInput stars={stars} setStars={setStars} />
-                            </View>
-                            <View style={{ marginVertical: 10 }}>
-                                <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
+                    <View style={s.form.container}>
+                        <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} control={control} errors={errors} />
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
+                            <StarInput stars={stars} setStars={setStars} />
+                        </View>
+                        <View style={{ marginVertical: 10 }}>
+                            <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
 
-                            </View>
-                            <View style={{ gap: 20 }}>
-                                <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
-                                <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
-                            </View>
-                            <View style={[s.form.input_container, s.form.input_addInfos]}>
-                                <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                            </View>
+                        </View>
+                        <View style={{ gap: 20 }}>
+                            <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
+                            <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
+                        </View>
+                        <View style={[s.form.input_container, s.form.input_addInfos]}>
+                            <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                         </View>
                     </View>
                 </View>

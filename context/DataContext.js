@@ -19,15 +19,15 @@ export function DataProvider({ children }) {
     const isFirstLoad = useRef(true); // Ref for initialization status
 
     const addDestination = (name) => {
-        setDestinations(prev => [
-            ...prev, {
-                id: uuidv4(),
-                name,
-                flights: [],
-                hotels: [],
-                transport: []
-            }
-        ]);
+        const newDest = {
+            id: Date.now().toString(),
+            name,
+            flights: [],
+            hotels: [],
+            transport: []
+        };
+        setDestinations(old => [...old, newDest]);
+        return newDest;
     }
 
     const renameDestination = (destinationId, newName) => {

@@ -5,7 +5,7 @@ import Txt from "../Utils/Txt";
 import { TextInput } from "react-native-paper";
 import { DESTINATION } from "../../locales/languagesConst";
 
-export default function DestinationInput({ value, setValue, addDestination, t, colors, typography }) {
+export default function DestinationInput({ value, setValue, handleAddDestination, t, colors, typography }) {
 
     const [emoji, setEmoji] = useState(generateDestinationEmoji());
 
@@ -14,16 +14,6 @@ export default function DestinationInput({ value, setValue, addDestination, t, c
 
     const randomGreeting = useMemo(() => greetingsArr[Math.floor(Math.random() * greetingsArr.length)], [t]);
     const randomQuestion = useMemo(() => questionsArr[Math.floor(Math.random() * questionsArr.length)], [t]);
-
-    const handleAddDestination = (emoji, dest) => {
-        if (dest && dest.length > 0) {
-            addDestination(`${emoji} ${dest}`)
-            setValue("")
-
-        } else {
-            console.log("Value is empty")
-        }
-    }
 
     const updateEmoji = () => {
         setEmoji(generateDestinationEmoji())
