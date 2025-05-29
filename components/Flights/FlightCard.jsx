@@ -21,6 +21,8 @@ import CardRouteCity from "./CardRouteCity"
 import CardDuration from "../Cards/CardDuration"
 import Txt from "../Utils/Txt"
 import { calculateDuration } from "../../services/date-service"
+import { CardBookingRef } from "../Cards/CardBookingRef"
+import { SleepsLeft } from "../SleepsLeft"
 
 
 export default function FlightCard({ item, onPress, destination }) {
@@ -58,6 +60,7 @@ export default function FlightCard({ item, onPress, destination }) {
 
             <View style={styles.timeContainer}>
                 <CardDate icon="airplane-takeoff" date={item.departureDate} />
+                <SleepsLeft departureDate={item.departureDate} />
             </View>
 
             {item.arrivalAirport.iata && (
@@ -125,6 +128,10 @@ export default function FlightCard({ item, onPress, destination }) {
                         </CardSection>
                     </View>
                 )}
+
+                {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
+                    <CardBookingRef bookingRef={item.bookingReference || ""} />
+                </CardSection>}
 
                 <View style={s.card.add_container}>
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>

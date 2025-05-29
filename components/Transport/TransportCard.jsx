@@ -14,6 +14,8 @@ import CardFilesManager from "../Cards/CardFilesManager";
 import { useSettings } from "../../hook/settings";
 import { useTranslation } from "react-i18next";
 import { CARDS, FORM } from "../../locales/languagesConst";
+import { CardBookingRef } from "../Cards/CardBookingRef";
+import { SleepsLeft } from "../SleepsLeft";
 
 export default function TransportCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -29,9 +31,6 @@ export default function TransportCard({ item, onPress, destination }) {
         setIsCollapse(cardsOpen)
     }, [cardsOpen])
 
-    // const durationDay = getDayDifference(item.arrivalTime, item.departureTime)
-    // const duration = new Date(Date.parse(item.arrivalTime) - Date.parse(item.departureTime)).toISOString()
-
     return (
         <View style={[s.card.container, elevation.level1, { backgroundColor: colors.background }]}>
             <View style={s.card.icons_container}>
@@ -41,8 +40,8 @@ export default function TransportCard({ item, onPress, destination }) {
             {/* TITLE */}
 
             <View >
-                <View style={[styles.row, { backgroundColor: colors.primary, borderRadius: 5, borderBottomStartRadius: 0, borderBottomEndRadius: 0, paddingVertical: 5, paddingHorizontal: 10, marginTop: 15 }]}>
-                    <Icon source={item.transportType} size={28} color={colors.onPrimary} />
+                <View style={[styles.row, { borderWidth: 1, borderColor: colors.primary, borderRadius: 5, borderBottomWidth: 0, paddingVertical: 10, paddingHorizontal: 10, marginTop: 15 }]}>
+                    <Icon source={item.transportType} size={28} color={colors.primary} />
                     {item.name && <CardLine line={item.name} />}
                 </View>
                 <View style={[{ paddingVertical: 10, paddingHorizontal: 10, bottom: 5, borderWidth: 1, borderColor: colors.primary, borderBottomStartRadius: 5, borderBottomEndRadius: 5 }]}>
@@ -56,6 +55,7 @@ export default function TransportCard({ item, onPress, destination }) {
                         <Icon source="arrow-right-thin" size={24} color={colors.primary} />
                         <CardTime time={item.arrivalTime} hasIcon={true} />
                     </View>
+                    <SleepsLeft departureDate={item.departureTime} />
                 </View>
             </View>
 
@@ -63,6 +63,11 @@ export default function TransportCard({ item, onPress, destination }) {
 
             <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
+
+                    {/* BOOKING REFERENCE */}
+                    {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
+                        <CardBookingRef bookingRef={item.bookingReference || ""} />
+                    </CardSection>}
 
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>

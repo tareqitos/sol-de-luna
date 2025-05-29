@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Collapsible from "react-native-collapsible";
 import { useCallback, useEffect, useState } from "react";
-import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
+import { Card, Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
 import { s } from "../../styles/card.style";
 import CollapseButton from "../UI/CollapseButton";
 import CardTitle from "../Cards/CardTitle";
@@ -17,6 +17,8 @@ import CardStars from "./CardStars";
 import { useSettings } from "../../hook/settings";
 import { useTranslation } from "react-i18next";
 import { CARDS, FORM } from "../../locales/languagesConst";
+import { CardBookingRef } from "../Cards/CardBookingRef";
+import { SleepsLeft } from "../SleepsLeft";
 
 export default function HotelCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -45,8 +47,12 @@ export default function HotelCard({ item, onPress, destination }) {
             </View>
 
             {/* STARS */}
-            <CardSection style={{ flexDirection: "row" }}>
-                <CardStars stars={item.stars} />
+            <CardSection style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <CardStars stars={item.stars} />
+                </View>
+                <SleepsLeft departureDate={item.checkIn} />
+
             </CardSection>
 
 
@@ -75,6 +81,11 @@ export default function HotelCard({ item, onPress, destination }) {
                             <CardAddress item={item} />
                         </CardSection>
                     }
+
+                    {/* BOOKING REFERENCE */}
+                    {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
+                        <CardBookingRef bookingRef={item.bookingReference || ""} />
+                    </CardSection>}
 
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
