@@ -62,7 +62,7 @@ export default function AddHotels({ route }) {
             const date = new Date(item.checkOut)
             setCheckOut(getTimeZoneOffset(date))
         };
-        if (stars > -1) setStars(item.stars);
+        if (stars != 0) setStars(item.stars - 1);
     }
 
     const onSubmit = async (newData) => {
