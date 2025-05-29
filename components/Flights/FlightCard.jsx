@@ -24,7 +24,6 @@ import { calculateDuration } from "../../services/date-service"
 import { CardBookingRef } from "../Cards/CardBookingRef"
 import { SleepsLeft } from "../SleepsLeft"
 
-
 export default function FlightCard({ item, onPress, destination }) {
     const { t } = useTranslation();
     const { cardsOpen } = useSettings()
@@ -92,10 +91,12 @@ export default function FlightCard({ item, onPress, destination }) {
                                 <View style={{ flexDirection: "row", gap: 5 }}>
                                     {item.arrivalDate && <CardTime icon="airplane-landing" hasIcon time={item.arrivalDate} />}
                                     {item.plusOneDay && <Txt style={[typography.bodyInter, { color: colors.primary }]}>+1</Txt>}
+
                                 </View>
                                 <Txt style={[typography.h5, styles.airportCode]}>{item.arrivalAirport.iata}</Txt>
                             </View>
                         </View>
+
                         {hasStop && (
                             <View style={[styles.row, { justifyContent: "center", gap: 5, paddingHorizontal: 10 }]}>
                                 <Txt>{t(FORM.STOP_OVER)}</Txt>

@@ -1,5 +1,6 @@
 import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 
@@ -25,7 +26,6 @@ import { scheduleNotification } from "../services/notifications";
 import { AddOneDayInput } from "../components/Flights/AddOneDayInput";
 import { BookingRefInput } from "../components/BookingRefInput";
 
-
 export default function AddFlight({ route }) {
     const { destination } = route.params;
     const { addItem, updateItem } = useData()
@@ -49,6 +49,8 @@ export default function AddFlight({ route }) {
         stopAirport: { city: "", iata: "" },
     });
     const [error, setError] = useState({ airports: false, stop: false });
+
+    const [hasStop, setHasStop] = useState(false);
 
     const [hasStop, setHasStop] = useState(false);
 
@@ -245,7 +247,16 @@ export default function AddFlight({ route }) {
                                         error={error}
                                     />
                                 </View>
-
+                                        <View style={[styles.inputContainer, styles.stopContainer]}>
+                                            <AddOneDayInput date={hasStop ? stopStartTime : arrivalDate} setDate={hasStop ? setStopStartTime : setArrivalDate} plusOneDay={plusOneDay} setPlusOneDay={setPlusOneDay} />
+                                            <Checkbox.Item
+                                                label="Add a stop"
+                                                position="leading"
+                                                status={hasStop ? 'checked' : 'unchecked'}
+                                                onPress={() => setHasStop(!hasStop)}
+                                                style={styles.checkboxItem}
+                                            />
+                                        </View>
 
                                 <View style={{ marginVertical: 10 }}>
                                     <View style={[styles.dateTimeContainer, styles.arrivalContainer]}>
@@ -305,7 +316,6 @@ export default function AddFlight({ route }) {
                 </TouchableWithoutFeedback>
             </ScrollView>
 
-
             <View style={styles.buttonStyle}>
                 {isEdit ?
                     <>
@@ -315,6 +325,7 @@ export default function AddFlight({ route }) {
                     :
                     <>
                         <IconButton icon={"plus"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPressIn={validateAirports} onPress={handleSubmit(onSubmit)} />
+
                     </>
                 }
             </View>

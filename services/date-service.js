@@ -60,7 +60,6 @@ export const getTimeZoneOffset = (date) => {
     return new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
 }
 
-
 export const calculateDuration = (startIso, endIso) => {
     const startDate = new Date(startIso);
     const endDate = new Date(endIso);
