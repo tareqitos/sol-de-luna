@@ -59,7 +59,10 @@ const CARDS = {
     HOTEL_CARD_ADDRESS: 'hotelCardAddress',
     CARD_ADDITIONAL_INFO: 'cardAdditionalInfo',
     STOP_OVER: 'stopover',
-
+    BOOKING_REFERENCE: 'bookingReference',
+    ONLY: 'only',
+    SLEEP_LEFT: 'sleepLeft',
+    SLEEPS_LEFT: 'sleepsLeft',
 }
 
 const DESTINATION = {

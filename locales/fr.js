@@ -46,6 +46,7 @@ export default {
     flightReservation: "Numéro de réservation de vol",
     flightReservationPlaceholder: "ex: AF1234, BA5678, ...",
 
+
     hotelName: "Nom de l'hôtel / Séjour",
     hotelNamePlaceholder: "ex: Hôtel à Tokyo",
     hotelStars: "Étoiles",
@@ -82,6 +83,10 @@ export default {
     hotelCardAddress: "Adresse",
     cardAdditionalInfo: "Informations supplémentaires",
     stopover: "Escale",
+    bookingReference: "Numéro de référence",
+    only: "Plus que",
+    sleepLeft: "dodo",
+    sleepsLeft: "dodos",
 
     // MESSAGE
     emptyCategoryMessage: "C'est vide ici, ajoutez vos prochains ",

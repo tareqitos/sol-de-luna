@@ -79,6 +79,10 @@ export default {
     hotelCardAddress: "Address",
     cardAdditionalInfo: "Additional information",
     stopoverCard: "Stopover",
+    bookingReference: "Reference number",
+    only: "Only",
+    sleepLeft: "sleep left",
+    sleepsLeft: "sleeps left",
 
     // MESSAGE
     emptyCategoryMessage: "Nothing here, add your next ",
