@@ -7,8 +7,7 @@ import { MESSAGES } from "../locales/languagesConst";
 import { View } from "react-native";
 
 
-export const BookingRefInput = ({ label, placeholder, control, errors }) => {
-    const { t } = useTranslation()
+export const BookingRefInput = ({ label, placeholder, control }) => {
     const { colors, typography } = useTheme();
     const { field } = useController({
         control,
@@ -16,15 +15,11 @@ export const BookingRefInput = ({ label, placeholder, control, errors }) => {
         name: "bookingReference",
     })
 
-    const error = errors?.name ? true : false
-
-
     return (
         <View>
             <TextInput
                 label={label}
                 mode="flat"
-                error={error}
                 value={field.value}
                 onChangeText={field.onChange}
                 textColor={colors.onBackground}
@@ -43,10 +38,6 @@ export const BookingRefInput = ({ label, placeholder, control, errors }) => {
                         style={{ alignSelf: "baseline" }}
                     />}
             />
-            {error &&
-                <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={error}>
-                    {t(MESSAGES.REQUIRED_MESSAGE)}
-                </HelperText>}
         </View>
     )
 }
