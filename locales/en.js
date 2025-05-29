@@ -1,5 +1,3 @@
-import { set } from "react-hook-form";
-
 export default {
     // DESTINATION
     title: "Destination",
@@ -41,6 +39,12 @@ export default {
     flightArrivalCityPlaceholder: "e.g. Tokyo",
     flightPassenger: "Passenger name",
     flightSeat: "Seat",
+    plusOneDay: "+1 day",
+    addAStop: "Add a stopover",
+    stopover: "Stopover",
+    stopoverPlaceholder: "e.g. Paris, London, ...",
+    flightReservation: "Flight reservation number",
+    flightReservationPlaceholder: "e.g. AF1234, BA5678, ...",
 
     hotelName: "Hotel / Stay name",
     hotelNamePlaceholder: "e.g. Hotel in Tokyo",
@@ -50,6 +54,8 @@ export default {
     hotelAddAddressManually: "Or tap here to add address manually",
     hotelAddAddressManuallyAccepted: "Address added!",
     hotelAdditionnalInfoPlaceholder: "e.g. Room number, access code, etc.",
+    hotelBookingReference: "Booking reference",
+    hotelBookingReferencePlaceholder: "Your booking reference",
 
     transportName: "Line / Name",
     transportNamePlaceholder: "e.g. 23, Line 92, ...",
@@ -62,6 +68,8 @@ export default {
     transportArrivalCity: "To",
     transportArrivalCityPlaceholder: "Enter arrival location",
     transportAdditionnalInfoPlaceholder: "e.g. Train number, boarding gate, etc.",
+    transportBookingReference: "Booking reference",
+    transportBookingReferencePlaceholder: "Your booking reference",
 
     additionnalInfo: "Additional information",
     additionnalInfoPlaceholder: "e.g. Flight number, boarding gate, etc.",
@@ -70,6 +78,11 @@ export default {
     flightCardPassenger: "Passengers",
     hotelCardAddress: "Address",
     cardAdditionalInfo: "Additional information",
+    stopoverCard: "Stopover",
+    bookingReference: "Reference number",
+    only: "Only",
+    sleepLeft: "sleep left",
+    sleepsLeft: "sleeps left",
 
     // MESSAGE
     emptyCategoryMessage: "Nothing here, add your next ",
@@ -129,6 +142,9 @@ export default {
     importBackupError: "Error importing backup",
     importBackupAlertTitle: "Warning",
     importBackupAlertContent: "This will overwrite all your current data. Are you sure you want to continue?",
+    deleteData: "Delete all data",
+    deleteDataMessage: "Are you sure you want to delete all your data? This action cannot be undone.",
+    deleteDataSuccess: "All data has been deleted successfully",
     // ABOUT
     about: "About",
 }

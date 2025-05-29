@@ -39,6 +39,13 @@ export default {
     flightArrivalCityPlaceholder: "ex: Tokyo",
     flightPassenger: "Nom du passager",
     flightSeat: "Siège",
+    plusOneDay: "+1 jour",
+    addAStop: "Ajouter une escale",
+    stopover: "Escale",
+    stopoverPlaceholder: "ex: Paris, Londres, ...",
+    flightReservation: "Numéro de réservation de vol",
+    flightReservationPlaceholder: "ex: AF1234, BA5678, ...",
+
 
     hotelName: "Nom de l'hôtel / Séjour",
     hotelNamePlaceholder: "ex: Hôtel à Tokyo",
@@ -48,9 +55,11 @@ export default {
     hotelAddAddressManually: "Ou appuyez ici pour ajouter l'adresse manuellement",
     hotelAddAddressManuallyAccepted: "Adresse ajoutée!",
     hotelAdditionnalInfoPlaceholder: "ex: Numéro de chambre, code d'accès, etc.",
+    hotelBookingReference: "Référence de réservation",
+    hotelBookingReferencePlaceholder: "Votre référence de réservation",
 
     transportName: "Ligne / Nom",
-    transportNamePlaceholder: "e.g. 56, Tram 92, RER A, ...",
+    transportNamePlaceholder: "ex: 56, Tram 92, RER A, ...",
     transportTypeTrain: "Train",
     transportTypeBus: "Bus",
     transportTypeCar: "Voiture",
@@ -60,6 +69,9 @@ export default {
     transportArrivalCity: "À",
     transportArrivalCityPlaceholder: "Entrez le lieu d'arrivée",
     transportAdditionnalInfoPlaceholder: "ex: Numéro de train, porte d'embarquement, etc.",
+    transportBookingReference: "Référence de réservation",
+    transportBookingReferencePlaceholder: "Votre numéro de réservation",
+
 
     additionnalInfo: "Informations supplémentaires",
     additionnalInfoPlaceholder: "ex: Numéro de vol, porte d'embarquement, etc.",
@@ -70,6 +82,11 @@ export default {
     flightCardPassenger: "Passagers",
     hotelCardAddress: "Adresse",
     cardAdditionalInfo: "Informations supplémentaires",
+    stopover: "Escale",
+    bookingReference: "Numéro de référence",
+    only: "Plus que",
+    sleepLeft: "dodo",
+    sleepsLeft: "dodos",
 
     // MESSAGE
     emptyCategoryMessage: "C'est vide ici, ajoutez vos prochains ",
@@ -131,6 +148,9 @@ export default {
     importBackupError: "Erreur lors de l'importation de la sauvegarde",
     importBackupAlertTitle: "Attention",
     importBackupAlertContent: "Cela écrasera toutes vos données actuelles. Êtes-vous sûr de vouloir continuer?",
+    deleteData: "Supprimer toutes les données",
+    deleteDataMessage: "Toutes les données seront supprimées, êtes-vous sûr de vouloir continuer?",
+    deleteDataSuccess: "Toutes les données ont été supprimées avec succès",
     // ABOUT
     about: "À propos",
 }

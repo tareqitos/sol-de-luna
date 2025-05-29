@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 
-export const RouteField = ({ label, placeholder, field, fieldText, showList, icon }) => {
+export const RouteField = ({ label, placeholder, field, fieldText, showList, icon, error }) => {
     const { colors, typography } = useTheme();
 
     return (
@@ -9,12 +9,14 @@ export const RouteField = ({ label, placeholder, field, fieldText, showList, ico
             label={label}
             placeholder={placeholder}
             mode="flat"
+            focusable
+            error={error}
             value={field.city && field.iata ? `${field.city} (${field.iata})` : field.city}
             onChangeText={(text) => showList(text, fieldText)}
             style={[
                 styles.input,
                 field.city && field.city.length == 0 ? typography.caption : typography.body,
-                { color: colors.onBackground, backgroundColor: colors.background }
+                { color: colors.onBackground, backgroundColor: 'transparent' }
             ]}
             placeholderTextColor={typography.caption.color}
             inputMode="text"

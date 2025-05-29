@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Checkbox, useTheme } from "react-native-paper";
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { FORM } from "../../locales/languagesConst";
 
 export const AddOneDayInput = ({ date, setDate, plusOneDay, setPlusOneDay }) => {
     const { colors } = useTheme();
+    const { t } = useTranslation();
 
     const handleCheckboxChange = () => {
         setPlusOneDay(!plusOneDay);
@@ -21,7 +24,7 @@ export const AddOneDayInput = ({ date, setDate, plusOneDay, setPlusOneDay }) => 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Checkbox.Item
-                label="+1 day"
+                label={t(FORM.PLUS_ONE_DAY)}
                 position="leading"
                 onPress={handleCheckboxChange}
                 color={colors.primary}

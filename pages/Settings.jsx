@@ -4,7 +4,7 @@ import TitlePage from '../components/Utils/TitlePage';
 import Container from '../components/Utils/Container';
 import { useTheme } from 'react-native-paper';
 
-import { SettingsAbout, SettingsExportData, SettingsImportData, SettingsLanguages, SettingsTemperature, SettingsTheme, SettingsToggleCardCollapse } from '../components/Settings/SettingsComponents';
+import { SettingsAbout, SettingsDeleteData, SettingsExportData, SettingsImportData, SettingsLanguages, SettingsTemperature, SettingsTheme, SettingsToggleCardCollapse } from '../components/Settings/SettingsComponents';
 import { useTranslation } from 'react-i18next';
 import { PAGE_TITLES, SETTINGS } from '../locales/languagesConst';
 
@@ -12,7 +12,7 @@ import { PAGE_TITLES, SETTINGS } from '../locales/languagesConst';
 const Settings = () => {
     const { t } = useTranslation()
     const { colors } = useTheme()
-    const [dialogVisible, setDialogVisible] = useState(false);
+    const [dialogVisible, setDialogVisible] = useState({ import: false, delete: false });
 
     const SettingsCard = ({ title, children }) => (
         <View style={[styles.card, { backgroundColor: colors.surface }]}>
@@ -38,7 +38,8 @@ const Settings = () => {
 
                 <SettingsCard title={t(SETTINGS.SAVE_AND_BACKUP)}>
                     <SettingsExportData />
-                    <SettingsImportData dialogVisible={dialogVisible} setDialogVisible={setDialogVisible} />
+                    <SettingsImportData dialogVisible={dialogVisible.import} setDialogVisible={setDialogVisible} />
+                    <SettingsDeleteData dialogVisible={dialogVisible.delete} setDialogVisible={setDialogVisible} />
                 </SettingsCard>
 
                 <SettingsCard title={t(SETTINGS.ABOUT)}>

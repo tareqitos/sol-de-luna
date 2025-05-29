@@ -35,30 +35,28 @@ export default function CardFilesManager({ item, destinationID }) {
             {
                 item.documents.length > 0 &&
                 <CardSection style={styles.cardSection}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <View style={styles.container}>
+                    <View style={styles.container}>
 
-                            {item.documents.map((file) => {
-                                const scaleValue = getScaleValue(file.uri)
-                                return (
-                                    <Animated.View
-                                        key={file.uri}
-                                        style={{ transform: [{ scale: scaleValue }], overflow: "visible" }}
+                        {item.documents.map((file) => {
+                            const scaleValue = getScaleValue(file.uri)
+                            return (
+                                <Animated.View
+                                    key={file.uri}
+                                    style={{ transform: [{ scale: scaleValue }], overflow: "visible" }}
+                                >
+                                    <TouchableOpacity
+                                        activeOpacity={0.9}
+                                        onPressIn={() => handlePressIn(0.9, file.uri)}
+                                        onPressOut={() => handlePressOut(file.uri)}
+                                        onPress={() => openDocument(file.uri)}
+                                        onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destinationID, item, file.name)}
                                     >
-                                        <TouchableOpacity
-                                            activeOpacity={0.9}
-                                            onPressIn={() => handlePressIn(0.9, file.uri)}
-                                            onPressOut={() => handlePressOut(file.uri)}
-                                            onPress={() => openDocument(file.uri)}
-                                            onLongPress={() => Platform.OS === "android" ? handleDeleteFile(file.name) : deleteDocument(destinationID, item, file.name)}
-                                        >
-                                            <CardFiles file={file} />
-                                        </TouchableOpacity>
-                                    </Animated.View>
-                                )
-                            })}
-                        </View>
-                    </ScrollView>
+                                        <CardFiles file={file} />
+                                    </TouchableOpacity>
+                                </Animated.View>
+                            )
+                        })}
+                    </View>
                 </CardSection>
             }
 
@@ -77,11 +75,13 @@ export default function CardFilesManager({ item, destinationID }) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        alignItems: "center",
+        flexWrap: "wrap",
+        width: "auto",
         gap: 10
     },
 
     cardSection: {
+
         marginVertical: 10,
         gap: 10
     }

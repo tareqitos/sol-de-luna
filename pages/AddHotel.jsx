@@ -20,6 +20,7 @@ import HotelSearchMap from "../components/Hotels/HotelSearchMap";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
+import { BookingRefInput } from "../components/BookingRefInput";
 
 
 export default function AddHotels({ route }) {
@@ -40,6 +41,7 @@ export default function AddHotels({ route }) {
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: "",
+            bookingReference: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -49,6 +51,7 @@ export default function AddHotels({ route }) {
 
     const fillFieldsInEditMode = () => {
         if (item.name) control._reset({ name: item.name, additionalInformation: item.additionalInformation })
+        if (item.bookingReference) control._reset({ bookingReference: item.bookingReference });
         if (item.address) setQuery(item.address);
         if (item.latitude) setCoords({ latitude: item.latitude, longitude: item.longitude });
         if (item.checkIn) {
@@ -59,7 +62,7 @@ export default function AddHotels({ route }) {
             const date = new Date(item.checkOut)
             setCheckOut(getTimeZoneOffset(date))
         };
-        if (stars > -1) setStars(item.stars);
+        if (stars != 0) setStars(item.stars - 1);
     }
 
     const onSubmit = async (newData) => {
@@ -116,37 +119,31 @@ export default function AddHotels({ route }) {
 
     return (
         <Container style={{ paddingHorizontal: 20 }}>
+            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
             <TouchableWithoutFeedback onPress={handleCloseKeyboard} >
-                <FlatList
-                    data={[{ key: 'content' }]}
-                    renderItem={({ item }) => (
-                        <View style={{ flex: 1 }}>
-                            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_HOTEL_TITLE) : t(PAGE_TITLES.HOTEL_TITLE)} />
-                            <View style={{ flex: 1 }}>
-                                <View style={s.form.container}>
-                                    <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} control={control} errors={errors} />
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                                        <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
-                                        <StarInput stars={stars} setStars={setStars} />
-                                    </View>
-                                    <View style={{ marginVertical: 10 }}>
-                                        <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
-
-                                    </View>
-                                    <View style={{ gap: 20 }}>
-                                        <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
-                                        <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
-                                    </View>
-                                    <View style={[s.form.input_container, s.form.input_addInfos]}>
-                                        <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                                    </View>
-                                </View>
-                            </View>
+                <View style={{ flex: 1 }}>
+                    <View style={s.form.container}>
+                        <TitleInput name={t(FORM.HOTEL_NAME)} placeholder={t(FORM.HOTEL_NAME_PLACEHOLDER)} field="name" control={control} errors={errors} />
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <Txt style={{ color: typography.caption.color }}>{t(FORM.HOTEL_STARS)}</Txt>
+                            <StarInput stars={stars} setStars={setStars} />
                         </View>
-                    )}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="always"
-                />
+                        <View style={{ marginVertical: 10 }}>
+                            <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
+
+                        </View>
+                        <View style={{ gap: 20 }}>
+                            <DateTimeInput label="calendar-start" time={checkIn} setTime={setCheckIn} date={checkIn} setDate={setCheckIn} />
+                            <DateTimeInput label="calendar-end" time={checkOut} setTime={setCheckOut} date={checkOut} setDate={setCheckOut} />
+                        </View>
+                        <View>
+                            <BookingRefInput label={t(FORM.HOTEL_BOOKING_REFERENCE)} placeholder={t(FORM.HOTEL_BOOKING_REFERENCE_PLACEHOLDER)} control={control} errors={errors} />
+                        </View>
+                        <View style={[s.form.input_container, s.form.input_addInfos]}>
+                            <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
+                        </View>
+                    </View>
+                </View>
             </TouchableWithoutFeedback>
             <View style={buttonStyle}>
                 {isEdit ?

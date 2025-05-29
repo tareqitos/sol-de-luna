@@ -1,5 +1,6 @@
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,12 +19,12 @@ import { s } from "../styles/styles.style";
 import { useData } from "../hook/data";
 import { useSnackbar } from "../hook/useSnackbar";
 
-import { calculateDuration, getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
+import { getTimeZoneOffset, mergeDateAndTime } from "../services/date-service";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
-import { cancelNotification, scheduleNotification } from "../services/notifications";
+import { scheduleNotification } from "../services/notifications";
 import { AddOneDayInput } from "../components/Flights/AddOneDayInput";
-
+import { BookingRefInput } from "../components/BookingRefInput";
 
 export default function AddFlight({ route }) {
     const { destination } = route.params;
@@ -37,7 +38,6 @@ export default function AddFlight({ route }) {
     const [arrivalTime, setArrivalTime] = useState(new Date());
     const [arrivalDate, setArrivalDate] = useState(new Date());
 
-    const [stopDate, setStopDate] = useState(new Date());
     const [stopStartTime, setStopStartTime] = useState(new Date());
     const [stopEndTime, setStopEndTime] = useState(new Date());
 
@@ -48,6 +48,9 @@ export default function AddFlight({ route }) {
         arrivalAirport: { city: "", iata: "" },
         stopAirport: { city: "", iata: "" },
     });
+    const [error, setError] = useState({ airports: false, stop: false });
+
+    const [hasStop, setHasStop] = useState(false);
 
     const [hasStop, setHasStop] = useState(false);
 
@@ -56,6 +59,7 @@ export default function AddFlight({ route }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             name: "",
+            bookingReference: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -64,9 +68,10 @@ export default function AddFlight({ route }) {
     const { isEdit, item, destinationId } = route?.params || {};
 
     const fillFieldsInEditMode = () => {
-        if (item.name || item.additionalInformation) {
+        if (item.name || item.additionalInformation || item.bookingReference) {
             reset({
                 name: item.name || "",
+                bookingReference: item.bookingReference || "",
                 additionalInformation: item.additionalInformation || ""
             });
         }
@@ -115,6 +120,10 @@ export default function AddFlight({ route }) {
     }
 
     const onSubmit = async (newData) => {
+        if (validateAirports()) {
+            console.log("Missing airport information");
+            return;
+        }
 
         try {
             const notificationId = await scheduleNotification(
@@ -124,7 +133,8 @@ export default function AddFlight({ route }) {
             );
 
             const stop = {
-                stopStartTime: mergeDateAndTime(date, stopStartTime) || new Date(),
+                stopStartTime: mergeDateAndTime(date,
+                    stopStartTime) || new Date(),
                 stopEndTime: mergeDateAndTime(date, stopEndTime) || new Date(),
                 stopAirport: hasStop ? routes?.stopAirport || {} : null,
             }
@@ -160,6 +170,31 @@ export default function AddFlight({ route }) {
 
     }
 
+    const { departureAirport, arrivalAirport, stopAirport } = routes;
+    const validateAirports = () => {
+        let hasError = false;
+        if (
+            !departureAirport.city.length ||
+            !departureAirport.iata.length ||
+            !arrivalAirport.city.length ||
+            !arrivalAirport.iata.length
+        ) {
+            setError(prev => ({ ...prev, airports: true }));
+            hasError = true;
+        } else {
+            setError(prev => ({ ...prev, airports: false }));
+        }
+        if (hasStop) {
+            if (!stopAirport.city.length || !stopAirport.iata.length) {
+                setError(prev => ({ ...prev, stop: true }));
+                hasError = true;
+            } else {
+                setError(prev => ({ ...prev, stop: false }));
+            }
+        }
+        return hasError;
+    };
+
     // Handle keyboard dismissal
     const handleCloseKeyboard = () => {
         Keyboard.dismiss();
@@ -172,6 +207,15 @@ export default function AddFlight({ route }) {
     }, []);
 
     useEffect(() => {
+        if (departureAirport.city && departureAirport.iata || arrivalAirport.city && arrivalAirport.iata) {
+            setError({ ...error, airports: false });
+        }
+        if (hasStop && stopAirport.city.length > 0 && stopAirport.iata.length > 0) {
+            setError({ ...error, stop: false });
+        }
+    }, [departureAirport, arrivalAirport, stopAirport]);
+
+    useEffect(() => {
         setArrivalDate(date);
     }, [date]);
 
@@ -179,40 +223,30 @@ export default function AddFlight({ route }) {
 
     return (
         <Container style={styles.container}>
-            <FlatList
-                data={[{ key: 'content' }]}
-                renderItem={({ item }) => (
-                    <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
-                        <View>
-                            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_FLIGHT_TITLE) : t(PAGE_TITLES.FLIGHT_TITLE)} />
+            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_FLIGHT_TITLE) : t(PAGE_TITLES.FLIGHT_TITLE)} />
 
-                            <View style={{ flex: 1 }}>
-                                <View style={s.form.container}>
-                                    <View style={styles.inputContainer}>
-                                        <TitleInput name={t(FORM.FLIGHT_NAME)} placeholder={t(FORM.FLIGHT_NAME_PLACEHOLDER)} maxLength={50} control={control} errors={errors} />
-                                    </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                nestedScrollEnabled={true}
+            >
+                <TouchableWithoutFeedback onPress={handleCloseKeyboard}>
+                    <View>
 
-                                    <View style={styles.inputContainer}>
-                                        <RouteInput
-                                            iataRef={iataRef}
-                                            route={routes}
-                                            setRoute={setRoutes}
-                                        />
-                                    </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={s.form.container}>
+                                <View style={styles.inputContainer}>
+                                    <TitleInput name={t(FORM.FLIGHT_NAME)} placeholder={t(FORM.FLIGHT_NAME_PLACEHOLDER)} maxLength={50} control={control} errors={errors} />
+                                </View>
 
-
-                                    <View style={{ marginVertical: 20 }}>
-                                        <View style={[styles.dateTimeContainer, styles.arrivalContainer]}>
-                                            <View >
-                                                <DateTimeInput hasTime={false} label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
-                                            </View>
-                                            <View style={styles.row}>
-                                                <DateTimeInput hasDate={false} label="airplane-clock" time={time} setTime={setTime} />
-                                                <DateTimeInput hasDate={false} label="arrow-right" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
-                                            </View>
-                                        </View>
-
-
+                                <View style={styles.inputContainer}>
+                                    <RouteInput
+                                        iataRef={iataRef}
+                                        route={routes}
+                                        setRoute={setRoutes}
+                                        error={error}
+                                    />
+                                </View>
                                         <View style={[styles.inputContainer, styles.stopContainer]}>
                                             <AddOneDayInput date={hasStop ? stopStartTime : arrivalDate} setDate={hasStop ? setStopStartTime : setArrivalDate} plusOneDay={plusOneDay} setPlusOneDay={setPlusOneDay} />
                                             <Checkbox.Item
@@ -224,39 +258,63 @@ export default function AddFlight({ route }) {
                                             />
                                         </View>
 
-                                        {hasStop &&
-                                            <>
+                                <View style={{ marginVertical: 10 }}>
+                                    <View style={[styles.dateTimeContainer, styles.arrivalContainer]}>
+                                        <View>
+                                            <DateTimeInput hasTime={false} label="airplane-takeoff" time={time} setTime={setTime} date={date} setDate={setDate} />
+                                        </View>
+                                        <View style={styles.row}>
+                                            <DateTimeInput hasDate={false} label="airplane-clock" time={time} setTime={setTime} />
+                                            <DateTimeInput hasDate={false} label="arrow-right" time={arrivalTime} setTime={setArrivalTime} date={arrivalDate} setDate={setArrivalDate} />
+                                        </View>
+                                    </View>
+
+
+                                    <View style={[styles.inputContainer, styles.stopContainer]}>
+                                        <AddOneDayInput date={hasStop ? stopStartTime : arrivalDate} setDate={hasStop ? setStopStartTime : setArrivalDate} plusOneDay={plusOneDay} setPlusOneDay={setPlusOneDay} />
+                                        <Checkbox.Item
+                                            label={t(FORM.ADD_A_STOP)}
+                                            position="leading"
+                                            status={hasStop ? 'checked' : 'unchecked'}
+                                            onPress={() => setHasStop(!hasStop)}
+                                            style={styles.checkboxItem}
+                                        />
+                                    </View>
+
+                                    {hasStop &&
+                                        <>
+                                            <View style={[{ flex: 1 }]}>
+                                                <View style={[styles.inputContainer, { gap: 10 }]}>
+                                                    <RouteInput
+                                                        iataRef={iataRef}
+                                                        route={routes}
+                                                        setRoute={setRoutes}
+                                                        hasStop={hasStop}
+                                                        error={error}
+                                                    />
+                                                </View>
                                                 <View style={styles.row}>
-                                                    <View style={[styles.inputContainer, { flex: 1, gap: 10 }]}>
-                                                        <RouteInput
-                                                            iataRef={iataRef}
-                                                            route={routes}
-                                                            setRoute={setRoutes}
-                                                            hasStop={hasStop}
-                                                        />
-                                                    </View>
                                                     <DateTimeInput hasDate={false} time={stopStartTime} setTime={setStopStartTime} />
                                                     <DateTimeInput hasDate={false} time={stopEndTime} setTime={setStopEndTime} label="arrow-right" />
                                                 </View>
-                                            </>
-                                        }
-                                    </View>
+                                            </View>
+                                        </>
+                                    }
+                                </View>
 
-                                    <PeopleInput passengerLabel={t(FORM.FLIGHT_PASSENGER)} seatLabel={t(FORM.FLIGHT_SEAT)} passengers={passengers} setPassengers={setPassengers} />
+                                <PeopleInput passengerLabel={t(FORM.FLIGHT_PASSENGER)} seatLabel={t(FORM.FLIGHT_SEAT)} passengers={passengers} setPassengers={setPassengers} />
 
-                                    <View style={[styles.inputContainer]}>
-                                        <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                                    </View>
+                                <View>
+                                    <BookingRefInput label={t(FORM.FLIGHT_RESERVATION)} placeholder={t(FORM.FLIGHT_RESERVATION_PLACEHOLDER)} control={control} errors={errors} />
+                                </View>
+                                <View style={[styles.inputContainer]}>
+                                    <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                                 </View>
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
-                )}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="always"
-                nestedScrollEnabled={true}
-                scrollEnabled
-            />
+                    </View>
+                </TouchableWithoutFeedback>
+            </ScrollView>
 
             <View style={styles.buttonStyle}>
                 {isEdit ?
@@ -266,7 +324,8 @@ export default function AddFlight({ route }) {
                     </>
                     :
                     <>
-                        <IconButton icon={"plus"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPress={handleSubmit(onSubmit)} />
+                        <IconButton icon={"plus"} size={buttonSize} mode="contained" iconColor={colors.onPrimary} containerColor={colors.primary} onPressIn={validateAirports} onPress={handleSubmit(onSubmit)} />
+
                     </>
                 }
             </View>

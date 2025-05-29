@@ -20,6 +20,7 @@ import TransportNumberInput from "../components/Transport/TransportNumberInput";
 import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
+import { BookingRefInput } from "../components/BookingRefInput";
 
 
 export default function AddTransport({ route }) {
@@ -30,15 +31,16 @@ export default function AddTransport({ route }) {
     const { addItem, updateItem } = useData()
     const { t } = useTranslation();
 
-    const [line, setLine] = useState(null)
     const [departDate, setDepartDate] = useState(new Date());
     const [arriveDate, setArriveDate] = useState(new Date());
     const [transportType, setTransportType] = useState('train')
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
+            name: "",
             departure: "",
             arrival: "",
+            bookingReference: "",
             additionalInformation: "",
         },
         mode: "onBlur"
@@ -47,7 +49,10 @@ export default function AddTransport({ route }) {
     const { isEdit, item, destinationId } = route?.params
 
     const fillFieldsInEditMode = () => {
-        if (item.name) setLine(item.name);
+        if (item.name) {
+            control._reset({ name: item.name });
+        }
+
         if (item.transportType) setTransportType(item.transportType);
         if (item.departureTime) {
             const date = new Date(item.departureTime)
@@ -64,6 +69,9 @@ export default function AddTransport({ route }) {
                 additionalInformation: item.additionalInformation || ""
             });
         }
+        if (item.bookingReference) {
+            control._reset({ bookingReference: item.bookingReference });
+        }
     }
 
     const onSubmit = async (newData) => {
@@ -75,7 +83,6 @@ export default function AddTransport({ route }) {
             );
 
             const newItem = {
-                name: line,
                 transportType: transportType,
                 departureTime: mergeDateAndTime(departDate, departDate) || null,
                 arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
@@ -124,28 +131,24 @@ export default function AddTransport({ route }) {
 
         <Container style={{ paddingHorizontal: 20 }}>
             <TouchableWithoutFeedback onPress={handleCloseKeyboard} >
-                <FlatList
-                    data={[{ key: 'content' }]}
-                    renderItem={({ item }) => (
-                        <View style={{ flex: 1 }}>
-                            <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_TRANSPORT_TITLE) : t(PAGE_TITLES.TRANSPORT_TITLE)} />
-                            <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
-                            <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} line={line} setLine={setLine} />
-                            <TransportRouteInput t={t} control={control} errors={errors} />
-                            <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
-                                <View style={{ gap: 20 }}>
-                                    <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
-                                    <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
-                                </View>
-                            </View>
-                            <View style={[s.form.input_container, s.form.input_addInfos]}>
-                                <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
-                            </View>
+                <View style={{ flex: 1 }}>
+                    <TitlePage title={isEdit ? t(PAGE_TITLES.EDIT_TRANSPORT_TITLE) : t(PAGE_TITLES.TRANSPORT_TITLE)} />
+                    <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
+                    <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} control={control} errors={errors} />
+                    <TransportRouteInput t={t} control={control} errors={errors} />
+                    <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
+                        <View style={{ gap: 20 }}>
+                            <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
+                            <DateTimeInput label="clock-end" time={arriveDate} setTime={setArriveDate} date={arriveDate} setDate={setArriveDate} />
                         </View>
-                    )}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="always"
-                />
+                    </View>
+                    <View>
+                        <BookingRefInput label={t(FORM.TRANSPORT_BOOKING_REFERENCE)} placeholder={t(FORM.TRANSPORT_DEPARTURE_CITY_PLACEHOLDER)} control={control} errors={errors} />
+                    </View>
+                    <View style={[s.form.input_container, s.form.input_addInfos]}>
+                        <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
+                    </View>
+                </View>
             </TouchableWithoutFeedback>
             <View style={buttonStyle}>
                 {isEdit ?

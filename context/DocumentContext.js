@@ -19,20 +19,21 @@ export function DocumentProvider({ children }) {
     const { t } = useTranslation()
 
     const pickDocument = async (item) => {
-        const result = await DocumentPicker.getDocumentAsync({
+        const results = await DocumentPicker.getDocumentAsync({
             type: "*/*",
             copyToCacheDirectory: true,
-        })
+            multiple: true,
+        });
 
-        if (!result.canceled) {
-            const newFile = {
-                name: result.assets[0].name,
-                uri: result.assets[0].uri
-            }
+        if (!results.canceled) {
+            const newFiles = results.assets.map(asset => ({
+                name: asset.name,
+                uri: asset.uri,
+            }));
 
-            return { ...item, documents: [...item.documents, newFile] };
+            return { ...item, documents: [...item.documents, ...newFiles] };
         } else {
-            return console.log('Document picking was cancelled')
+            return console.log('Document picking was cancelled');
         }
     }
 

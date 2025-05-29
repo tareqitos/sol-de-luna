@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native"
 
 import Collapsible from "react-native-collapsible"
-import { useCallback, useEffect, useState, useTransition } from "react"
+import { useCallback, useEffect, useState } from "react"
 import CollapseButton from "../UI/CollapseButton"
 import { s } from "../../styles/card.style"
 
@@ -21,7 +21,8 @@ import CardRouteCity from "./CardRouteCity"
 import CardDuration from "../Cards/CardDuration"
 import Txt from "../Utils/Txt"
 import { calculateDuration } from "../../services/date-service"
-
+import { CardBookingRef } from "../Cards/CardBookingRef"
+import { SleepsLeft } from "../SleepsLeft"
 
 export default function FlightCard({ item, onPress, destination }) {
     const { t } = useTranslation();
@@ -58,103 +59,90 @@ export default function FlightCard({ item, onPress, destination }) {
 
             <View style={styles.timeContainer}>
                 <CardDate icon="airplane-takeoff" date={item.departureDate} />
-                {/* <CardRoute departure={item.departureAirport} arrival={item.arrivalAirport} /> */}
+                <SleepsLeft departureDate={item.departureDate} />
             </View>
 
-            {item.arrivalAirport.iata &&
+            {item.arrivalAirport.iata && (
                 <>
                     <View style={[styles.column, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
-
                         <View style={[styles.row, { alignItems: hasStop ? "flex-start" : "center" }]}>
-
-                            {/* ── left column ── */}
                             <View style={[styles.sideColumn, styles.leftAlign]}>
-                                <CardTime icon="airplane-takeoff" hasIcon={true} time={item.departureDate} />
+                                <CardTime icon="airplane-takeoff" hasIcon time={item.departureDate} />
                                 <Txt style={[typography.h5, styles.airportCode]}>{item.departureAirport.iata}</Txt>
-
                             </View>
 
-                            {/* ── middle column ── */}
                             <View style={styles.middleColumn}>
-
-                                {/* the line + duration */}
                                 <View style={styles.lineContainer}>
                                     <View style={[hasStop ? styles.line : styles.lineFull, { backgroundColor: colors.primary }]} />
-
-
-                                    {hasStop ? <View style={styles.sideColumn}>
-                                        <CardTime icon="airplane-takeoff" hasIcon={true} time={item.stop.stopEndTime} />
-                                        <Txt style={[typography.h5, styles.airportCode]}>{item.stop.stopAirport.iata}</Txt>
-                                    </View>
-                                        :
-                                        item.arrivalDate && <CardDuration duration={duration(item.departureDate, item.arrivalDate)} />
-                                    }
-
-                                    {item.arrivalDate &&
-                                        <>
-                                            <View style={[hasStop ? styles.line : styles.lineFull, { backgroundColor: colors.primary }]} />
-                                        </>
-                                    }
+                                    {hasStop && (
+                                        <View style={styles.sideColumn}>
+                                            {item.arrivalDate && <CardDuration duration={duration(item.stop.stopStartTime, item.stop.stopEndTime)} />}
+                                            <Txt style={[typography.h5, styles.airportCode]}>{item.stop.stopAirport.iata}</Txt>
+                                        </View>
+                                    )}
+                                    {item.arrivalDate && <View style={[hasStop ? styles.line : styles.lineFull, { backgroundColor: colors.primary }]} />}
                                     <View style={{ position: "absolute", right: -6 }}>
                                         <Icon source="arrow-right-thin" color={colors.primary} size={24} />
                                     </View>
                                 </View>
-
                             </View>
 
-                            {/* ── right column ── */}
                             <View style={[styles.sideColumn, styles.rightAlign, { top: item.arrivalDate ? 0 : 10 }]}>
                                 <View style={{ flexDirection: "row", gap: 5 }}>
-                                    {item.arrivalDate && <CardTime icon="airplane-landing" hasIcon={true} time={item.arrivalDate} />}
-                                    {item.plusOneDay && <Txt style={[typography.bodyInter, { color: colors.primary }]} >+1</Txt>}
+                                    {item.arrivalDate && <CardTime icon="airplane-landing" hasIcon time={item.arrivalDate} />}
+                                    {item.plusOneDay && <Txt style={[typography.bodyInter, { color: colors.primary }]}>+1</Txt>}
+
                                 </View>
                                 <Txt style={[typography.h5, styles.airportCode]}>{item.arrivalAirport.iata}</Txt>
                             </View>
                         </View>
-                        {hasStop && <View style={[styles.row, { justifyContent: "center", gap: 5, paddingHorizontal: 10 }]}>
 
-                            {item.arrivalDate && <CardDuration duration={duration(item.departureDate, item.stop.stopStartTime)} />}
-                            <CardTime icon="airplane-landing" hasIcon={true} time={item.stop.stopStartTime} />
-                            {item.arrivalDate && <CardDuration duration={duration(item.stop.stopEndTime, item.arrivalDate)} />}
-                        </View>}
+                        {hasStop && (
+                            <View style={[styles.row, { justifyContent: "center", gap: 5, paddingHorizontal: 10 }]}>
+                                <Txt>{t(FORM.STOP_OVER)}</Txt>
+                                <CardTime icon="airplane-landing" hasIcon time={item.stop.stopStartTime} />
+                                <CardTime icon="airplane-takeoff" hasIcon time={item.stop.stopEndTime} />
+                            </View>
+                        )}
                     </View>
 
                     <View style={[styles.row, { justifyContent: "flex-start", flexWrap: "wrap" }]}>
                         <CardRouteCity departure={item.departureAirport} />
-                        {hasStop &&
+                        {hasStop && (
                             <>
                                 <Icon source="arrow-right-thin" color={colors.primary} size={24} />
                                 <CardRouteCity stop={item.stop.stopAirport} />
                             </>
-                        }
+                        )}
                         <Icon source="arrow-right-thin" color={colors.primary} size={24} />
                         <CardRouteCity arrival={item.arrivalAirport} />
                     </View>
                 </>
-            }
+            )}
 
-            <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true} >
-
+            <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed>
                 <Divider theme={MD3DarkTheme} />
-                {item.passengers.length !== 0 &&
+                {item.passengers.length > 0 && (
                     <View style={s.card.add_container}>
                         <CardSection style={styles.cardSection} text={t(CARDS.FLIGHT_CARD_PASSENGER)}>
                             <CardPassengers destination={destination} item={item} passengers={item.passengers} />
                         </CardSection>
-                    </View>}
+                    </View>
+                )}
+
+                {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
+                    <CardBookingRef bookingRef={item.bookingReference || ""} />
+                </CardSection>}
 
                 <View style={s.card.add_container}>
-
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
                         <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder={t(FORM.ADDITIONNAL_INFO_PLACEHOLDER)} />
                     </CardSection>
-
                     <CardFilesManager item={item} destinationID={destination.id} />
-
                 </View>
                 <CardAddFiles item={item} destinationID={destination.id} />
-            </Collapsible >
-        </View >
+            </Collapsible>
+        </View>
     )
 }
 
@@ -181,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'space-evenly',
         justifyContent: 'center',
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 10,
         borderWidth: 1
@@ -211,10 +199,9 @@ const styles = StyleSheet.create({
     airportCode: {
         fontSize: 18,
         fontWeight: '600',
-
     },
     middleColumn: {
-        flex: 2.2,
+        flex: 1.5,
         alignItems: 'center',
     },
     lineContainer: {
