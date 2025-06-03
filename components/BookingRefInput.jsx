@@ -1,9 +1,7 @@
-import { HelperText, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { s } from "../styles/styles.style";
 import { useController } from "react-hook-form";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import { MESSAGES } from "../locales/languagesConst";
 import { View } from "react-native";
 
 
@@ -31,6 +29,7 @@ export const BookingRefInput = ({ label, placeholder, control }) => {
                 placeholder={placeholder}
                 placeholderTextColor={typography.caption.color}
                 autoCorrect={false}
+                maxLength={40}
                 right={
                     <TextInput.Icon
                         icon="checkbook"
