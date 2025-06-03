@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { CARDS, FORM } from "../../locales/languagesConst";
 import { CardBookingRef } from "../Cards/CardBookingRef";
 import { SleepsLeft } from "../SleepsLeft";
+import { CardElementChip } from "../Cards/CardElementChip";
+import { copyToClipboard } from "../../services/services";
 
 export default function TransportCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -59,14 +61,12 @@ export default function TransportCard({ item, onPress, destination }) {
                 </View>
             </View>
 
-
-
             <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true}>
                 <View style={s.card.add_container}>
 
                     {/* BOOKING REFERENCE */}
                     {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
-                        <CardBookingRef bookingRef={item.bookingReference || ""} />
+                        <CardElementChip clickable icon="checkbook" onPress={() => copyToClipboard(item.bookingReference)} element={item.bookingReference} />
                     </CardSection>}
 
                     {/* ADDITIONAL INFORMATION */}

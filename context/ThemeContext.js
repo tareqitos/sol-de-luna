@@ -38,7 +38,7 @@ export function ThemeProvider({ children }) {
 
     const saveTheme = async () => {
         try {
-            await AsyncStorage.setItem(THEME_STORAGE_KEY, theme || systemColorScheme)
+            await AsyncStorage.setItem(THEME_STORAGE_KEY, theme || systemTheme)
             console.log("theme saved: ", theme)
         } catch (error) {
             console.log("Failed to save theme: ", error)
@@ -47,17 +47,18 @@ export function ThemeProvider({ children }) {
 
     useEffect(() => {
         const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-            if (theme === 'system') {
-                console.log("System theme changed to: ", colorScheme)
-                setTheme('system');
-            }
+            console.log("System theme changed to: ", colorScheme);
+            setTheme(colorScheme); // Update theme instantly based on system theme change
         });
 
         return () => {
             subscription.remove();
         };
+    }, [systemTheme]);
 
-    }, [theme])
+    useEffect(() => {
+        saveTheme();
+    }, [theme]);
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

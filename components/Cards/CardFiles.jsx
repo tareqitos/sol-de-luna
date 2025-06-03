@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Appearance, Image, StyleSheet, View } from "react-native";
 import Txt from "../Utils/Txt";
 import { Chip, Icon, useTheme } from "react-native-paper";
 import { themeHook } from "../../hook/theme";
@@ -6,6 +6,8 @@ import { themeHook } from "../../hook/theme";
 export default function CardFiles({ file }) {
     const { colors } = useTheme()
     const { theme } = themeHook();
+    const systemTheme = Appearance.getColorScheme();
+
 
     function File() {
         const extension = file.uri.split('.').pop().toLowerCase();
@@ -43,7 +45,7 @@ export default function CardFiles({ file }) {
             <>
                 <Chip
                     icon={chipIcon}
-                    mode={theme === "dark" ? "outlined" : "flat"}
+                    mode={theme === "dark" ? "outlined" : systemTheme === "dark" ? "outlined" : "flat"}
                     textStyle={textStyle}
                     style={[styles.file, { borderColor: colors.primary }]}
                 >

@@ -49,10 +49,6 @@ export default function AddTransport({ route }) {
     const { isEdit, item, destinationId } = route?.params
 
     const fillFieldsInEditMode = () => {
-        if (item.name) {
-            control._reset({ name: item.name });
-        }
-
         if (item.transportType) setTransportType(item.transportType);
         if (item.departureTime) {
             const date = new Date(item.departureTime)
@@ -62,15 +58,14 @@ export default function AddTransport({ route }) {
             const date = new Date(item.arrivalTime)
             setArriveDate(getTimeZoneOffset(date))
         };
-        if (item.departure || item.arrival || item.additionalInformation) {
+        if (item.name || item.departure || item.arrival || item.additionalInformation) {
             control._reset({
+                name: item.name || "",
                 departure: item.departure || "",
                 arrival: item.arrival || "",
-                additionalInformation: item.additionalInformation || ""
+                additionalInformation: item.additionalInformation || "",
+                bookingReference: item.bookingReference || ""
             });
-        }
-        if (item.bookingReference) {
-            control._reset({ bookingReference: item.bookingReference });
         }
     }
 
@@ -143,7 +138,7 @@ export default function AddTransport({ route }) {
                         </View>
                     </View>
                     <View>
-                        <BookingRefInput label={t(FORM.TRANSPORT_BOOKING_REFERENCE)} placeholder={t(FORM.TRANSPORT_DEPARTURE_CITY_PLACEHOLDER)} control={control} errors={errors} />
+                        <BookingRefInput label={t(FORM.TRANSPORT_BOOKING_REFERENCE)} placeholder={t(FORM.TRANSPORT_BOOKING_REFERENCE_PLACEHOLDER)} control={control} errors={errors} />
                     </View>
                     <View style={[s.form.input_container, s.form.input_addInfos]}>
                         <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />

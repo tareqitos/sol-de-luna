@@ -23,6 +23,8 @@ import Txt from "../Utils/Txt"
 import { calculateDuration } from "../../services/date-service"
 import { CardBookingRef } from "../Cards/CardBookingRef"
 import { SleepsLeft } from "../SleepsLeft"
+import { CardElementChip } from "../Cards/CardElementChip"
+import { copyToClipboard } from "../../services/services"
 
 export default function FlightCard({ item, onPress, destination }) {
     const { t } = useTranslation();
@@ -137,7 +139,7 @@ export default function FlightCard({ item, onPress, destination }) {
                 )}
 
                 {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
-                    <CardBookingRef bookingRef={item.bookingReference || ""} />
+                    <CardElementChip clickable icon="checkbook" onPress={() => copyToClipboard(item.bookingReference)} element={item.bookingReference} />
                 </CardSection>}
 
                 <View style={s.card.add_container}>
