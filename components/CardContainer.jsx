@@ -188,12 +188,12 @@ const CardContainer = memo(({ category, destination, t_categories, style = {} })
                             filterByDate={handleFilterByDate}
                             filterOutCompletedCard={handleFilterCompleted}
                         />
-                        <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} />
+                        {/* <CollapseButton isCollapsed={isCollapsed} onPress={handleCollapsible} /> */}
                     </View>
                 </View>
-                <Collapsible style={s.card_container.collapsible} collapsed={isCollapsed} duration={300} renderChildrenCollapsed={true} >
+                <View style={s.card_container.collapsible} >
                     {CategoryContent}
-                </Collapsible>
+                </View>
                 <DialogPopUp
                     visible={dialogVisible}
                     onDismiss={closeDialog}
