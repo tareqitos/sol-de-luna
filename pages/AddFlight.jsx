@@ -245,16 +245,6 @@ export default function AddFlight({ route }) {
                                         error={error}
                                     />
                                 </View>
-                                <View style={[styles.inputContainer, styles.stopContainer]}>
-                                    <AddOneDayInput date={hasStop ? stopStartTime : arrivalDate} setDate={hasStop ? setStopStartTime : setArrivalDate} plusOneDay={plusOneDay} setPlusOneDay={setPlusOneDay} />
-                                    <Checkbox.Item
-                                        label="Add a stop"
-                                        position="leading"
-                                        status={hasStop ? 'checked' : 'unchecked'}
-                                        onPress={() => setHasStop(!hasStop)}
-                                        style={styles.checkboxItem}
-                                    />
-                                </View>
 
                                 <View style={{ marginVertical: 10 }}>
                                     <View style={[styles.dateTimeContainer, styles.arrivalContainer]}>
@@ -276,6 +266,7 @@ export default function AddFlight({ route }) {
                                             status={hasStop ? 'checked' : 'unchecked'}
                                             onPress={() => setHasStop(!hasStop)}
                                             style={styles.checkboxItem}
+                                            mode="android"
                                         />
                                     </View>
 
