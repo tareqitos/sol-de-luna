@@ -119,7 +119,6 @@ export const SettingsToggleCardCollapse = () => {
 // APPEARANCE
 export const SettingsTheme = () => {
     const { theme, setTheme } = themeHook();
-    const deviceTheme = useColorScheme();
 
     // Theme options
     const themeOptions = [
@@ -138,8 +137,8 @@ export const SettingsTheme = () => {
                         title={option.label}
                         value={option.id}
                         icon={option.icon}
-                        type={option.id !== "system" && "radio"}
-                        onPress={() => setTheme(option.id === "system" ? deviceTheme : option.id)}
+                        type="radio"
+                        onPress={() => setTheme(option.id)}
                     />
                 ))}
             </RadioButton.Group>
