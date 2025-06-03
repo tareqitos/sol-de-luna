@@ -83,6 +83,7 @@ export default {
     hotelCardAddress: "Adresse",
     cardAdditionalInfo: "Informations supplémentaires",
     stopover: "Escale",
+    stopDuration: "Durée de l'escale",
     bookingReference: "Numéro de référence",
     only: "Plus que",
     sleepLeft: "dodo",
