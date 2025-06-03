@@ -4,6 +4,7 @@ import { Animated, Platform, ScrollView, StyleSheet, TouchableOpacity, View } fr
 import CardSection from "./CardSection";
 import CardFiles from "./CardFiles";
 import DialogPopUp from "../UI/Dialog";
+import { v4 as uuidv4 } from 'uuid';
 import Txt from "../Utils/Txt";
 import { MESSAGES } from "../../locales/languagesConst";
 import { useTranslation } from "react-i18next";
@@ -41,7 +42,7 @@ export default function CardFilesManager({ item, destinationID }) {
                             const scaleValue = getScaleValue(file.uri)
                             return (
                                 <Animated.View
-                                    key={file.uri}
+                                    key={uuidv4()}
                                     style={{ transform: [{ scale: scaleValue }], overflow: "visible" }}
                                 >
                                     <TouchableOpacity
