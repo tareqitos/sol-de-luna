@@ -51,7 +51,9 @@ const FORM = {
     TRANSPORT_BOOKING_REFERENCE_PLACEHOLDER: 'transportBookingReferencePlaceholder',
 
     ADDITIONNAL_INFO: 'additionnalInfo',
-    ADDITIONNAL_INFO_PLACEHOLDER: 'additionnalInfoPlaceholder'
+    ADDITIONNAL_INFO_PLACEHOLDER: 'additionnalInfoPlaceholder',
+    CONTACT_NUMBER: 'contactNumber',
+    CONTACT_NUMBER_PLACEHOLDER: 'contactNumberPlaceholder',
 }
 
 const CARDS = {
