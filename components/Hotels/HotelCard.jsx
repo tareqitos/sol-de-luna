@@ -19,6 +19,9 @@ import { useTranslation } from "react-i18next";
 import { CARDS, FORM } from "../../locales/languagesConst";
 import { CardBookingRef } from "../Cards/CardBookingRef";
 import { SleepsLeft } from "../SleepsLeft";
+import { CardContactNumber } from "../Cards/CardContactNumber";
+import { CardElementChip } from "../Cards/CardElementChip";
+import { openMapApp, openPhoneDialer } from "../../services/services";
 
 export default function HotelCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -78,13 +81,19 @@ export default function HotelCard({ item, onPress, destination }) {
                     {/* ADDRESS */}
                     {item.address &&
                         <CardSection style={styles.cardSection} text={t(CARDS.HOTEL_CARD_ADDRESS)}>
-                            <CardAddress item={item} />
+                            {/* <CardAddress item={item} /> */}
+                            <CardElementChip type="button" icon="map-search-outline" onPress={() => openMapApp(item.latitude, item.longitude, item.address)} element={item.address} />
                         </CardSection>
                     }
 
                     {/* BOOKING REFERENCE */}
                     {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
                         <CardBookingRef bookingRef={item.bookingReference || ""} />
+                    </CardSection>}
+
+                    {/* CONTACT NUMBER */}
+                    {item.contactNumber && <CardSection style={styles.cardSection} text={t(FORM.CONTACT_NUMBER)}>
+                        <CardElementChip type="button" icon="phone" onPress={() => openPhoneDialer(item.contactNumber)} element={item.contactNumber} />
                     </CardSection>}
 
                     {/* ADDITIONAL INFORMATION */}
@@ -106,11 +115,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 10
+        gap: 10,
+
     },
 
     cardSection: {
-        marginVertical: 10,
+        marginVertical: 15,
         gap: 10
     }
 })

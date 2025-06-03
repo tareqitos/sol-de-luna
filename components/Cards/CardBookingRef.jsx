@@ -1,6 +1,5 @@
 import { Chip, useTheme } from "react-native-paper"
 import Txt from "../Utils/Txt"
-import * as Clipboard from 'expo-clipboard';
 import { copyToClipboard } from "../../services/services";
 
 export const CardBookingRef = ({ bookingRef }) => {
