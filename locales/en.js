@@ -79,6 +79,7 @@ export default {
     hotelCardAddress: "Address",
     cardAdditionalInfo: "Additional information",
     stopoverCard: "Stopover",
+    stopDuration: "Stop duration",
     bookingReference: "Reference number",
     only: "Only",
     sleepLeft: "sleep left",

@@ -6,15 +6,15 @@ export default function CardRouteCity({ departure, stop, arrival }) {
     const { colors, typography } = useTheme()
 
     const DepartureCity = () => {
-        return <Txt style={[typography.h5, { lineHeight: 15 }]}>{departure.city}</Txt>
+        return <Txt style={[typography.h5, styles.text]}>{departure.city}</Txt>
     }
 
     const StopCity = () => {
-        return <Txt style={[typography.h5, { lineHeight: 15 }]}>{stop.city}</Txt>
+        return <Txt style={[typography.h5, styles.text]}>{stop.city}</Txt>
     }
 
     const ArrivalCity = () => {
-        return <Txt style={[typography.h5, { lineHeight: 15 }]}>{arrival.city}</Txt>
+        return <Txt style={[typography.h5, styles.text]}>{arrival.city}</Txt>
     }
     return (
         <View>
@@ -26,9 +26,7 @@ export default function CardRouteCity({ departure, stop, arrival }) {
 }
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 5,
+    text: {
+        lineHeight: 20,
     }
 })

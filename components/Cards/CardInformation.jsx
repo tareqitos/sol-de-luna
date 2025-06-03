@@ -10,7 +10,7 @@ export default function CardInformation({ item, placeholder, destinationID }) {
     const [infoText, setInfoText] = useState();
     const [prevText, setPrevText] = useState()
     const { updateItem, } = useData();
-    const { colors, elevation, typography } = useTheme();
+    const { colors, typography } = useTheme();
 
     const handleTextUpdate = (text) => {
         const updatedItem = { ...item, additionalInformation: text };
@@ -33,7 +33,7 @@ export default function CardInformation({ item, placeholder, destinationID }) {
                         handleTextUpdate(infoText)
                     }
                 }}
-                style={[s.card.add_infos, elevation.level1, typography.body, { color: colors.onSurface, backgroundColor: colors.surface, height: height }]}>
+                style={[s.card.add_infos, typography.body, { color: colors.onSurface, backgroundColor: colors.surface, height: height }]}>
 
                 {item.additionalInformation}
 

@@ -76,7 +76,7 @@ export default function FlightCard({ item, onPress, destination }) {
                                     <View style={[hasStop ? styles.line : styles.lineFull, { backgroundColor: colors.primary }]} />
                                     {hasStop && (
                                         <View style={styles.sideColumn}>
-                                            {item.arrivalDate && <CardDuration duration={duration(item.stop.stopStartTime, item.stop.stopEndTime)} />}
+                                            <CardTime icon="airplane-takeoff" hasIcon time={item.stop.stopEndTime} />
                                             <Txt style={[typography.h5, styles.airportCode]}>{item.stop.stopAirport.iata}</Txt>
                                         </View>
                                     )}
@@ -98,10 +98,16 @@ export default function FlightCard({ item, onPress, destination }) {
                         </View>
 
                         {hasStop && (
-                            <View style={[styles.row, { justifyContent: "center", gap: 5, paddingHorizontal: 10 }]}>
-                                <Txt>{t(FORM.STOP_OVER)}</Txt>
-                                <CardTime icon="airplane-landing" hasIcon time={item.stop.stopStartTime} />
-                                <CardTime icon="airplane-takeoff" hasIcon time={item.stop.stopEndTime} />
+                            <View style={[styles.row, { justifyContent: "center", gap: 20, paddingHorizontal: 10 }]}>
+                                <View>
+                                    <Txt>{t(FORM.STOP_OVER)}</Txt>
+                                    <CardTime icon="airplane-landing" hasIcon time={item.stop.stopStartTime} />
+                                </View>
+                                <View>
+                                    <Txt>{t(CARDS.STOP_DURATION)}</Txt>
+                                    {item.arrivalDate && <CardDuration duration={duration(item.stop.stopStartTime, item.stop.stopEndTime)} />}
+                                </View>
+
                             </View>
                         )}
                     </View>
