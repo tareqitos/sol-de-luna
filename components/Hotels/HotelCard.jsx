@@ -21,7 +21,7 @@ import { CardBookingRef } from "../Cards/CardBookingRef";
 import { SleepsLeft } from "../SleepsLeft";
 import { CardContactNumber } from "../Cards/CardContactNumber";
 import { CardElementChip } from "../Cards/CardElementChip";
-import { openMapApp, openPhoneDialer } from "../../services/services";
+import { copyToClipboard, openMapApp, openPhoneDialer } from "../../services/services";
 
 export default function HotelCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -82,18 +82,20 @@ export default function HotelCard({ item, onPress, destination }) {
                     {item.address &&
                         <CardSection style={styles.cardSection} text={t(CARDS.HOTEL_CARD_ADDRESS)}>
                             {/* <CardAddress item={item} /> */}
-                            <CardElementChip type="button" icon="map-search-outline" onPress={() => openMapApp(item.latitude, item.longitude, item.address)} element={item.address} />
+                            <CardElementChip clickable type="button" icon="map-search-outline" onPress={() => openMapApp(item.latitude, item.longitude, item.address)} element={item.address} />
                         </CardSection>
                     }
 
                     {/* BOOKING REFERENCE */}
                     {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>
-                        <CardBookingRef bookingRef={item.bookingReference || ""} />
+                        {/* <CardBookingRef bookingRef={item.bookingReference || ""} /> */}
+                        <CardElementChip clickable icon="checkbook" onPress={() => copyToClipboard(item.bookingReference)} element={item.bookingReference} />
+
                     </CardSection>}
 
                     {/* CONTACT NUMBER */}
                     {item.contactNumber && <CardSection style={styles.cardSection} text={t(FORM.CONTACT_NUMBER)}>
-                        <CardElementChip type="button" icon="phone" onPress={() => openPhoneDialer(item.contactNumber)} element={item.contactNumber} />
+                        <CardElementChip clickable icon="phone" onPress={() => openPhoneDialer(item.contactNumber)} element={item.contactNumber} />
                     </CardSection>}
 
                     {/* ADDITIONAL INFORMATION */}
