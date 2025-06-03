@@ -1,4 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
+import * as Linking from "expo-linking";
+import { showLocation } from 'react-native-map-link';
 
 const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🦆", "🦉", "🦇", "🐺", "🐗", "🐴", "🦄", "🐝", "🐛", "🦋", "🐌", "🐞"];
 const emojiDestination = ["🌴", "☀️", "🌊", "🏖️", "⛱️", "🍹", "🍉", "🍦", "😎", "🧳", "✈️", "🛳️", "🏔️", "🏕️", "🏞️", "🌋", "🏜️", "🗿", "🗼", "🗽", "🌉", "🎠", "🎡", "🎢", "🎪"];
@@ -16,3 +18,16 @@ export const generateDestinationEmoji = () => {
 export const copyToClipboard = async (ref) => {
     await Clipboard.setStringAsync(ref);
 };
+
+export const openPhoneDialer = async (phoneNumber) => {
+    Linking.openURL(`tel:${phoneNumber}`);
+}
+
+export const openMapApp = (latitude, longitude, address) => {
+    showLocation({
+        latitude: latitude,
+        longitude: longitude,
+        title: address,
+        address: !latitude ? address : null
+    })
+}

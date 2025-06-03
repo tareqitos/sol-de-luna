@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
 import { BookingRefInput } from "../components/BookingRefInput";
+import { ContactNumberInput } from "../components/Hotels/ContactNumberInput";
 
 
 export default function AddHotels({ route }) {
@@ -37,12 +38,14 @@ export default function AddHotels({ route }) {
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date());
     const [stars, setStars] = useState(-1);
+    const [contactNumber, setContactNumber] = useState(null);
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: "",
             bookingReference: "",
             additionalInformation: "",
+            contactNumber: "",
         },
         mode: "onBlur"
     })
@@ -50,8 +53,8 @@ export default function AddHotels({ route }) {
     const { isEdit, item, destinationId } = route?.params
 
     const fillFieldsInEditMode = () => {
-        if (item.name) control._reset({ name: item.name, additionalInformation: item.additionalInformation })
-        if (item.bookingReference) control._reset({ bookingReference: item.bookingReference });
+        if (item.name) control._reset({ name: item.name, additionalInformation: item.additionalInformation, bookingReference: item.bookingReference, contactNumber: item.contactNumber });
+
         if (item.address) setQuery(item.address);
         if (item.latitude) setCoords({ latitude: item.latitude, longitude: item.longitude });
         if (item.checkIn) {
@@ -81,6 +84,7 @@ export default function AddHotels({ route }) {
                 checkIn: mergeDateAndTime(checkIn, checkIn) || new Date(),
                 checkOut: mergeDateAndTime(checkOut, checkOut) || new Date(),
                 stars: stars + 1,
+                contactNumber: contactNumber || null,
                 notificationId: notificationId || null,
 
                 ...newData,
@@ -139,6 +143,10 @@ export default function AddHotels({ route }) {
                         <View>
                             <BookingRefInput label={t(FORM.HOTEL_BOOKING_REFERENCE)} placeholder={t(FORM.HOTEL_BOOKING_REFERENCE_PLACEHOLDER)} control={control} errors={errors} />
                         </View>
+                        <View style={[s.form.input_container, s.form.input_contact]}>
+                            <ContactNumberInput label={t(FORM.CONTACT_NUMBER)} placeholder={t(FORM.CONTACT_NUMBER_PLACEHOLDER)} control={control} />
+                        </View>
+
                         <View style={[s.form.input_container, s.form.input_addInfos]}>
                             <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.HOTEL_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />
                         </View>

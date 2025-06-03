@@ -74,6 +74,9 @@ export default {
     additionnalInfo: "Additional information",
     additionnalInfoPlaceholder: "e.g. Flight number, boarding gate, etc.",
 
+    contactNumber: "Contact number",
+    contactNumberPlaceholder: "e.g. +32 123 456 789",
+
     // CARDS
     flightCardPassenger: "Passengers",
     hotelCardAddress: "Address",
