@@ -18,7 +18,7 @@ export default {
     flights: "Flights",
     hotels: "Hotels",
     transport: "Transport",
-    Home: "Home",
+    home: "Home",
 
     // PAGES TITLES
     destinationTitle: "Destination",
