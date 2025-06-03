@@ -96,22 +96,25 @@ export default function DateTimeInput({ label, time, setTime, date, setDate, has
                 </>
             ) : (
                 <View style={{ flexDirection: "row" }}>
-                    <DateTimePicker
-                        mode="date"
-                        value={date || new Date()}
-                        onChange={handleDateChange}
-                        themeVariant={theme}
-                        locale={selected.tag}
-                        minimumDate={today}
-                    />
-
-                    <DateTimePicker
-                        mode="time"
-                        value={time || new Date()}
-                        onChange={handleTimeChange}
-                        themeVariant={theme}
-                        minimumDate={today}
-                    />
+                    {hasDate && (
+                        <DateTimePicker
+                            mode="date"
+                            value={date || new Date()}
+                            onChange={handleDateChange}
+                            themeVariant={theme}
+                            locale={selected.tag}
+                            minimumDate={today}
+                        />
+                    )}
+                    {hasTime && (
+                        <DateTimePicker
+                            mode="time"
+                            value={time || new Date()}
+                            onChange={handleTimeChange}
+                            themeVariant={theme}
+                            minimumDate={today}
+                        />
+                    )}
                 </View>
             )}
         </View>

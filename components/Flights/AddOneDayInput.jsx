@@ -30,8 +30,9 @@ export const AddOneDayInput = ({ date, setDate, plusOneDay, setPlusOneDay }) => 
                 color={colors.primary}
                 status={plusOneDay ? 'checked' : 'unchecked'}
                 rippleColor='transparent'
-
                 style={{ paddingHorizontal: 0, margin: 0 }}
+                mode="android"
+
             />
         </View>
     )
