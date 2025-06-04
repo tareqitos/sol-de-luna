@@ -22,6 +22,9 @@ import SnackbarMessage from './components/UI/Snackbar';
 import { SettingsProvider } from './context/SettingsContext';
 import { LocalizationProvider } from './context/LocalizationContext';
 import { initializeNotifications } from './services/notifications';
+import { UpdateModal } from './components/UpdateModal';
+import { checkAppVersion, updates } from './services/services';
+import * as Application from 'expo-application';
 
 const Stack = createNativeStackNavigator();
 initializeNotifications();
@@ -32,9 +35,12 @@ function AppContent() {
   const currentTheme = theme === 'system' ? systemTheme : theme;
   let paperTheme = currentTheme === 'dark' ? darkTheme : lightTheme;
 
+  console.log(Application.nativeApplicationVersion);
+
   return (
     <View style={[{ flex: 1 }, { backgroundColor: currentTheme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
+        {checkAppVersion() && <UpdateModal />}
         <LocalizationProvider>
           <NavigationContainer>
             <SettingsProvider>

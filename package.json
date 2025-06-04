@@ -18,6 +18,7 @@
     "@react-navigation/native-stack": "^7.3.3",
     "axios": "^1.8.4",
     "expo": "^53.0.9",
+    "expo-application": "^6.1.4",
     "expo-build-properties": "~0.14.6",
     "expo-clipboard": "~7.1.4",
     "expo-dev-client": "~5.1.8",
