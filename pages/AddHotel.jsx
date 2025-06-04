@@ -133,7 +133,16 @@ export default function AddHotels({ route }) {
                             <StarInput stars={stars} setStars={setStars} />
                         </View>
                         <View style={{ marginVertical: 10 }}>
-                            <HotelSearchMap editMode={isEdit} query={query} setQuery={setQuery} setCoords={setCoords} closeKeyboard={handleCloseKeyboard} t={t} />
+                            <HotelSearchMap
+                                editMode={isEdit}
+                                query={query}
+                                setQuery={setQuery}
+                                setCoords={setCoords}
+                                closeKeyboard={handleCloseKeyboard}
+                                label={t(FORM.HOTEL_ADDRESS)}
+                                placeholder={t(FORM.HOTEL_ADDRESS_PLACEHOLDER)}
+                                t={t}
+                            />
 
                         </View>
                         <View style={{ gap: 20 }}>

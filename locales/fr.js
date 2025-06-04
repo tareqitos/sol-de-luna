@@ -65,13 +65,14 @@ export default {
     transportTypeCar: "Voiture",
     transportTypeBoat: "Ferry",
     transportDepartureCity: "De",
-    transportDepartureCityPlaceholder: "Entrez le lieu de départ",
+    transportDepartureCityPlaceholder: "Lieu de départ",
     transportArrivalCity: "À",
-    transportArrivalCityPlaceholder: "Entrez le lieu d'arrivée",
+    transportArrivalCityPlaceholder: "Lieu d'arrivée",
     transportAdditionnalInfoPlaceholder: "ex: Numéro de train, porte d'embarquement, etc.",
     transportBookingReference: "Référence de réservation",
     transportBookingReferencePlaceholder: "Votre numéro de réservation",
-
+    transportDepartureLocation: "Lieu de départ",
+    transportDepartureLocationPlaceholder: "Entrez le lieu de départ",
 
     additionnalInfo: "Informations supplémentaires",
     additionnalInfoPlaceholder: "ex: Numéro de vol, porte d'embarquement, etc.",
@@ -91,6 +92,7 @@ export default {
     only: "Plus que",
     sleepLeft: "dodo",
     sleepsLeft: "dodos",
+    departureLocationCard: "Lieu de départ",
 
     // MESSAGE
     emptyCategoryMessage: "C'est vide ici, ajoutez vos prochains ",

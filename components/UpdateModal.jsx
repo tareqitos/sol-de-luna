@@ -24,7 +24,7 @@ export const UpdateModal = () => {
                 <ScrollView style={{}}>
 
                     <List.Section>
-                        <List.Subheader style={[typography.h2, { color: colors.onSurface }]} >
+                        <List.Subheader style={[typography.h2, { lineHeight: 24, color: colors.onSurface }]} >
                             🌟 Updates
                         </List.Subheader>
 

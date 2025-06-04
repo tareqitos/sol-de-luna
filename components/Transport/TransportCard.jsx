@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Icon, useTheme } from "react-native-paper";
+import { Divider, Icon, MD3DarkTheme, useTheme } from "react-native-paper";
 import CollapseButton from "../UI/CollapseButton";
 import CardTitle from "../Cards/CardTitle";
 import { s } from "../../styles/card.style";
@@ -17,7 +17,7 @@ import { CARDS, FORM } from "../../locales/languagesConst";
 import { CardBookingRef } from "../Cards/CardBookingRef";
 import { SleepsLeft } from "../SleepsLeft";
 import { CardElementChip } from "../Cards/CardElementChip";
-import { copyToClipboard } from "../../services/services";
+import { copyToClipboard, openMapApp } from "../../services/services";
 
 export default function TransportCard({ item, onPress, destination }) {
     const { cardsOpen } = useSettings()
@@ -62,7 +62,15 @@ export default function TransportCard({ item, onPress, destination }) {
             </View>
 
             <Collapsible collapsed={isCollapsed} duration={250} renderChildrenCollapsed={true}>
+                <Divider theme={MD3DarkTheme} />
                 <View style={s.card.add_container}>
+
+                    {item.address &&
+                        <CardSection style={styles.cardSection} text={t(CARDS.DEPARTURE_LOCATION_CARD)}>
+                            {/* <CardAddress item={item} /> */}
+                            <CardElementChip clickable type="button" icon="map-search-outline" onPress={() => openMapApp(item.latitude, item.longitude, item.address)} element={item.address} />
+                        </CardSection>
+                    }
 
                     {/* BOOKING REFERENCE */}
                     {item.bookingReference && <CardSection style={styles.cardSection} text={t(CARDS.BOOKING_REFERENCE)}>

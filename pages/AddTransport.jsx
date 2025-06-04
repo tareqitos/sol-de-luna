@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
 import { BookingRefInput } from "../components/BookingRefInput";
+import HotelSearchMap from "../components/Hotels/HotelSearchMap";
 
 
 export default function AddTransport({ route }) {
@@ -30,6 +31,9 @@ export default function AddTransport({ route }) {
     const { destination } = route.params;
     const { addItem, updateItem } = useData()
     const { t } = useTranslation();
+
+    const [query, setQuery] = useState("");
+    const [coords, setCoords] = useState()
 
     const [departDate, setDepartDate] = useState(new Date());
     const [arriveDate, setArriveDate] = useState(new Date());
@@ -67,6 +71,9 @@ export default function AddTransport({ route }) {
                 bookingReference: item.bookingReference || ""
             });
         }
+
+        if (item.address) setQuery(item.address);
+        if (item.latitude) setCoords({ latitude: item.latitude, longitude: item.longitude });
     }
 
     const onSubmit = async (newData) => {
@@ -78,6 +85,10 @@ export default function AddTransport({ route }) {
             );
 
             const newItem = {
+                address: query || null,
+                latitude: coords?.latitude || null,
+                longitude: coords?.longitude || null,
+
                 transportType: transportType,
                 departureTime: mergeDateAndTime(departDate, departDate) || null,
                 arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
@@ -131,6 +142,20 @@ export default function AddTransport({ route }) {
                     <TransportInput transportType={transportType} saveTransportType={saveTransportType} t={t} />
                     <TransportNumberInput label={t(FORM.TRANSPORT_NAME)} placeholder={t(FORM.TRANSPORT_NAME_PLACEHOLDER)} control={control} errors={errors} />
                     <TransportRouteInput t={t} control={control} errors={errors} />
+
+                    <View style={{ marginVertical: 10 }}>
+                        <HotelSearchMap
+                            editMode={isEdit}
+                            query={query}
+                            setQuery={setQuery}
+                            setCoords={setCoords}
+                            closeKeyboard={handleCloseKeyboard}
+                            label={t(FORM.TRANSPORT_DEPARTURE_LOCATION)}
+                            placeholder={t(FORM.TRANSPORT_DEPARTURE_LOCATION_PLACEHOLDER)}
+                            t={t}
+                        />
+                    </View>
+
                     <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginVertical: 20 }}>
                         <View style={{ gap: 20 }}>
                             <DateTimeInput label="clock-start" time={departDate} setTime={setDepartDate} date={departDate} setDate={setDepartDate} />
