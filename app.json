@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sol de Luna",
     "slug": "sol-de-luna",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -94,7 +94,7 @@
       }
     },
     "owner": "tareqitos",
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "1.1.0",
     "updates": {
       "url": "https://u.expo.dev/b1310730-82b4-4b23-b98c-5a30c9029321"
     }
