@@ -25,6 +25,7 @@ import { initializeNotifications } from './services/notifications';
 import { UpdateModal } from './components/UpdateModal';
 import { checkAppVersion, updates } from './services/services';
 import * as Application from 'expo-application';
+import { useEffect, useState } from 'react';
 
 const Stack = createNativeStackNavigator();
 initializeNotifications();
@@ -35,10 +36,21 @@ function AppContent() {
   const currentTheme = theme === 'system' ? systemTheme : theme;
   let paperTheme = currentTheme === 'dark' ? darkTheme : lightTheme;
 
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+  useEffect(() => {
+    const checkVersion = async () => {
+      const needsUpdate = await checkAppVersion();
+      setShowUpdateModal(needsUpdate);
+    };
+
+    checkVersion();
+  }, []);
+
   return (
     <View style={[{ flex: 1 }, { backgroundColor: currentTheme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
-        {checkAppVersion() && <UpdateModal />}
+        {showUpdateModal && <UpdateModal />}
         <LocalizationProvider>
           <NavigationContainer>
             <SettingsProvider>

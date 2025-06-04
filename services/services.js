@@ -59,7 +59,7 @@ export const updates = [
 ]
 
 export const checkAppVersion = async () => {
-    const appVersion = Application.nativeApplicationVersion;
+    const appVersion = Application.nativeApplicationVersion || "0.0.0";
     const storedVersion = await loadFromStorage("appVersion");
 
     if (appVersion !== storedVersion) {
