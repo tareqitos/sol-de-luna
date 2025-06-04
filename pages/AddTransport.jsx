@@ -22,6 +22,7 @@ import { FORM, MESSAGES, PAGE_TITLES } from "../locales/languagesConst";
 import { scheduleNotification } from "../services/notifications";
 import { BookingRefInput } from "../components/BookingRefInput";
 import HotelSearchMap from "../components/Hotels/HotelSearchMap";
+import { ContactNumberInput } from "../components/Hotels/ContactNumberInput";
 
 
 export default function AddTransport({ route }) {
@@ -39,6 +40,8 @@ export default function AddTransport({ route }) {
     const [arriveDate, setArriveDate] = useState(new Date());
     const [transportType, setTransportType] = useState('train')
 
+    const [contactNumber, setContactNumber] = useState(null);
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: "",
@@ -46,6 +49,7 @@ export default function AddTransport({ route }) {
             arrival: "",
             bookingReference: "",
             additionalInformation: "",
+            contactNumber: "",
         },
         mode: "onBlur"
     })
@@ -68,7 +72,8 @@ export default function AddTransport({ route }) {
                 departure: item.departure || "",
                 arrival: item.arrival || "",
                 additionalInformation: item.additionalInformation || "",
-                bookingReference: item.bookingReference || ""
+                bookingReference: item.bookingReference || "",
+                contactNumber: item.contactNumber || "",
             });
         }
 
@@ -93,6 +98,8 @@ export default function AddTransport({ route }) {
                 departureTime: mergeDateAndTime(departDate, departDate) || null,
                 arrivalTime: mergeDateAndTime(arriveDate, arriveDate) || null,
                 notificationId: notificationId || null,
+
+                contactNumber: contactNumber || null,
 
                 ...newData
             }
@@ -163,6 +170,9 @@ export default function AddTransport({ route }) {
                     </View>
                     <View>
                         <BookingRefInput label={t(FORM.TRANSPORT_BOOKING_REFERENCE)} placeholder={t(FORM.TRANSPORT_BOOKING_REFERENCE_PLACEHOLDER)} control={control} errors={errors} />
+                    </View>
+                    <View style={[s.form.input_container, s.form.input_contact]}>
+                        <ContactNumberInput label={t(FORM.CONTACT_NUMBER)} placeholder={t(FORM.CONTACT_NUMBER_PLACEHOLDER)} control={control} />
                     </View>
                     <View style={[s.form.input_container, s.form.input_addInfos]}>
                         <InformationInput label={t(FORM.ADDITIONNAL_INFO)} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} control={control} />

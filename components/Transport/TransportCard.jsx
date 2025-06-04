@@ -77,6 +77,11 @@ export default function TransportCard({ item, onPress, destination }) {
                         <CardElementChip clickable icon="checkbook" onPress={() => copyToClipboard(item.bookingReference)} element={item.bookingReference} />
                     </CardSection>}
 
+                    {/* CONTACT NUMBER */}
+                    {item.contactNumber && <CardSection style={styles.cardSection} text={t(FORM.CONTACT_NUMBER)}>
+                        <CardElementChip clickable icon="phone" onPress={() => openPhoneDialer(item.contactNumber)} element={item.contactNumber} />
+                    </CardSection>}
+
                     {/* ADDITIONAL INFORMATION */}
                     <CardSection style={styles.cardSection} text={t(CARDS.CARD_ADDITIONAL_INFO)}>
                         <CardInformation item={item} destinationID={destination.id} onPress={onPress} placeholder={t(FORM.TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER)} />
