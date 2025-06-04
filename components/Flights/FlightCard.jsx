@@ -100,7 +100,7 @@ export default function FlightCard({ item, onPress, destination }) {
                         </View>
 
                         {hasStop && (
-                            <View style={[styles.row, { justifyContent: "center", gap: 20, paddingHorizontal: 10 }]}>
+                            <View style={[styles.row, { justifyContent: "flex-start", gap: 20 }]}>
                                 <View>
                                     <Txt>{t(FORM.STOP_OVER)}</Txt>
                                     <CardTime icon="airplane-landing" hasIcon time={item.stop.stopStartTime} />
