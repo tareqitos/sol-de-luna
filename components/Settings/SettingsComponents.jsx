@@ -4,9 +4,10 @@ import {
     View, Text, StyleSheet, TouchableOpacity, Switch, Platform, Alert, useColorScheme,
     Linking
 } from 'react-native';
-import { Button, Icon, Modal, Portal, RadioButton, useTheme } from 'react-native-paper';
+import { Button, RadioButton, useTheme } from 'react-native-paper';
 import Txt from '../Utils/Txt';
 import { exportDataToJSON, importJSONData } from '../../services/import-export-service';
+import * as Application from 'expo-application';
 
 import DialogPopUp from '../UI/Dialog';
 import { useSnackbar } from '../../hook/useSnackbar';
@@ -349,7 +350,7 @@ export const SettingsAbout = () => {
             <SettingsItem
                 icon="code-slash-outline"
                 title="Version"
-                rightText="1.0.0"
+                rightText={Application.nativeApplicationVersion || "1.1.0"}
             />
             <SettingsItem
                 icon="heart-outline"
