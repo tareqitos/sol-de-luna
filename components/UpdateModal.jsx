@@ -1,4 +1,4 @@
-import { List, Modal, Portal, useTheme } from "react-native-paper"
+import { Button, List, Modal, Portal, useTheme } from "react-native-paper"
 import Txt from "./Utils/Txt"
 import { ScrollView, StyleSheet } from "react-native"
 import { checkAppVersion, updates } from "../services/services"
@@ -46,6 +46,7 @@ export const UpdateModal = () => {
                         ))}
                     </List.Section>
                 </ScrollView>
+                <Button onPress={closeModal}>Close</Button>
             </Modal>
         </Portal>
     )
