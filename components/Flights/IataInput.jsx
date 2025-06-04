@@ -29,8 +29,6 @@ export default function IataInput({ label, city, setCity }) {
         setValue(city)
         setIsVisible(false)
     }
-    console.log(departure)
-
 
     useEffect(() => {
         getIataApi();

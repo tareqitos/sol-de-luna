@@ -35,8 +35,6 @@ function AppContent() {
   const currentTheme = theme === 'system' ? systemTheme : theme;
   let paperTheme = currentTheme === 'dark' ? darkTheme : lightTheme;
 
-  console.log(Application.nativeApplicationVersion);
-
   return (
     <View style={[{ flex: 1 }, { backgroundColor: currentTheme === 'dark' ? "#121212" : "#FDFDFD" }]}>
       <PaperProvider theme={paperTheme}>
