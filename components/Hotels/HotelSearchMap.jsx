@@ -4,7 +4,7 @@ import { Divider, IconButton, List, TextInput, useTheme } from "react-native-pap
 import { API } from "../../api/api";
 import { FORM } from "../../locales/languagesConst";
 
-export default function HotelSearchMap({ editMode, query, setQuery, setCoords, closeKeyboard, t }) {
+export default function HotelSearchMap({ editMode, query, setQuery, setCoords, closeKeyboard, label, placeholder, t }) {
 
     const [results, setResults] = useState([]);
     const [message, setMessage] = useState(t(FORM.HOTEL_ADD_ADDRESS_MANUALLY))
@@ -53,7 +53,7 @@ export default function HotelSearchMap({ editMode, query, setQuery, setCoords, c
             >
                 <List.Item
                     title={item.display_name}
-                    contentStyle={[styles.item, typography.body]}
+                    contentStyle={[typography.body, styles.item]}
                     titleNumberOfLines={2}
                 />
             </TouchableOpacity>
@@ -134,7 +134,7 @@ export default function HotelSearchMap({ editMode, query, setQuery, setCoords, c
         <>
             <View style={styles.searchContainer}>
                 <TextInput
-                    label={t(FORM.HOTEL_ADDRESS)}
+                    label={label}
                     value={query}
                     onChange={() => isAddressSelected.current = false}
                     onChangeText={setQuery}
@@ -144,7 +144,7 @@ export default function HotelSearchMap({ editMode, query, setQuery, setCoords, c
                     inputMode="search"
                     returnKeyType="search"
                     returnKeyLabel="search"
-                    placeholder={t(FORM.HOTEL_ADDRESS_PLACEHOLDER)}
+                    placeholder={placeholder}
                     style={[
                         styles.input,
                         query?.length > 0 ? typography.body : typography.caption,
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         marginVertical: 5,
+        fontSize: 14,
     },
     input: {
         flex: 1,

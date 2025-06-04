@@ -32,18 +32,20 @@ export default function TransportRouteInput({ t, control, errors }) {
 
     return (
         <>
-            <View>
+            <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
                 <TextInput
                     label={t(FORM.TRANSPORT_DEPARTURE_CITY)}
                     mode="flat"
                     error={departureError}
                     value={departureField.value}
-                    onBlur={departureField.onBlur}
                     onChangeText={departureField.onChange}
                     style={[
                         s.form.input,
                         departureField.value?.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground, backgroundColor: colors.background }
+                        {
+                            flex: 1,
+                            paddingHorizontal: 0, color: colors.onBackground, backgroundColor: colors.background
+                        }
                     ]}
                     placeholder={t(FORM.TRANSPORT_DEPARTURE_CITY_PLACEHOLDER)}
                     placeholderTextColor={typography.caption.color}
@@ -53,22 +55,20 @@ export default function TransportRouteInput({ t, control, errors }) {
                     right={<TextInput.Icon icon="source-commit-start" style={{ alignSelf: "baseline" }} size={18} />}
 
                 />
-                {departureError &&
-                    <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={departureError}>
-                        {errorMessage}
-                    </HelperText>}
 
                 <TextInput
                     label={t(FORM.TRANSPORT_ARRIVAL_CITY)}
                     mode="flat"
                     error={arrivalError}
                     value={arrivalField.value}
-                    onBlur={arrivalField.onBlur}
                     onChangeText={arrivalField.onChange}
                     style={[
                         s.form.input,
                         arrivalField.value?.length == 0 ? typography.caption : typography.body,
-                        { color: colors.onBackground, backgroundColor: colors.background }
+                        {
+                            flex: 1,
+                            paddingHorizontal: 0, color: colors.onBackground, backgroundColor: colors.background
+                        }
                     ]}
                     placeholder={t(FORM.TRANSPORT_ARRIVAL_CITY_PLACEHOLDER)}
                     placeholderTextColor={typography.caption.color}
@@ -78,13 +78,13 @@ export default function TransportRouteInput({ t, control, errors }) {
                     right={<TextInput.Icon icon="source-commit-end" style={{ alignSelf: "baseline" }} size={18} />}
                 />
 
-                {arrivalError &&
-                    <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={arrivalError}>
-                        {errorMessage}
-                    </HelperText>}
 
 
             </View>
+            {arrivalError &&
+                <HelperText padding="none" style={{ paddingVertical: 0 }} type="error" visible={arrivalError}>
+                    {errorMessage}
+                </HelperText>}
         </>
     )
 }
