@@ -18,8 +18,6 @@ export default function TimeInput({ time, setTime }) {
         }
     };
 
-    console.log(time);
-
     return (
         <View>
             {Platform.OS === "android" &&

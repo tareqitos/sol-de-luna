@@ -117,7 +117,6 @@ export default function AddTransport({ route }) {
 
     const saveTransportType = (type) => {
         setTransportType(type);
-        console.log("Transport: ", type)
     }
 
     const handleCloseKeyboard = () => {
