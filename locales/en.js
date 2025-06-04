@@ -64,12 +64,14 @@ export default {
     transportTypeCar: "Car",
     transportTypeBoat: "Ferry",
     transportDepartureCity: "From",
-    transportDepartureCityPlaceholder: "Enter departure location",
+    transportDepartureCityPlaceholder: "Departure location",
     transportArrivalCity: "To",
-    transportArrivalCityPlaceholder: "Enter arrival location",
+    transportArrivalCityPlaceholder: "Arrival location",
     transportAdditionnalInfoPlaceholder: "e.g. Train number, boarding gate, etc.",
     transportBookingReference: "Booking reference",
     transportBookingReferencePlaceholder: "Your booking reference",
+    transportDepartureLocation: "Departure location",
+    transportDepartureLocationPlaceholder: "Enter departure location",
 
     additionnalInfo: "Additional information",
     additionnalInfoPlaceholder: "e.g. Flight number, boarding gate, etc.",
@@ -87,6 +89,7 @@ export default {
     only: "Only",
     sleepLeft: "sleep left",
     sleepsLeft: "sleeps left",
+    departureLocationCard: "Departure location",
 
     // MESSAGE
     emptyCategoryMessage: "Nothing here, add your next ",

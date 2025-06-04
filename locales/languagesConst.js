@@ -49,6 +49,9 @@ const FORM = {
     TRANSPORT_ADDITIONNAL_INFO_PLACEHOLDER: 'transportAdditionnalInfoPlaceholder',
     TRANSPORT_BOOKING_REFERENCE: 'transportBookingReference',
     TRANSPORT_BOOKING_REFERENCE_PLACEHOLDER: 'transportBookingReferencePlaceholder',
+    TRANSPORT_DEPARTURE_LOCATION: 'transportDepartureLocation',
+    TRANSPORT_DEPARTURE_LOCATION_PLACEHOLDER: 'transportDepartureLocationPlaceholder',
+
 
     ADDITIONNAL_INFO: 'additionnalInfo',
     ADDITIONNAL_INFO_PLACEHOLDER: 'additionnalInfoPlaceholder',
@@ -66,6 +69,8 @@ const CARDS = {
     ONLY: 'only',
     SLEEP_LEFT: 'sleepLeft',
     SLEEPS_LEFT: 'sleepsLeft',
+    DEPARTURE_LOCATION_CARD: 'departureLocationCard',
+
 }
 
 const DESTINATION = {
