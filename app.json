@@ -36,7 +36,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET"
       ],
-      "package": "com.tareqitos.soldeluna"
+      "package": "com.tareqitos.soldeluna",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
