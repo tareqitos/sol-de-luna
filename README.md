@@ -8,6 +8,10 @@
 
 Sol de Luna is a comprehensive travel companion app that helps you organize all your trips in one place. Whether you're planning a weekend getaway or a two weeks international trip, Sol de Luna keeps your flights, hotels, transportation, and important documents organized and easily accessible. Sol de Luna is 100% local and private.
 
+<div>
+<img src="media/pres2.png" width="100%" height="80%">
+</div>
+
 ## Features
 
 ### ✈️ All-in-One Travel Organization
